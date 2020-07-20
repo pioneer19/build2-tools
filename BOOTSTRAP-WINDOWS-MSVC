@@ -1,0 +1,164 @@
+Continuing from Bootstrapping on Windows (BOOTSTRAP-WINDOWS file), if you have
+already started an appropriate Visual Studio command prompt, then you can
+continue using it. Otherwise, start the Visual Studio "x64 Native Tools Command
+Prompt". Also set the PATH environment variable as on the previous steps:
+
+> set "PATH=C:\build2\bin;%PATH%"
+
+To build with MSVC you can either perform the following steps manually or, if
+after reviewing the steps you are happy with using the defaults, run the
+build-msvc.bat batch file. It performs (and echoes) the same set of steps as
+outlined below but only allows you to customize the installation directory and
+a few other things (run build-msvc.bat /? for usage).
+
+For example, you could run this batch file (from the above-mentioned command
+prompt) like this:
+
+> .\build-msvc.bat
+
+| Note that at about half way through (bpkg fetch at step 4 below) the script
+| will stop and prompt you to verify the authenticity of the repository
+| certificate. To run the script unattended you can specify the certificate
+| fingerprint with the --trust option (see build-msvc.bat /? for details).
+
+The end result of the bootstrap process (performed either with the script or
+manually) is the installed toolchain as well as the bpkg configuration in
+build2-toolchain-X.Y\ that can be used to upgrade (UPGRADE file) to newer
+versions. It can also be used to uninstall the toolchain:
+
+> cd build2-toolchain-X.Y
+> bpkg uninstall build2 bpkg bdep
+
+| Note that in both cases (manual or scripted bootstrap), if something goes
+| wrong and you need to restart the process, you must start with a clean
+| toolchain source by unpacking it afresh from the archive.
+
+The rest of this section outlines the manual bootstrap process.
+
+1. Bootstrap, Phase 1
+
+    First, we build a minimal build system with the provided bootstrap-msvc.bat
+    batch file. Normally, the only argument you will pass to this script is the
+    C++ compiler to use but there is also a way to specify compile options; run
+    bootstrap-msvc.bat /? and see the build2\INSTALL file for details.
+
+    > cd build2
+    > .\bootstrap-msvc.bat cl
+
+    > build2\b-boot --version
+
+2. Bootstrap, Phase 2
+
+    Then, we rebuild the build system with the result of Phase 1 linking
+    libraries statically.
+
+    > build2\b-boot config.cxx=cl config.bin.lib=static build2\exe{b}
+    > move /y build2\b.exe build2\b-boot.exe
+
+    > build2\b-boot --version
+
+3. Stage
+
+    At this step the build system and package manager are built with shared
+    libraries and then staged:
+
+    > cd ..  # Back to build2-toolchain-X.Y.Z\
+
+    > build2\build2\b-boot configure      ^
+      config.cxx=cl                       ^
+      config.bin.lib=shared               ^
+      config.bin.suffix=-stage            ^
+      config.install.root=C:\build2       ^
+      config.install.data_root=root\stage
+
+    > build2\build2\b-boot install: build2/ bpkg/
+
+    The strange-looking config.install.data_root=root\stage means install data
+    files (as opposed to executable files) into the stage\ subdirectory of
+    wherever config.install.root points to (so in our case it will be
+    C:\build2\stage\). This subdirectory is temporary and will be removed in a
+    few steps.
+
+    Verify that the toolchain binaries can be found and work (this relies on
+    the PATH environment variable we have set earlier):
+
+    > where b-stage
+    C:\build2\bin\b-stage.exe
+
+    > where bpkg-stage
+    C:\build2\bin\bpkg-stage.exe
+
+    > b-stage --version
+    > bpkg-stage --version
+
+    At the next step we will use bpkg to build and install the entire
+    toolchain. If for some reason you prefer not to build from packages (for
+    example, because the machine is offline), then you can convert this step
+    into a local installation and skip the rest. For this you will need to
+    change the configure and install command lines above along these lines (see
+    also a note on the following step about only building shared libraries):
+
+    > build2\build2\b-boot configure ^
+      config.cxx=cl                  ^
+      config.cc.coptions=/O2         ^
+      config.bin.lib=shared          ^
+      config.install.root=C:\build2
+
+    > build2\build2\b-boot install: build2/ bpkg/ bdep/
+
+    | To perform a local installation with the build-msvc.bat batch file, pass
+    | the --local option.
+
+    To uninstall such a local installation, run:
+
+    > b uninstall: build2/ bpkg/ bdep/
+
+4. Install
+
+    Next, we use the staged tools to build and install the entire toolchain
+    from the package repository with the bpkg package manager. First, we create
+    the bpkg configuration. The configuration values are pretty similar to the
+    previous step and you may want/need to make similar adjustments.
+
+    > cd ..  # Back to build2-build\
+    > md build2-toolchain-X.Y
+    > cd build2-toolchain-X.Y
+
+    > bpkg-stage create             ^
+      cc                            ^
+      config.cxx=cl                 ^
+      config.cc.coptions=/O2        ^
+      config.bin.lib=shared         ^
+      config.install.root=C:\build2
+
+    | The above configuration will only build shared libraries. If you would
+    | like to build both shared and static, remove config.bin.lib=shared.
+
+    Next, we add the package repository, build, and install:
+
+    > bpkg-stage add https://pkg.cppget.org/1/alpha
+    > bpkg-stage fetch
+    > bpkg-stage build --for install build2 bpkg bdep
+    > bpkg-stage install build2 bpkg bdep
+
+    Finally, we verify the result:
+
+    > where b
+    C:\build2\bin\b.exe
+
+    > where bpkg
+    C:\build2\bin\bpkg.exe
+
+    > where bdep
+    C:\build2\bin\bdep.exe
+
+    > b --version
+    > bpkg --version
+    > bdep --version
+
+5. Clean
+
+    The last thing we need to do is uninstall the staged tools:
+
+    > cd ..\build2-toolchain-X.Y.Z  # Back to bootstrap.
+    > b uninstall: build2/ bpkg/

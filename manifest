@@ -1,0 +1,7 @@
+: 1
+
+# Note: not a real package, just for the version module.
+#
+version: 0.13.0
+depends: * build2 >= 0.13.0
+depends: * bpkg >= 0.13.0

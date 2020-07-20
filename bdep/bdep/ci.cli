@@ -1,0 +1,184 @@
+// file      : bdep/ci.cli
+// license   : MIT; see accompanying LICENSE file
+
+include <bdep/project.cli>;
+include <bdep/ci-types.hxx>;
+
+"\section=1"
+"\name=bdep-ci"
+"\summary=submit project test request to CI server"
+
+namespace bdep
+{
+  {
+    "<options>
+     <prj-spec> <prj-dir>
+     <pkg-spec> <pkg-dir>
+     <cfg-spec> <cfg-name> <cfg-dir>",
+
+    "\h|SYNOPSIS|
+
+     \c{\b{bdep ci} [<options>] [<cfg-spec>] [<pkg-spec>]}
+
+     \c{<pkg-spec> = (\b{--directory}|\b{-d} <pkg-dir>)... | <prj-spec>\n
+        <prj-spec> = \b{--directory}|\b{-d} <prj-dir>\n
+        <cfg-spec> = \b{@}<cfg-name> | \b{--config}|\b{-c} <cfg-dir>}
+
+     \h|DESCRIPTION|
+
+     The \cb{ci} command submits the project packages test request to a CI
+     server.
+
+     If no project or package directory is specified, then the current working
+     directory is assumed. If no configuration is specified, then the default
+     configuration is used. If the specified directory is a project directory,
+     then all the packages initialized in the configuration are submitted. See
+     \l{bdep-projects-configs(1)} for details on specifying projects and
+     configurations.
+
+     A CI request consists of the specified packages and their versions as
+     well as the project's remote version control repository URL corresponding
+     to the current (local) state of the project. The CI server should be able
+     to fetch these package versions from this repository as well as any
+     dependencies from this repository or its prerequisite/complement
+     repositories, according to each package's \cb{repositories.manifest}.
+
+     If the CI server is not explicitly specified with the \cb{--server}
+     option, the request is submitted to \cb{ci.cppget.org} by default.
+
+     Unless the remote repository URL is specified with the \cb{--repository}
+     option, it will be automatically derived from the version control's
+     \"remote\" URL. In case of \cb{git(1)}, it will be based on the
+     \cb{remote.origin.url} configuration value unless overridden with
+     \cb{remote.origin.build2Url}. The repository URL is then adjusted to
+     corresponding to the current (local) state of the project. In case of
+     \cb{git(1)}, the current branch and commit id are added as the repository
+     URL fragment (see \l{bpkg-repository-types(1)} for details).
+
+     Some package manifest values can be overridden as part of the CI request
+     submission using the \cb{--override} and \cb{--overrides-file} options as
+     well as their \cb{--builds} and \cb{--build-email} shortcuts. This is
+     primarily useful for specifying alternative build configurations and/or
+     build notification emails. For example:
+
+     \
+     $ bdep ci --builds gcc
+     \
+
+     Note that manifest overrides override the entire value group that they
+     belong to. Currently, the following value groups can be overridden with
+     the \cb{build*-email} group overridden by default as if by specifying
+     an empty build email.
+
+     \
+     build-email build-{warning,error}-email
+     builds build-{include,exclude}
+     \
+
+     Note also that the build constraints group values are overridden
+     hierarchically so that the \cb{build-{include,exclude\}} overrides don't
+     affect the \cb{builds} values.
+
+     While the exact interpretation of the CI request depends on the specific
+     service, normally, the CI server will respond with a reference that can
+     be used to query the results. See \l{brep#ci Package CI} for details on
+     the CI request handling.
+     "
+  }
+
+  class cmd_ci_options: project_options
+  {
+    "\h|CI OPTIONS|"
+
+    bool --yes|-y
+    {
+      "Don't prompt for confirmation before submitting."
+    }
+
+    url --server
+    {
+      "<url>",
+      "CI server to submit the request to."
+    }
+
+    url --repository
+    {
+      "<url>",
+      "Remote repository URL for the project."
+    }
+
+    // Note: the following options are for documentation only (see --overrides
+    // below for details).
+    //
+    strings --override
+    {
+      "<name>:<value>",
+      "Package manifest value override. Repeat this option to override
+       multiple values."
+    }
+
+    path --overrides-file
+    {
+      "<file>",
+      "Read manifest value overrides from the specified manifest fragment
+       file. Repeat this option to specify multiple override files."
+    }
+
+    strings --builds
+    {
+      "<class-expr>",
+      "Shortcut for \c{\b{--override\ builds:}<class-expr>}."
+    }
+
+    string --build-email
+    {
+      "<email>",
+      "Shortcut for \c{\b{--override\ build-email:}<email>}."
+    }
+
+    // All the overrides-related options are handled with a common parser and
+    // are collected in a single manifest value list that is accessible via
+    // the --overrides option accessor. The --overrides option is "fake" in
+    // that it only serves to collect the values in a single list while
+    // preserving their order. Note that for this trick (or hack, if you
+    // will) to work, this option should come after all the options it
+    // aliases.
+    //
+    cmd_ci_override --overrides      |
+                    --override       |
+                    --overrides-file |
+                    --builds         |
+                    --build-email;
+
+    string --simulate
+    {
+      "<outcome>",
+      "Simulate the specified outcome of the CI process without actually
+       performing any externally visible actions (such as testing the packages
+       or publishing the result). The commonly used outcome value is
+       \cb{success}. For other recognized outcomes refer to the CI service
+       documentation."
+    }
+  };
+
+  "
+   \h|DEFAULT OPTIONS FILES|
+
+   See \l{bdep-default-options-files(1)} for an overview of the default
+   options files. For the \cb{ci} command the search start directory is
+   the project directory. The following options files are searched for in
+   each directory and, if found, loaded in the order listed:
+
+   \
+   bdep.options
+   bdep-ci.options
+   \
+
+   The following \cb{ci} command options cannot be specified in the
+   default options files:
+
+   \
+   --directory|-d
+   \
+  "
+}

@@ -1,0 +1,44 @@
+# file      : tests/test/simple/generated/testscript
+# license   : MIT; see accompanying LICENSE file
+
+test.arguments = test clean
+
+.include ../../common.testscript
+
+# @@ in module
+#
++cat <<EOI >+build/bootstrap.build
+using version
+EOI
++cat <<EOI >=manifest
+: 1
+name: test
+version: 1.2.3
+EOI
+
+# This one is a bit tricky since we need an executable to run. We don't want
+# to be building anything as part of our test project so what we do is test
+# the directory target with an overridden test target (note that $src_root
+# here refers to the root of the project being tested).
+
+: input
+:
+ln -s $src_base/input.in ./;
+$* <<EOI
+driver = $src_root/../exe{driver}
+./: test = $driver
+./: $driver
+./: file{input}: test.input = true
+file{input}: in{input} $src_root/manifest #@@ in module
+EOI
+
+: output
+:
+ln -s $src_base/output.in ./;
+$* <<EOI
+driver = $src_root/../exe{driver}
+./: test = $driver
+./: $driver
+./: file{output}: test.stdout = true
+file{output}: in{output} $src_root/manifest #@@ in module
+EOI

@@ -1,0 +1,151 @@
+// file      : BOOTSTRAP-WINDOWS.cli
+// license   : MIT; see accompanying LICENSE file
+
+"
+The following instructions are for bootstrapping \c{build2} from the Windows
+command prompt with either MSVC, Clang (targeting the MSVC runtime), or
+MinGW. If you are using any kind of UNIX emulation layer (for example, WSL,
+MSYS, or Cygwin) and already have a UNIX shell with standard utilities, then
+you most likely should follow \l{#bootstrap-unix Bootstrapping on UNIX}
+instead.
+
+\N|Note that if you continue with these instructions but you already have your
+own installation of MSYS and/or MinGW, then make sure that their paths are not
+in your \c{PATH} environment variable when building and using \c{build2} since
+they may provide conflicting DLLs.|
+
+The \c{build2} toolchain on Windows requires a set of extra utilities
+(\c{install}, \c{diff}, \c{curl}, \c{tar}, etc). These are provided by the
+\c{build2-baseutils} package (see the \c{README} file inside for details).
+Normally, the \c{build2} toolchain itself is installed into the same directory
+as the utilities in order to produce the  combined installation.
+
+To build on Windows you will need either MSVC 14 Update 3 or later, Clang 8 or
+later (either bundled with MSVC or installed separately), or MinGW GCC 4.9 or
+later. If you don't already have a suitable C++ compiler, then you can use the
+\c{build2-mingw} package which provides a minimal MinGW-W64 GCC distribution
+(see the \c{README} file inside for details). If used, then it should be
+unpacked into the same directory as \c{build2-baseutils}.
+
+\N|If using your own MinGW GCC installation, make sure it is configured with
+the \c{posix} threading model (this is currently the only configuration that
+implements C++11 threads; run \c{g++ -v} to verify).|
+
+\N|Only 64-bit variants of the \c{baseutils} and \c{mingw} packages are
+provided and they \b{must} match the width of the \c{build2} toolchain. Note
+also that the 64-bit \c{build2} toolchain can be used to build 32-bit
+applications without any restrictions.|
+
+To bootstrap on Windows with either MSVC, Clang, or MinGW start with the
+following common steps:
+
+\dl|
+
+\li|\b{1. Open Command Prompt}\n
+
+Start the standard Windows Command Prompt. If you plan to build with MSVC or
+Clang bundled with MSVC, then you may go ahead and start the Visual Studio
+\"x64 Native Tools Command Prompt\" (or wait for MSVC/Clang-specific
+instructions).|
+
+\li|\n\b{2. Create Build Directory}\n
+
+You will want to keep this directory around in order to upgrade to new
+toolchain versions in the future. In this guide we use \c{C:\\build2-build\\}
+as the build directory and \c{C:\\build2\\} as the installation directory but
+you can use other paths.
+
+\
+> cd /D C:\
+> mkdir build2-build
+> cd build2-build
+\
+
+|
+
+\li|\n\b{3. Download Archives}\n
+
+Download the following files as well as their \c{.sha256} checksums from the
+\l{https://build2.org/download.xhtml Download} page:
+
+\
+build2-baseutils-X.Y.Z-x86_64-windows.zip
+build2-mingw-X.Y.Z-x86_64-windows.tar.xz   (if required)
+build2-toolchain-X.Y.Z.tar.xz
+\
+
+Place everything into \c{C:\\build2-build\\} (build directory).|
+
+\li|\n\b{4. Verify Archive Checksums}\n
+
+Verify archive checksums match (compare visually):
+
+\
+> type *.sha256
+> for %f in (*.zip *.xz) do certutil -hashfile %f SHA256
+\
+
+|
+
+\li|\n\b{5. Unpack \c{build2-baseutils}}\n
+
+Unpack the \c{build2-baseutils-X.Y.Z-x86_64-windows.zip} archive into \c{C:\\}
+using Windows Explorer (for example, copy the archive directory and then paste
+it). Rename it to \c{C:\\build2\\}. This will be the toolchain installation
+directory.  |
+
+\li|\n\b{6. Set \c{PATH}}\n
+
+Set the \c{PATH} environment variable and verify that the utilities are found
+and work:
+
+\
+> set \"PATH=C:\build2\bin;%PATH%\"
+> where tar
+> tar --version
+\
+
+|
+
+\li|\n\b{7. Unpack \c{build2-mingw} (optional)}\n
+
+If required, unpack the \c{build2-mingw-X.Y.Z-x86_64-windows.tar.xz} archive
+into \c{C:\\build2\\}:
+
+\
+> xz -d build2-mingw-X.Y.Z-x86_64-windows.tar.xz
+> tar -xf build2-mingw-X.Y.Z-x86_64-windows.tar ^
+  --one-top-level=C:\build2 --strip-components=1
+\
+
+Verify that the MinGW GCC is found and works:
+
+\
+> where g++
+> g++ --version
+\
+
+|
+
+\li|\n\b{8. Unpack \c{build2-toolchain}}\n
+
+Unpack the \c{build2-toolchain-X.Y.Z.tar.xz} archive and change to its
+directory:
+
+\
+> xz -d build2-toolchain-X.Y.Z.tar.xz
+> tar -xf build2-toolchain-X.Y.Z.tar
+> cd build2-toolchain-X.Y.Z
+\
+
+||
+
+If building with MSVC, continue with \l{#bootstrap-windows-msvc Bootstrapping
+on Windows with MSVC}.
+
+If building with Clang, continue with \l{#bootstrap-windows-clang Bootstrapping
+on Windows with Clang}.
+
+If building with MinGW, continue with \l{#bootstrap-windows-mingw
+Bootstrapping on Windows with MinGW}.
+"

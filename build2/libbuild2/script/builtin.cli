@@ -1,0 +1,21 @@
+// file      : libbuild2/script/builtin.cli
+// license   : MIT; see accompanying LICENSE file
+
+// Note that options in this file are undocumented because we generate neither
+// the usage printing code nor man pages. Instead, they are documented in the
+// Testscript Language Manual's builtin descriptions.
+//
+namespace build2
+{
+  namespace script
+  {
+    // Pseudo-builtin options.
+    //
+    class set_options
+    {
+      bool --exact|-e;
+      bool --newline|-n;
+      bool --whitespace|-w;
+    };
+  }
+}

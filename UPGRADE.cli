@@ -1,0 +1,221 @@
+// file      : UPGRADE.cli
+// license   : MIT; see accompanying LICENSE file
+
+"
+At this point we assume that you have the build2 toolchain installed and would
+like to upgrade it to a newer version. We also expect that you have the
+toolchain \c{bpkg} configuration in the \c{build2-toolchain-X.Y/} directory,
+as produced by the bootstrap process. If you don't have the \c{bpkg}
+configuration but do have the toolchain installed somehow (for example, using
+your distribution's package manager), then you can create the configuration as
+shown at the end. If you have neither, then you will need to go through the
+bootstrap process.
+
+There are two ways to upgrade: dirty (but quick) and staged (but more
+involved). In the \i{dirty upgrade} we override the existing installation
+without first uninstalling it. If some installed files no longer exist in the
+new version, they will remain \"installed\" until cleaned up manually. Also,
+with this approach we never get a chance to make sure the new build is
+functional.
+
+In the \i{staged upgrade} we first install a \c{-stage} build of the new
+toolchain (similar to what we did during bootstrap), test it, uninstall the
+old toolchain, install the new toolchain as \"final\", and finally uninstall
+\c{-stage}.
+
+We recommend that you use a dirty upgrade for patch releases with the same
+\c{X.Y} (\c{MAJOR.MINOR}) version and a staged upgrade otherwise. With patch
+releases we guarantee not to alter the installation file set.
+
+\N|Without periodic upgrades your version of the toolchain may become too old
+to be able to upgrade itself. In this case you will have to fall back onto the
+bootstrap process.|
+
+\N|The below upgrade process does not cover upgrading the \c{baseutils} and
+\c{mingw} packages on Windows (see \l{#bootstrap-windows Bootstrapping on
+Windows} for details). We recommend using the bootstrap process to upgrade
+these packages since all the straightforward upgrade sequences would lead to
+either the old toolchain using the new utilities or vice versa.|
+
+The dirty upgrade is straightforward:
+
+\
+$ cd build2-toolchain-X.Y
+$ bpkg fetch
+$ bpkg build --for install -ur build2 bpkg bdep
+$ bpkg install build2 bpkg bdep
+\
+
+\N|The \c{-ur} options stands for \c{--upgrade} and \c{--recursive} \- upgrade
+the listed packages and their dependencies, recursively. See
+\l{bpkg-pkg-build(1)} for details.|
+
+You may also want to issue the \c{status} command after \c{fetch} to examine
+which versions are available. By default \c{bpkg} will upgrade to the latest
+available but you can override this by specifying the desired version
+explicitly, for example:
+
+\
+$ bpkg status build2 bpkg bdep
+!build2 configured 1.0.0 available 1.0.1 2.0.0
+!bpkg configured 1.0.0 available 1.0.1 2.0.0
+!bdep configured 1.0.0 available 1.0.1 2.0.0
+
+$ bpkg build --for install build2/1.0.1 bpkg/1.0.1 bdep/1.0.1
+\
+
+The staged upgrade consists of several steps:
+
+\dl|
+
+\li|\b{0. Check for Updates}\n
+
+There is no harm in running \c{bpkg fetch} in the existing configuration so
+we can use it to determine if any updates are available, whether we can use
+the simpler dirty upgrade, and, if not, the target \c{X.Y} (\c{MAJOR.MINOR})
+version for the staged upgrade:
+
+\
+$ cd build2-toolchain-X.Y
+$ bpkg fetch
+$ bpkg status build2 bpkg bdep
+\
+
+Let's say the new version is X.Z.
+|
+
+\li|\n\b{1. Create New Configuration}\n
+
+First we make a copy of the old configuration. We will need the original later
+to cleanly uninstall the old toolchain, and, maybe, to rollback the
+installation if the new version doesn't work out.
+
+\
+$ cd ..
+$ cp -rp build2-toolchain-X.Y build2-toolchain-X.Z
+\
+
+Or, using Windows command prompt:
+
+\
+> cd ..
+> xcopy /s /q /i build2-toolchain-X.Y build2-toolchain-X.Z
+\
+
+|
+
+\li|\n\b{2. Build and Install as \c{-stage}}\n
+
+This step is similar to the dirty upgrade except we use the copied
+configuration and install the new toolchain with the \c{-stage} suffix:
+
+\
+$ cd build2-toolchain-X.Z
+$ bpkg build --for install -ur build2 bpkg bdep
+$ bpkg install                        \
+  config.bin.suffix=-stage            \
+  config.install.data_root=root/stage \
+  build2 bpkg bdep
+\
+
+|
+
+\li|\n\b{3. Test Staged}\n
+
+Now you can test the new toolchain on your projects, etc. Remember to use the
+\c{-stage}-suffixed binaries (\c{bdep-stage} will automatically use
+\c{bpkg-stage} which in turn will use \c{b-stage}):
+
+\
+$ b-stage --version
+$ bpkg-stage --version
+$ bdep-stage --version
+\
+
+|
+
+\li|\n\b{4. Uninstall Old, Install New}\n
+
+Once we are satisfied that the new toolchain works, we can uninstall the old
+one and install the new one:
+
+\
+$ cd ../build2-toolchain-X.Y
+$ bpkg uninstall build2 bpkg bdep
+
+$ cd ../build2-toolchain-X.Z
+$ bpkg-stage install build2 bpkg bdep
+\
+
+|
+
+\li|\n\b{5. Uninstall Staged}\n
+
+Finally, we clean up by removing the staged toolchain (hint: use the command
+line history to find the corresponding \c{install} command and change it to
+\c{uninstall}):
+
+\
+$ bpkg uninstall                      \
+  config.bin.suffix=-stage            \
+  config.install.data_root=root/stage \
+  build2 bpkg bdep
+\
+
+You can also remove the old configuration in \c{build2-toolchain-X.Y/} if you
+think you no longer need it.
+
+||
+
+If you ever need to (re-)create the \c{bpkg} configuration for the toolchain
+from scratch, it is fairly simple (you may need to adjust the compiler,
+options, installation directory, etc; see the bootstrap steps for details):
+
+For UNIX-like operating systems (GNU/Linux, Mac OS X, FreeBSD, etc):
+
+\
+$ bpkg-stage create             \
+cc                              \
+config.cxx=g++                  \
+config.cc.coptions=-O3          \
+config.bin.lib=shared           \
+config.bin.rpath=/usr/local/lib \
+config.install.root=/usr/local  \
+config.install.sudo=sudo
+\
+
+For Windows with MSVC (from the Visual Studio \"x64 Native Tools Command
+Prompt\"):
+
+\
+> bpkg-stage create             ^
+  cc                            ^
+  config.cxx=cl                 ^
+  config.cc.coptions=/O2        ^
+  config.bin.lib=shared         ^
+  config.install.root=C:\build2
+\
+
+For Windows with Clang (from a suitable command prompt, see
+\l{#bootstrap-windows-clang Bootstrapping on Windows with Clang} for details):
+
+\
+> bpkg-stage create             ^
+  cc                            ^
+  config.cxx=clang++            ^
+  \"config.cc.coptions=-m64 -O2\" ^
+  config.bin.lib=shared         ^
+  config.install.root=C:\build2
+\
+
+For Windows with MinGW (from the command prompt):
+
+\
+> bpkg-stage create             ^
+  cc                            ^
+  config.cxx=g++                ^
+  config.cc.coptions=-O3        ^
+  config.bin.lib=shared         ^
+  config.install.root=C:\build2
+\
+"

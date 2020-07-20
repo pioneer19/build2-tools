@@ -1,0 +1,104 @@
+# file      : tests/status.testscript
+# license   : MIT; see accompanying LICENSE file
+
+.include common.testscript project.testscript
+
+config_cxx = cc config.cxx=$quote($recall($cxx.path) $cxx.config.mode, true)
+
+new    += 2>!
+init   += $config_cxx -d prj 2>!
+sync   += -d prj 2>!
+deinit += -d prj
+
+: no-cfg
+:
+{
+  $clone_prj;
+
+  $* 2>>/"EOE" != 0
+    error: no default configuration in project $~/prj/
+      info: use \(@<cfg-name> | --config|-c <cfg-dir> | --all|-a\) to specify configuration explicitly
+    EOE
+}
+
+: single-cfg
+:
+{
+  $clone_prj;
+
+  $init -C @cfg &prj-cfg/***;
+
+  $* >'prj configured 0.1.0-a.0.19700101000000';
+
+  $deinit 2>>/"EOE"
+    deinitializing in project $~/prj/
+    synchronizing:
+      drop prj
+    EOE
+}
+
+: multi-cfg
+:
+{
+  $clone_prj;
+
+  $init -C @cfg1 &prj-cfg1/***;
+  $init -C @cfg2 &prj-cfg2/***;
+
+  $* @cfg2 >'prj configured 0.1.0-a.0.19700101000000';
+
+  $* --all >>EOO;
+    in configuration @cfg1:
+    prj configured 0.1.0-a.0.19700101000000
+
+    in configuration @cfg2:
+    prj configured 0.1.0-a.0.19700101000000
+    EOO
+
+  $deinit 2>>/"EOE"
+    deinitializing in project $~/prj/
+    synchronizing:
+      drop prj
+    EOE
+}
+
+: dependency
+:
+{
+  $clone_prj;
+
+  $init -C @cfg &prj-cfg/***;
+
+  $new -t lib libprj &libprj/***;
+
+  cat <<EOI >+prj/repositories.manifest;
+    :
+    role: prerequisite
+    location: ../libprj
+    type: dir
+    EOI
+
+  cat <<EOI >+prj/manifest;
+    depends: libprj
+    EOI
+
+  $* --recursive >>EOO 2>>/"EOE"; # Note: implicitly fetches in cfg.
+    prj configured 0.1.0-a.0.19700101000000 available 0.1.0-a.0.19700101000000#1
+    EOO
+    fetching dir:$~/libprj \(prerequisite of dir:$~/prj\)
+    EOE
+
+  $sync;
+
+  $* --recursive >>~%EOO%;
+    prj configured 0.1.0-a.0.19700101000000#1
+    %  libprj configured 0.+%
+    EOO
+
+  $deinit 2>>/"EOE"
+    deinitializing in project $~/prj/
+    synchronizing:
+      drop prj
+      drop libprj
+    EOE
+}

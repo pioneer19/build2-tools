@@ -1,0 +1,366 @@
+<changelog xmlns="http://www.codesynthesis.com/xmlns/odb/changelog" database="sqlite" version="1">
+  <changeset version="7">
+    <alter-table name="available_package_dependencies">
+      <add-column name="type" type="TEXT" null="true"/>
+    </alter-table>
+    <add-table name="available_package_tests" kind="container">
+      <column name="name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="version_epoch" type="INTEGER" null="true"/>
+      <column name="version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="version_canonical_release" type="TEXT" null="true" options="COLLATE BINARY"/>
+      <column name="version_revision" type="INTEGER" null="true"/>
+      <column name="version_iteration" type="INTEGER" null="true"/>
+      <column name="index" type="INTEGER" null="true"/>
+      <column name="test_name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="test_min_version_epoch" type="INTEGER" null="true"/>
+      <column name="test_min_version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="test_min_version_canonical_release" type="TEXT" null="true"/>
+      <column name="test_min_version_revision" type="INTEGER" null="true"/>
+      <column name="test_min_version_iteration" type="INTEGER" null="true"/>
+      <column name="test_min_version_upstream" type="TEXT" null="true"/>
+      <column name="test_min_version_release" type="TEXT" null="true"/>
+      <column name="test_max_version_epoch" type="INTEGER" null="true"/>
+      <column name="test_max_version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="test_max_version_canonical_release" type="TEXT" null="true"/>
+      <column name="test_max_version_revision" type="INTEGER" null="true"/>
+      <column name="test_max_version_iteration" type="INTEGER" null="true"/>
+      <column name="test_max_version_upstream" type="TEXT" null="true"/>
+      <column name="test_max_version_release" type="TEXT" null="true"/>
+      <column name="test_min_open" type="INTEGER" null="true"/>
+      <column name="test_max_open" type="INTEGER" null="true"/>
+      <column name="test_type" type="TEXT" null="true"/>
+      <foreign-key name="object_id_fk" on-delete="CASCADE">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+        <references table="available_package">
+          <column name="name"/>
+          <column name="version_epoch"/>
+          <column name="version_canonical_upstream"/>
+          <column name="version_canonical_release"/>
+          <column name="version_revision"/>
+          <column name="version_iteration"/>
+        </references>
+      </foreign-key>
+      <index name="available_package_tests_object_id_i">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+      </index>
+      <index name="available_package_tests_index_i">
+        <column name="index"/>
+      </index>
+    </add-table>
+  </changeset>
+
+  <changeset version="6"/>
+
+  <model version="5">
+    <table name="repository_fragment" kind="object">
+      <column name="name" type="TEXT" null="true"/>
+      <column name="url" type="TEXT" null="true"/>
+      <column name="type" type="TEXT" null="true"/>
+      <primary-key>
+        <column name="name"/>
+      </primary-key>
+    </table>
+    <table name="repository_fragment_complements" kind="container">
+      <column name="repository_fragment" type="TEXT" null="true"/>
+      <column name="complement" type="TEXT" null="true"/>
+      <foreign-key name="repository_fragment_fk" on-delete="CASCADE">
+        <column name="repository_fragment"/>
+        <references table="repository_fragment">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+      <index name="repository_fragment_complements_repository_fragment_i">
+        <column name="repository_fragment"/>
+      </index>
+      <foreign-key name="complement_fk" deferrable="DEFERRED">
+        <column name="complement"/>
+        <references table="repository">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+    </table>
+    <table name="repository_fragment_prerequisites" kind="container">
+      <column name="repository_fragment" type="TEXT" null="true"/>
+      <column name="prerequisite" type="TEXT" null="true"/>
+      <foreign-key name="repository_fragment_fk" on-delete="CASCADE">
+        <column name="repository_fragment"/>
+        <references table="repository_fragment">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+      <index name="repository_fragment_prerequisites_repository_fragment_i">
+        <column name="repository_fragment"/>
+      </index>
+      <foreign-key name="prerequisite_fk" deferrable="DEFERRED">
+        <column name="prerequisite"/>
+        <references table="repository">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+    </table>
+    <table name="repository" kind="object">
+      <column name="name" type="TEXT" null="true"/>
+      <column name="url" type="TEXT" null="true"/>
+      <column name="type" type="TEXT" null="true"/>
+      <column name="certificate" type="TEXT" null="true"/>
+      <primary-key>
+        <column name="name"/>
+      </primary-key>
+    </table>
+    <table name="repository_fragments" kind="container">
+      <column name="repository" type="TEXT" null="true"/>
+      <column name="index" type="INTEGER" null="true"/>
+      <column name="friendly_name" type="TEXT" null="true"/>
+      <column name="fragment" type="TEXT" null="true"/>
+      <foreign-key name="repository_fk" on-delete="CASCADE">
+        <column name="repository"/>
+        <references table="repository">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+      <index name="repository_fragments_repository_i">
+        <column name="repository"/>
+      </index>
+      <index name="repository_fragments_index_i">
+        <column name="index"/>
+      </index>
+      <foreign-key name="fragment_fk" deferrable="DEFERRED">
+        <column name="fragment"/>
+        <references table="repository_fragment">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+    </table>
+    <table name="available_package" kind="object">
+      <column name="name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="version_epoch" type="INTEGER" null="true"/>
+      <column name="version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="version_canonical_release" type="TEXT" null="true" options="COLLATE BINARY"/>
+      <column name="version_revision" type="INTEGER" null="true"/>
+      <column name="version_iteration" type="INTEGER" null="true"/>
+      <column name="version_upstream" type="TEXT" null="true"/>
+      <column name="version_release" type="TEXT" null="true"/>
+      <column name="sha256sum" type="TEXT" null="true"/>
+      <primary-key>
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+      </primary-key>
+    </table>
+    <table name="available_package_locations" kind="container">
+      <column name="name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="version_epoch" type="INTEGER" null="true"/>
+      <column name="version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="version_canonical_release" type="TEXT" null="true" options="COLLATE BINARY"/>
+      <column name="version_revision" type="INTEGER" null="true"/>
+      <column name="version_iteration" type="INTEGER" null="true"/>
+      <column name="repository_fragment" type="TEXT" null="true"/>
+      <column name="location" type="TEXT" null="true"/>
+      <foreign-key name="object_id_fk" on-delete="CASCADE">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+        <references table="available_package">
+          <column name="name"/>
+          <column name="version_epoch"/>
+          <column name="version_canonical_upstream"/>
+          <column name="version_canonical_release"/>
+          <column name="version_revision"/>
+          <column name="version_iteration"/>
+        </references>
+      </foreign-key>
+      <index name="available_package_locations_object_id_i">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+      </index>
+      <foreign-key name="repository_fragment_fk" deferrable="DEFERRED">
+        <column name="repository_fragment"/>
+        <references table="repository_fragment">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+    </table>
+    <table name="available_package_dependencies" kind="container">
+      <column name="name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="version_epoch" type="INTEGER" null="true"/>
+      <column name="version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="version_canonical_release" type="TEXT" null="true" options="COLLATE BINARY"/>
+      <column name="version_revision" type="INTEGER" null="true"/>
+      <column name="version_iteration" type="INTEGER" null="true"/>
+      <column name="index" type="INTEGER" null="true"/>
+      <column name="conditional" type="INTEGER" null="true"/>
+      <column name="buildtime" type="INTEGER" null="true"/>
+      <column name="comment" type="TEXT" null="true"/>
+      <foreign-key name="object_id_fk" on-delete="CASCADE">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+        <references table="available_package">
+          <column name="name"/>
+          <column name="version_epoch"/>
+          <column name="version_canonical_upstream"/>
+          <column name="version_canonical_release"/>
+          <column name="version_revision"/>
+          <column name="version_iteration"/>
+        </references>
+      </foreign-key>
+      <index name="available_package_dependencies_object_id_i">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+      </index>
+      <index name="available_package_dependencies_index_i">
+        <column name="index"/>
+      </index>
+    </table>
+    <table name="available_package_dependency_alternatives" kind="container">
+      <column name="name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="version_epoch" type="INTEGER" null="true"/>
+      <column name="version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="version_canonical_release" type="TEXT" null="true" options="COLLATE BINARY"/>
+      <column name="version_revision" type="INTEGER" null="true"/>
+      <column name="version_iteration" type="INTEGER" null="true"/>
+      <column name="dependency_index" type="INTEGER" null="true"/>
+      <column name="index" type="INTEGER" null="true"/>
+      <column name="dep_name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="dep_min_version_epoch" type="INTEGER" null="true"/>
+      <column name="dep_min_version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="dep_min_version_canonical_release" type="TEXT" null="true"/>
+      <column name="dep_min_version_revision" type="INTEGER" null="true"/>
+      <column name="dep_min_version_iteration" type="INTEGER" null="true"/>
+      <column name="dep_min_version_upstream" type="TEXT" null="true"/>
+      <column name="dep_min_version_release" type="TEXT" null="true"/>
+      <column name="dep_max_version_epoch" type="INTEGER" null="true"/>
+      <column name="dep_max_version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="dep_max_version_canonical_release" type="TEXT" null="true"/>
+      <column name="dep_max_version_revision" type="INTEGER" null="true"/>
+      <column name="dep_max_version_iteration" type="INTEGER" null="true"/>
+      <column name="dep_max_version_upstream" type="TEXT" null="true"/>
+      <column name="dep_max_version_release" type="TEXT" null="true"/>
+      <column name="dep_min_open" type="INTEGER" null="true"/>
+      <column name="dep_max_open" type="INTEGER" null="true"/>
+      <foreign-key name="object_id_fk" on-delete="CASCADE">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+        <references table="available_package">
+          <column name="name"/>
+          <column name="version_epoch"/>
+          <column name="version_canonical_upstream"/>
+          <column name="version_canonical_release"/>
+          <column name="version_revision"/>
+          <column name="version_iteration"/>
+        </references>
+      </foreign-key>
+      <index name="available_package_dependency_alternatives_object_id_i">
+        <column name="name"/>
+        <column name="version_epoch"/>
+        <column name="version_canonical_upstream"/>
+        <column name="version_canonical_release"/>
+        <column name="version_revision"/>
+        <column name="version_iteration"/>
+      </index>
+    </table>
+    <table name="selected_package" kind="object">
+      <column name="name" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="version_epoch" type="INTEGER" null="true"/>
+      <column name="version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="version_canonical_release" type="TEXT" null="true"/>
+      <column name="version_revision" type="INTEGER" null="true"/>
+      <column name="version_iteration" type="INTEGER" null="true"/>
+      <column name="version_upstream" type="TEXT" null="true"/>
+      <column name="version_release" type="TEXT" null="true"/>
+      <column name="state" type="TEXT" null="true"/>
+      <column name="substate" type="TEXT" null="true"/>
+      <column name="hold_package" type="INTEGER" null="true"/>
+      <column name="hold_version" type="INTEGER" null="true"/>
+      <column name="repository_fragment_url" type="TEXT" null="true"/>
+      <column name="repository_fragment_type" type="TEXT" null="true"/>
+      <column name="archive" type="TEXT" null="true"/>
+      <column name="purge_archive" type="INTEGER" null="true"/>
+      <column name="src_root" type="TEXT" null="true"/>
+      <column name="purge_src" type="INTEGER" null="true"/>
+      <column name="manifest_checksum" type="TEXT" null="true"/>
+      <column name="out_root" type="TEXT" null="true"/>
+      <primary-key>
+        <column name="name"/>
+      </primary-key>
+    </table>
+    <table name="selected_package_prerequisites" kind="container">
+      <column name="package" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="prerequisite" type="TEXT" null="true" options="COLLATE NOCASE"/>
+      <column name="min_version_epoch" type="INTEGER" null="true"/>
+      <column name="min_version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="min_version_canonical_release" type="TEXT" null="true"/>
+      <column name="min_version_revision" type="INTEGER" null="true"/>
+      <column name="min_version_iteration" type="INTEGER" null="true"/>
+      <column name="min_version_upstream" type="TEXT" null="true"/>
+      <column name="min_version_release" type="TEXT" null="true"/>
+      <column name="max_version_epoch" type="INTEGER" null="true"/>
+      <column name="max_version_canonical_upstream" type="TEXT" null="true"/>
+      <column name="max_version_canonical_release" type="TEXT" null="true"/>
+      <column name="max_version_revision" type="INTEGER" null="true"/>
+      <column name="max_version_iteration" type="INTEGER" null="true"/>
+      <column name="max_version_upstream" type="TEXT" null="true"/>
+      <column name="max_version_release" type="TEXT" null="true"/>
+      <column name="min_open" type="INTEGER" null="true"/>
+      <column name="max_open" type="INTEGER" null="true"/>
+      <foreign-key name="package_fk" on-delete="CASCADE">
+        <column name="package"/>
+        <references table="selected_package">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+      <index name="selected_package_prerequisites_package_i">
+        <column name="package"/>
+      </index>
+      <foreign-key name="prerequisite_fk" deferrable="DEFERRED">
+        <column name="prerequisite"/>
+        <references table="selected_package">
+          <column name="name"/>
+        </references>
+      </foreign-key>
+    </table>
+    <table name="certificate" kind="object">
+      <column name="id" type="TEXT" null="true"/>
+      <column name="fingerprint" type="TEXT" null="true"/>
+      <column name="name" type="TEXT" null="true"/>
+      <column name="organization" type="TEXT" null="true"/>
+      <column name="email" type="TEXT" null="true"/>
+      <column name="start_date" type="INTEGER" null="true"/>
+      <column name="end_date" type="INTEGER" null="true"/>
+      <primary-key>
+        <column name="id"/>
+      </primary-key>
+    </table>
+  </model>
+</changelog>

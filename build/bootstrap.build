@@ -1,0 +1,13 @@
+# file      : build/bootstrap.build
+# license   : MIT; see accompanying LICENSE file
+
+project = build2-toolchain
+amalgamation = # Disable amalgamation.
+subprojects = libpkgconf libbutl build2 \
+libsqlite3 libodb libodb-sqlite libbpkg bpkg bdep
+
+using version
+using config
+using dist
+using test # Note: needed for dist to work in subprojects with tests.
+using install

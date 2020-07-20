@@ -1,0 +1,24 @@
+This is the build2 toolchain amalgamation. It includes the build system
+(build2), package dependency manager (bpkg), project dependency manager
+(bdep), and their prerequisite libraries as subprojects.
+
+Note that while the MAJOR.MINIOR version components in the amalgamation and
+subprojects always match, the PATCH components are incremented more or less
+independently. Specifically, whenever a new patch release of a subproject is
+published, an updated amalgamation with an incremented PATCH component is
+released as well.
+
+build2 is an open source, cross-platform toolchain for building and packaging
+C++ code. Its aim is a modern build system and dependency manager for the C++
+language that provide a consistent, out of the box interface across multiple
+platforms and compilers. For more information see:
+
+https://build2.org/
+
+See the INSTALL file for the prerequisites and installation instructions.
+
+See the doc/ directory for documentation.
+
+Send questions, bug reports, or any other feedback to the users@build2.org
+mailing list. You can post without subscribing. See https://lists.build2.org
+for searchable archives, posting guidelines, etc.

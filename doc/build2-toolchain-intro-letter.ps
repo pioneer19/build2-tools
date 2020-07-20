@@ -1,0 +1,3713 @@
+%!PS
+%%Title: The build2 Toolchain Introduction
+%%Creator: html2ps version 1.0 beta7
+%%EndComments
+save
+2000 dict begin
+/d {bind def} bind def
+/D {def} d
+/t true D
+/f false D
+/FL [/Times-Roman
+/Times-Italic
+/Times-Bold
+/Times-BoldItalic
+/Courier
+/Courier-Oblique
+/Courier-Bold
+/Courier-BoldOblique
+/Helvetica
+/Helvetica-Oblique
+/Helvetica-Bold
+/Helvetica-BoldOblique] D
+/WF t D
+/WI 0 D
+/F 1 D
+/IW 471 F div D
+/IL 621 F div D
+/PS 791 D
+/EF [0 1 0 0 0 0 0 0 0 0 1 1 0 0 0 0 0 0 0 0 0 0 2 2] D
+/EZ [12 9 19 17 15 13 12 11 12 12 12 12 12 12 12 12 12 12 12 12 12 12 8 8] D
+/Ey [0 0 2 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0] D
+/EG [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1] D
+/Tm [1 1 0.8 0.8 0.8 0.8 0.8 0.8 0 0 0 0 0 0 0.5 1 1 1 1 0 0 1.3 0 0] D
+/Bm [1 1 0.5 0.5 0.5 0.5 0.5 0.5 0 0 0 0 0 0 0.5 1 1 1 1 0 0 1 0 0] D
+/Lm [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 2 2 0 0 2 0 0 0] D
+/Rm [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 0] D
+/EU [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 0 0] D
+/NO f D
+/YY [[{()}{ h }][{ h }{()}][{()}{()}]] D
+/ZZ [[{ (Revision ) ME 0 get join(, July 2020)join }{ Pn }][{ Pn }{ (Revision ) ME 0 get join(, July 2020)join }][{ Ti }{ Ti }]] D
+/Ts EZ 0 get D
+/TU f D
+/Xp t D
+/AU f D
+/SN 0 D
+/Cf t D
+/Tp t D
+/Fe f D
+/TI 2 Ts mul D
+/Fm 14 D
+/xL 71 D
+/xR 71 D
+/yL 706 D
+/yR 706 D
+/Wl 471 F div D
+/Wr 471 F div D
+/hL 621 F div D
+/hR 621 F div D
+/FE {newpath Fm neg Fm M CP BB IW Fm add Fm L IW Fm add IL Fm add neg L CP BB
+ Fm neg IL Fm add neg L closepath} D
+/LA {PM 0 eq{/IW Wl D /IL hL D}{/IW Wr D /IL hR D}ie /W IW D /LL W D /LS W D
+ TU PM 0 eq and{IW 56 F div add SA{Sf div}if 0 translate}
+ {PM 0 eq{xL yL}{xR yR}ie translate F SA{Sf mul}if dup scale
+ CS CF FS Cf{CA CL get VC}if /Bb f D}ie 0 0 M
+ TF not Tc or {Cf{gsave SA{1 Sf div dup scale}if Cb VC FE fill grestore}if}if}D
+/Pi 0 Ts mul D
+/SG [0.8 1 1] D
+/Ab 15 D
+/J 0 D
+/Tc t D
+/NH 6 D
+/Nf f D
+/Pa f D
+/LH 1.2 D
+/XR f D
+/Xr {/pN E D ( [p ) WB pN WB (] )WB} D
+/Db [16#FF 16#FF 16#FF] D
+/Dt [16#00 16#00 16#00] D
+/eA f D
+/Fi f D
+/bT f D
+/Lc t D
+/Dl [16#00 16#00 16#00] D
+/LX f D
+/Br 0.25 D
+/IA ([IMAGE]) D
+/DS {/PF f D()WB NL NP()pop RC ZF} D
+/Gb f D
+/Mb t D
+/Hc [16#00 16#00 16#00] D
+/Bl 3 D
+/MI -15.6 D
+/DX (DRAFT) D
+/Di 0 D
+/Tt 113.385826771654 D
+/Th { (
+) 2 Al()BR (
+  ) 0 1 -1 H()4 FZ (The ) SM (build2) ES ( ) ME 1 get join ES()EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+  ) 0 1 -1 H ( ) EH (
+) Ea()BR (
+  ) 0 P (Copyright © ) ME 2 get join(.)join BR (  Permission is granted to copy, distribute and/or modify this document under
+  the terms of the MIT License.) EP (
+
+  ) 0 P (Revision ) SM() ME 0 get join ES (, July 2020) BR (  This revision of the document describes the ) SM (build2) ES ( ) ME 3 get join(
+  )join SM() ME 0 get join(.x)join ES ( series.) EP()} D
+/tH {()0 1 -1 H (Table of Contents) EH()} D
+/FD 2 D
+/Dy 2 D
+/cD [16#F0 16#F0 16#F0] D
+/FW 0.6 D
+/FU [16#00 16#00 16#00] D
+/ET {/RM f D /A0 3 D /PN SN D /OU t D /Ou t D /W IW D /LL W D D1
+ Ms not TP and{Ip}if /TF f D} D
+
+%-- End of variable part --
+/MySymbol 10 dict dup begin
+ /FontType 3 D /FontMatrix [.001 0 0 .001 0 0 ] D /FontBBox [25 -10 600 600] D
+ /Encoding 256 array D 0 1 255{Encoding exch /.notdef put}for
+ Encoding (e) 0 get /euro put
+ /Metrics 2 dict D Metrics begin
+  /.notdef 0 D
+  /euro 651 D
+ end
+ /BBox 2 dict D BBox begin
+  /.notdef [0 0 0 0] D
+  /euro [25 -10 600 600] D
+ end
+ /CharacterDefs 2 dict D CharacterDefs begin
+  /.notdef {} D
+  /euro{newpath 114 600 moveto 631 600 lineto 464 200 lineto 573 200 lineto
+   573 0 lineto -94 0 lineto 31 300 lineto -10 300 lineto closepath clip
+   50 setlinewidth newpath 656 300 moveto 381 300 275 0 360 arc stroke
+   -19 350 moveto 600 0 rlineto -19 250 moveto 600 0 rlineto stroke}d
+ end
+ /BuildChar{0 begin
+  /char E D /fontdict E D /charname fontdict /Encoding get char get D
+  fontdict begin
+   Metrics charname get 0 BBox charname get aload pop setcachedevice
+   CharacterDefs charname get exec
+  end
+ end}D
+ /BuildChar load 0 3 dict put /UniqueID 1 D
+end
+definefont pop
+
+/Cd {aload length 2 idiv dup dict begin {D} repeat currentdict end} D
+/EX {EC cvx exec} D
+/DU {} d
+/BB {pop pop}d
+/ie {ifelse} d
+/E {exch} d
+/M {moveto} d
+/R {rmoveto} d
+/L {lineto} d
+/RL {rlineto} d
+/CP {currentpoint} d
+/SW {stringwidth} d
+/GI {getinterval} d
+/PI {putinterval} d
+/Sg {setgray} d
+/LW {setlinewidth} d
+/S {dup () ne OU and{0 Co R AT 3 eq LB and HF not and A1 0 ne A2 0 ne or and
+ {A2 0 32 A1 0 6 -1 roll awidthshow}{show}ie 0 Co neg R}{pop}ie
+ OU PH 3 eq or{/Ms t D}if} D
+/U {OU{gsave CP currentfont /FontInfo get /UnderlinePosition get
+ 0 E currentfont /FontMatrix get dtransform E pop add newpath M dup SW pop
+ CJ 0 RL stroke grestore}if} D
+/B {OU Br 0 gt and{CP Ts neg Ts .33 mul R gsave 0 Sg
+ CP newpath Ts Br mul 0 360 arc closepath UI 2 mod 0 eq{stroke}{fill}ie
+ grestore M CP E Ts Br 1 add mul sub E BB /Ms t D}if}D
+/NP {Ms TP not or PA and OU and{TP{OR}if f1{mF k2 /mF E D /YC 0 D}if
+ TP TU not PM 0 eq or and{showpage}if DU Ip TE not{LA}if 0.6 LW
+ /CI 0 D /TP t D /Hs f D /hl 6 D /Hv 6 D /HI hi D /Ms f D}if Bs XO BO M} D
+/Np {LE sub CP E pop gt PL 0 eq and{NP}if}D
+/Ip {/PN PN 1 add D /Pn RM{1}{4}ie PN Ns D /PM PN SN sub 2 mod D} D
+/GP {E dup 3 -1 roll get PN 1 add 2 mod get dup type /integertype eq
+ {get 0 get}{E pop}ie}d
+/Fc {dup 2 GP exec SW pop /S1 E D dup 1 GP exec SW pop /S2 E D 0 GP exec SW
+ pop /S3 E D S1 0 gt{S2 2 mul S1 add S3 2 mul S1 add 2 copy lt{E}if pop}{0}ie
+ S2 S3 add 2 copy lt{E}if pop IW .9 mul div dup 1 gt{1 E div}{pop 1}ie}D
+/OR {Df{Sd}if tp not{gsave SA{1 Sf div dup scale}if Fe{Cf{FU VC}if FW LW
+ 1 setlinejoin FE stroke}if /YO {60 F div dup 40 gt{pop 40}if}D /cs CS D
+ /cf CF D /CF 0 D /pf PF D /PF f D /Fn FN D /At AT D /AT 0 D /FN EF Hf 1 add
+ get D Fz Fs FS ZZ Fc Fz mul Fs FS EU Hf 1 add get dup type /arraytype eq
+ Cf and{VC}{pop 0 Sg}ie IW IL neg YO sub M ZZ 1 GP exec dup SW pop neg 0 R Sh
+ 0 IL neg YO sub M ZZ 0 GP exec Sh ZZ 2 GP exec dup SW pop IW E sub 2 div
+ IL neg YO sub M Sh Fz Fs FS NO{/AW IW Pn SW pop sub D AW 2 div IL neg YO sub
+ S1 0 gt S2 AW .45 mul gt or S3 AW .45 mul gt or{Fz 2 mul sub}if M Pn Sh}if
+ EU Hf get dup type /arraytype eq Cf and{VC}{pop 0 Sg}ie YY Fc /FN EF Hf get D
+ Hz mul HS FS IW YO M YY 1 GP exec dup SW pop neg 0 R Sh 0 YO M YY 0 GP exec Sh
+ YY 2 GP exec dup SW pop IW E sub 2 div YO M Sh /FN Fn D /AT At D t Pb XO SZ
+ SL get neg R /PF pf D grestore /CF 0 D cs cf FS}if}D
+/Sh {dup () ne{CP Hz 4 div sub BB show CP CS add BB}{pop}ie}D
+/Pb {/OU E D /Ou OU D /PB t D 0 0 M Ba{/Sa save D /BP t D /Fl t D RC /PL 0 D
+ /PH 0 D /W IW D /LE IL .7 mul D /EO 0 D SI ZF /YA 0 D /BO 0 D /C1 () D
+ BA 0 Ts neg R Bb{Xl Yl Xh Yh}if Bb CP Sa restore M
+ {/Yh E D /Xh E D /Yl E D /Xl E D}if /Fl t D}if
+ BL /OU t D /HM f D /Ou t D /PB f D} D
+/Bs {/BP Ba not D}D
+/reencodeISO {
+ dup dup findfont dup length dict begin{1 index /FID ne{D}{pop pop}ie}forall
+ /Encoding ISOLatin1Encoding D currentdict end definefont} D
+/ISOLatin1Encoding [
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/space/exclam/quotedbl/numbersign/dollar/percent/ampersand/quoteright
+/parenleft/parenright/asterisk/plus/comma/hyphen/period/slash
+/zero/one/two/three/four/five/six/seven/eight/nine/colon/semicolon
+/less/equal/greater/question/at/A/B/C/D/E/F/G/H/I/J/K/L/M/N
+/O/P/Q/R/S/T/U/V/W/X/Y/Z/bracketleft/backslash/bracketright
+/asciicircum/underscore/quoteleft/a/b/c/d/e/f/g/h/i/j/k/l/m
+/n/o/p/q/r/s/t/u/v/w/x/y/z/braceleft/bar/braceright/asciitilde
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef/.notdef
+/.notdef/space/exclamdown/cent/sterling/currency/yen/brokenbar
+/section/dieresis/copyright/ordfeminine/guillemotleft/logicalnot
+/hyphen/registered/macron/degree/plusminus/twosuperior/threesuperior
+/acute/mu/paragraph/periodcentered/cedilla/onesuperior/ordmasculine
+/guillemotright/onequarter/onehalf/threequarters/questiondown
+/Agrave/Aacute/Acircumflex/Atilde/Adieresis/Aring/AE/Ccedilla
+/Egrave/Eacute/Ecircumflex/Edieresis/Igrave/Iacute/Icircumflex
+/Idieresis/Eth/Ntilde/Ograve/Oacute/Ocircumflex/Otilde/Odieresis
+/multiply/Oslash/Ugrave/Uacute/Ucircumflex/Udieresis/Yacute
+/Thorn/germandbls/agrave/aacute/acircumflex/atilde/adieresis
+/aring/ae/ccedilla/egrave/eacute/ecircumflex/edieresis/igrave
+/iacute/icircumflex/idieresis/eth/ntilde/ograve/oacute/ocircumflex
+/otilde/odieresis/divide/oslash/ugrave/uacute/ucircumflex/udieresis
+/yacute/thorn/ydieresis
+] D
+[128/backslash 129/parenleft 130/parenright 141/circumflex 142/tilde
+143/perthousand 144/dagger 145/daggerdbl 146/Ydieresis 147/scaron 148/Scaron
+149/oe 150/OE 151/guilsinglleft 152/guilsinglright 153/quotesinglbase
+154/quotedblbase 155/quotedblleft 156/quotedblright 157/endash 158/emdash
+159/trademark]
+aload length 2 idiv 1 1 3 -1 roll{pop ISOLatin1Encoding 3 1 roll put}for
+/colorimage where{pop}{
+ /colorimage {
+  pop pop /Pr E D {/Cv Pr D /Gr Cv length 3 idiv string D 0 1 Gr length 1 sub
+   {Gr E dup /i E 3 mul D Cv i get 0.299 mul Cv i 1 add get 0.587 mul add
+    Cv i 2 add get 0.114 mul add cvi put}for Gr} image} D
+}ie
+/pdfmark where{pop}{userdict /pdfmark /cleartomark load put}ie
+WF{FL{reencodeISO D}forall}{4 1 FL length 1 sub{FL E get reencodeISO D}for}ie
+/Symbol dup dup findfont dup length dict begin
+ {1 index /FID ne{D}{pop pop}ie}forall /Encoding [Encoding aload pop]
+ dup 128 /therefore put D currentdict end definefont D
+
+/SF {/CS E D SZ SL CS put FO SL FN put /YI CS LH neg mul D dup ST cvs ( ) join
+ CS ST cvs join C1 E join ( NF ) join /C1 E D CS NF /Wf WF FN 0 gt or D
+ /BW Wf{( ) SW pop}{0}ie D}D
+/NF {/cS E D /cF E D cF 0 ge{FL cF get}{cF -1 eq{/Symbol}{/MySymbol}ie}ie
+ findfont cS scalefont setfont} D
+/FS {CF or /CF E D FR SL CF put CF CF 0 ge{FN 4 mul add}if E SF} D
+/PC {SH /BP f D fin not GL not and{NL}if /HM t D /LL LS D} D
+/BS {/TX E D Wf{/fin f D /CW 0 D /LK 0 D /SC 0 D
+ /RT TX D {RT ( ) search{/NW E D pop /RT E D /WH NW SW pop D CW WH add LL gt
+ {TX SC LK SC sub 1 sub NN GI GL{SH cF cS OC
+ 2 copy cS ne E cF ne or{NF}{pop pop}ie}{PC /CW WH BW add D}ie
+ /SC LK D}
+ {GL{JC}if
+ /CW CW WH add BW add D /HM t D}ie /GL f D /Ph f D
+ /LK LK NW length 1 add add D}{pop exit}ie}loop
+ /fin t D TX SC LK SC sub GI SH RT () ne{GL not{CC}if}if
+ /LC TX length D /WH RT SW pop D CW WH add Hy{HC SW pop add}if LL gt
+ {RT GL{SH cF cS OC 2 copy cS ne E cF ne or{NF}{pop pop}ie
+ Hy{/Ph t D}if /LL LS D}{NL /LL LS D SH}ie}
+ {RT PC Hy{CC}if /Ph Ph Hy or D}ie RT () ne{/GL t D /HM t D}if}
+ {TX SW pop LL le{TX SH}{/NW () D 0 2 TX length 1 sub
+ {/CW E D TX 0 CW GI dup SW pop LL gt{pop NW SH /HM t D NL/LL W XO sub MR sub D
+ /CW CW 2 sub NN D /TX TX CW TX length CW sub GI D TX BS exit}
+ {/NW E D}ie}for}ie}ie /HM t D}D
+/CC {C0 length 0 gt{JC}if /C0 [C1 L1 YA YB Mf NS NB TB AF Bw] D
+ /C1 () D /L0 L1 D /YA 0 D /YB 0 D /Mf 0 D /NS 0 D /NB 0 D}D
+/JC {C0 aload length 0 gt{pop pop pop NB add /NB E D NS add /NS E D
+ dup Mf gt{/Mf E D}{pop}ie dup YB gt{/YB E D}{pop}ie
+ dup YA gt{/YA E D}{pop}ie pop C1 join /C1 E D /C0 [] D}if}D
+/OC {C0 length 0 gt{C1 L1 L0 sub YA YB Mf NS NB TB AF Bw GL C0 aload pop
+ /Bw E D /AF E D /TB E D /NB E D /NS E D /Mf E D /YB E D /YA E D /C0 [] D
+ /L1 E D /C1 E D Ph{HC SH}if NL /GL E D /Bw E D /AF E D /TB E D /NB E D /NS E D
+ /Mf E D /YB E D /YA E D /L1 E D /LL W L1 sub XO sub MR sub WH sub D /CW 0 D
+ C1 E join /C1 E D}if}D
+/BT {/LB t D dup length string copy RS dup dup () ne E ( ) ne and
+ {/CI 0 D /LS LL D /LL W L1 sub XO sub MR sub D BS}
+ {dup ( ) eq{/GL f D}if dup () eq L1 0 eq or{pop}{SH /BP f D /Ph f D}ie}ie
+ /LB f D} D
+/BL {CP E pop XO E M} D
+/NL {JC /GL f D /SK W XO sub MR sub L1 sub TB{Bw add}if D
+ /YA LF{Mf HM Fl not and PF or{LH mul}if}{0 /LF t D}ie YA 2 copy lt{E}if pop D
+ C1 () ne{/FB YB Mf SA{Sf mul}if 4 div 2 copy lt{E}if pop D}if Fl{/Ya YA D}if
+ CP E pop YA sub YB sub LE neg lt Fl not and PB not and{NP}if NT TL BL
+ OU PF not and PB or{/RE L1 TB{Bw sub}if
+ W XO sub MR sub div YA YB add LE BO add div 2 copy lt{E}if pop D
+ RE 1 gt{BL 1 RE div dup scale}if}if
+ AT 2 le{SK AT mul 2 div YA neg R}if
+ AT 3 eq{0 YA neg R TB{/NB NB 1 sub D /NS NS 1 sub D}if /NB NB 1 sub NN D
+ /A3 NS 6 mul NB add D NS NB add 0 eq
+  {/A1 0 D /A2 0 D}
+  {NS 0 eq{/A1 SK NB div dup J gt{pop 0}if D /A2 0 D}{J A3 mul SK lt
+   {/A1 J D /A2 SK J NB mul sub NS div dup Ab gt{/A1 0 D pop 0}if D}
+   {/A1 SK A3 div D /A2 A1 6 mul D}ie}ie}ie /A1 A1 NN D /A2 A2 NN D}if
+ AT 4 eq{0 YA neg R PH 2 le{PD 0 lt{/PD L1 D}if PD M1 gt{/M1 PD D}if
+ L1 PD sub M2 gt{/M2 L1 PD sub D}if}{DV ID 1 sub get 0 ge{Lo 0 R}if}ie}if
+ F0 cF ne Cs cS ne or{F0 Cs NF}if
+ /ms Ms D /Ms f D CP FB sub
+ C1 cvx exec XO EO sub L1 add TB{BW sub}if dup LM gt{/LM E D}{pop}ie
+ PH 0 eq PH 4 eq or Ms and{HF not{/PO t D /AH t D}if
+ BB CP YA add E AT 3 eq LB and{A1 sub}if TB{BW sub}if E BB}
+ {pop pop}ie Ms HM PH 3 eq and or{/BP f D /Fl f D}if
+ /Lo 0 D /L1 0 D /F0 cF D /Cs cS D BP not{0 YB NN neg R}if
+ OU f1 and mF not and{k2 /f1 f D}if
+ OU PF not and PB or{RE 1 gt{RE dup scale}if}if /Ms ms Ms or D
+ /C1 AF{(Cp )}{()}ie D /YA 0 D /YB 0 D BL
+ AT 4 eq LB not and PH 3 ge and
+ {ID DV length lt{DV ID get dup 0 ge{DO E sub /Lo E D /L1 Lo D}{pop}ie
+ /ID ID 1 add D}if}if /T t D CD{/LN LN 1 add D PD}if
+ /PD -1 D /NS 0 D /NB 0 D /TB f D /Ph f D /Mf 0 D /HM f D} D
+/RS {/TM E D /CN 0 D TM{10 eq{TM CN ( ) PI}if /CN CN 1 add D}forall
+ /CN 0 D /BK HM EN and{0}{1}ie D TM
+ {dup 32 ne{TM CN 3 2 roll put /CN CN 1 add D /BK 0 D}
+ {pop BK 0 eq{TM CN 32 put /CN CN 1 add D}if /BK 1 D}ie}forall
+ TM 0 CN GI dup dup () ne E ( ) ne and
+ {dup CN 1 sub get 32 eq{/EN f D}{/EN t D}ie}if} D
+/join {2 copy length E length add string dup 4 2 roll 2 index 0 3 index
+ PI E length E PI}d
+/WR {(\n) search{dup () ne BP not or
+ {Li 4 le CP E pop YI Li mul add LE add 0 lt and PL 0 eq and{NP}if
+ SH NL pop /Li Li 1 sub D WR}{pop pop WR}ie}{SH}ie /CI 0 D /BP f D} D
+/SH {dup dup () ne E ( ) ne and PF or CS Mf gt and{/Mf CS D}if
+ T not Wf and{( ) E join /T t D}if dup BP{/MF CS D}if
+ AT 3 eq{2 copy length dup 0 gt{/NB E NB add D
+ {( ) search{/NS NS 1 add D pop pop}{pop exit}ie}loop}{pop pop}ie}if
+ CD PD 0 lt and{dup DC search{SW pop /PD E L1 add D pop pop}{pop}ie}if
+ 0 Np dup SW pop L1 add /L1 E D dup () ne
+ {C1 (\() join E join (\)) join AU AF and UF or Wf and{( U ) join}if
+ sF{( s ) join}if ( S ) join
+ /C1 E D dup length 1 sub get 32 eq /TB E D /Bw BW D}{pop pop}ie} D
+/BG {AI LG BC add add 0 eq} D
+/ON {OU{Ty AR AI NN get dup 1 add Ln Ns Ty 2 mod 0 eq{(.  )}{(\)  )}ie join
+ dup SW pop neg 0 R CP E 0 lt{0 E M}{pop}ie CP BB show /Ms t D}if} D
+/Ln {AR AI 3 -1 roll put}D
+/SP {dup CI lt BP not and{dup CI sub 0 E R /CI E D}{pop}ie} D
+/BN {PF{WR /HM f D}{BT NL}ie} D
+/NN {dup 0 lt{pop 0}if} D
+/h {(h) HI ST cvs join cvx exec dup 1 get E Nf{0 get E join}{pop}ie} D
+/H {/fn FN D /Hi E 1 add D 1 sub /HL E D /H2 HL 2 add D /GS EZ H2 get D
+ E Tm H2 get GS mul BE dup 0 gt{1 sub}{pop EG H2 get dup 0 lt{pop AT}if}ie NA
+ WW Np /SL SL 1 add D /FN EF H2 get D GS Ey H2 get FS
+ EU H2 get Sc Hs not HL Hl lt and Hs HL hl lt and or Hi 0 eq or
+ {/HI Hi D /Hs t D /hl HL D /Hv HL D}if HL Hl lt{/hi Hi D}if
+ Nf HI 0 gt and{(h) Hi ST cvs join cvx exec 0 get WB}if
+ /HF t D /AH f D /PO f D} D
+/EH {Bm H2 get GS mul BE OA /SL SL 1 sub NN D /CF 0 D /FN fn D
+ SZ SL get FR SL get FS /HF f D /GS Ts D ()Ec} D
+/P {E PF{WR}{PO{EP}{BN}ie Ts 4 mul Np AE not{Tm 0 get Ts mul neg SP}if
+ dup 0 ge AH and{Pi Pd}if}ie 1 sub dup 0 lt{pop AV AL get}if /AT E D /PO t D} D
+/EP {PF{WR}{BN Ts 4 mul Np}ie AE not{Bm 0 get Ts mul neg SP}if
+ /AT AV AL get D /PO f D} D
+/BE {E PO{EP}{BN}ie Ts 4 mul Np neg SP} D
+/HR {/Aw W EO sub D /RW E dup 0 gt{Aw mul}{neg}ie dup Aw gt{pop Aw}if D /RZ E D
+ E BN Ts neg SP 1 sub 2 div Aw RW sub mul EO add CP E pop M PF{0 Ps neg R}if
+ 0 Np OU{gsave RZ LW Cf{Hc VC}{0 Sg}ie CP BB RW 0 RL CP BB stroke grestore}if
+ /CI 0 D /BP f D PF not{Ts neg SP}if /Ms t D} D
+/AD {I NL EG 14 get dup 0 lt{pop AT}if NA /AE t D Tm 14 get Ts mul neg SP
+ Cf{EU 14 get dup -1 eq{pop CA CL get}if Sc}if} D
+/DA {BN ()ES OA /AE f D ()Ec Bm 14 get Ts mul neg SP} D
+/PR {/MW E D /Li E D Tm 1 get Ps mul BE 0 NA /FN Fp D /PF t D SI /SL SL 1 add D
+ /CF 0 D Ps CS mul Ts div MW WC mul CS mul Ts div dup LL gt PL 0 eq and
+ {LL div div}{pop}ie Ey 1 get FS CP E pop LE add YI neg div cvi dup Li lt
+ AH and{4 lt YI Li mul 5 mul LE add 0 gt or PL 0 eq and{NP}if}{pop}ie
+ EU 1 get Sc /GS Ps D}D
+/RP {WR NL () /PF f D SI /FN 0 D ES Bm 1 get Ps mul neg SP OA /GS Ts D} D
+/SI {/XO Lm 15 get BC NN mul Lm 16 get AI UI sub NN mul add
+ Lm 17 get UI NN mul add Lm 20 get LG NN mul add Ts mul
+ PF{Lm 1 get Ps mul add}if EO add D
+ /MR Rm 15 get BC NN mul Rm 16 get AI UI sub NN mul add
+ Rm 17 get UI NN mul add Rm 20 get LG NN mul add Ts mul
+ PF{Rm 1 get Ps mul add}if D /LL W XO sub MR sub D} D
+/DT {/cC E D BN /LG LG 1 sub D SI /LG LG 1 add D WW 2 div Np BL} D
+/DD {WB Cc 0 eq cC 0 eq and L1 0 eq or Lm 20 get Ts mul L1 sub TB{BW add}if
+ Ts 2 div lt or NL /LF E D SI BL /cC 0 D} D
+/DL {Dc LG Cc put /Cc E D BG{Tm 18 get Ts mul BE}{BN}ie /LG LG 1 add D BL} D
+/LD {BN LG 0 gt{/LG LG 1 sub D}if /Cc Dc LG get D SI
+ BG{()Bm 18 get Ts mul BE}if BL} D
+/UL {BG{Tm 17 get Ts mul BE}{BN}ie NR AI NN 0 put /UI UI 1 add D
+ /AI AI 1 add D SI BL} D
+/LU {BN /UI UI 1 sub D /AI AI 1 sub D SI BG{()Bm 17 get Ts mul BE}if BL} D
+/OL {E BG{Tm 16 get Ts mul BE}{BN}ie TR AI NN Ty put /Ty E D NR AI NN 1 put
+ /AI AI 1 add D SI BL 1 Ln} D
+/LO {BN /AI AI 1 sub D /Ty TR AI get D SI BG{()Bm 16 get Ts mul BE}if BL} D
+/LI {E BN -1 SP /BP f D /CI 0 D 0 Np NR AI 1 sub NN get 1 eq
+ {dup dup 0 gt E 4 le and{/Ty E D}{pop}ie
+ /L1 L1 Ty AR AI NN get Ns SW pop XO sub dup 0 lt{pop 0}if add D ( ON )}
+ {pop ( B )}ie C1 E join /C1 E D CS Mf gt{/Mf CS D}if BL} D
+/BQ {Tm 15 get Ts mul BE /BC BC 1 add D SI BL} D
+/QB {Bm 15 get Ts mul BE /BC BC 1 sub D SI BL} D
+/Al {E EP 1 sub dup 0 lt{pop AV AL get}if NA} D
+/Ea {EP OA} D
+/WB {PF{WR}{BT}ie} D
+/F1 {WB /FN 0 D CS 0 FS} D
+/F2 {WB /FN WI D CS 0 FS} D
+/HY {/Hy t D WB /Hy f D} D
+/YH {WB} D
+/A {/LT E D LT 1 eq{/RN E D}if /Lh E D WB /C1 C1 ( Cp ) join D
+ Lc AF not and{Cl Sc}if /AF t D} D
+/EA {Lc AF and{Ec}{WB}ie TL Pa AF and Lh 0 ne and
+ {( \() Lh join (\)) join /AF f D WB}if /AF f D} D
+/TL {C1 ( Tl ) apa /C1 E D} d
+/apa {AF OU and Lh 0 ne LT 1 eq or and{LT 1 eq{RN ( /) E ST cvs join}
+ {(\() Lh join (\)) join}ie E join join}{pop}ie} d
+/Cp {/Xc CP /Yc E D D} D
+/SS {Cf{dup 0 ge{EU E get dup -1 eq{pop CA CL get}if}{pop CA CL get}ie Sc}
+ {pop}ie SZ SL get /SL SL 1 add D} D
+/I {WB 8 SS 1 FS} D
+/EM {WB 8 SS /CF CF 1 xor D 0 FS} D
+/BD {WB 9 SS 2 FS} D
+/TT {WB 10 SS /FN Fp D 0 FS} D
+/KB {WB 11 SS /FN Fp D 2 FS} D
+/CT {WB 12 SS 1 FS} D
+/SM {WB 13 SS /FN Fp D 0 FS} D
+/Q {/QL QL 1 add D QO QL 2 mod get La get join WB} D
+/EQ {QC QL 2 mod get La get join WB /QL QL 1 sub D} D
+/RO {WB -1 SS /CF 0 D 0 FS} D
+/SY {WB -1 SS -1 FS} D
+/MY {WB -1 SS -2 FS} D
+/ES {WB /SL SL 1 sub NN D /CF 0 D /FN FO SL get D SZ SL get FR SL get FS ()Ec}D
+/FZ {3 sub 1.2 E exp GS mul E WB TL /C1 C1 ( Cp ) join D /SL SL 1 add D 0 FS} D
+/Ef {WB TL ()ES /C1 C1 ( Cp ) join D} D
+/BZ {dup /Bf E D FZ}D
+/Sc {dup -1 ne Cf and{/CL CL 1 add D dup 0 eq{pop [0 0 0]}if
+ dup CA E CL E put VS ( VC ) join C1 E join /C1 E D}{pop}ie} D
+/Ec {WB Cf{/CL CL 1 sub NN D CA CL get VS ( VC ) join C1 E join /C1 E D}if} D
+/VS {dup type /arraytype eq{([) E {ST cvs join ( ) join}forall (]) join}if} D
+/VC {{255 div}forall setrgbcolor} D
+/Sl {dup type /integertype ne{Ds}if /La E D WB}d
+/UN {WB /UF t D} D
+/NU {WB /UF f D} D
+/SE {WB /sF t D} D
+/XE {WB /sF f D} D
+/sM {/C1 C1 ( k1 ) join D}d
+/eM {/C1 C1 ( k2 ) join D}d
+/k1 {/YC CP E pop Ts add D /mF t D /f1 t D}d
+/k2 {gsave 3 LW -9 CP E pop Ts 0.2 mul sub M -9 YC L stroke grestore /mF f D}d
+/Ac {/AC E D WB}d
+/Ca {eA{( \()join AC join(\) )join}if WB}d
+/s {OU{gsave 0 CS .25 mul R dup SW pop CJ 0 RL stroke grestore}if}D
+/CJ {AT 3 eq LB and{E dup dup length 1 sub A1 mul E
+ {( ) search{pop pop E A2 add E}{pop exit}ie}loop 3 -1 roll add
+ W CP pop sub 2 copy gt{E}if pop}if}D
+/So {/Co E D} D
+/SO {C1 Yo ST cvs join ( So ) join /C1 E D (j) SW pop 2 div Pd} D
+/Se {E WB CS E div Pd}D
+/Pd {dup type /stringtype eq{SW pop}if dup /L1 E L1 add D
+ ST cvs ( 0 R ) join C1 E join /C1 E D} D
+/Sp {0.35 CO} D
+/Sb {-0.2 CO} D
+/CO {OV Io Yo put /Yo E CS mul Yo add D /Io Io 1 add D -1.5 Io mul 3 add FZ SO
+ CS Yo add dup YA gt{/YA E D}{pop}ie
+ Yo neg dup YB gt{/YB E D}{pop}ie} D
+/Es {ES /Io Io 1 sub NN D /Yo OV Io get D SO} D
+/SB {/N2 0 D 0 1 NI{/N E D{IX N2 get 0 lt{/N2 N2 1 add D}{exit}ie}loop
+ /K WS N get FC N get mul D /NY AY N2 get D /BV NY array D
+ 0 1 NY 1 sub{/TM K string D currentfile TM readhexstring pop pop BV E TM put}
+ for BM N BV put /N2 N2 1 add D}for} D
+/IC [{/MA E D /MB 0 D}{2 div /MA E D /MB MA D}{/MB E CS sub D /MA CS D}
+ {pop /MA YS AB mul D /MB 1 AB sub YS mul D}{pop /MA 0 D /MB 0 D}] D
+/IP {BV N get /N N 1 add D} D
+/II {/K E D IX K get 0 lt{/EC E D}if /TY E D
+ TY 4 eq{/Y E D /X E D}if TY 3 eq{/AB E D}if
+ /XW AX K get D /YW AY K get D /IS SG IT K get get D /XS XW IS mul D
+ /YS YW IS mul D YS IC TY get exec /MA MA Fl not{3 add}if D} D
+/IM {II /ty TY D /xs XS D /ys YS D /ya YA D /yb YB D /ma MA D /mb MB D /k K D
+ /ec EC D /BP f D /CI 0 D WB TL L1 xs add dup XO add MR add W gt
+ {pop /ma ma Fl{3 add}if D NL /YA ma D /YB mb D /YS ys D /L1 xs D}
+ {/L1 E D ma YA gt{/YA ma D}if mb YB gt{/YB mb D}if}ie /TB f D
+ OU{CP E pop YS sub LE neg lt Fl not and PB not and{NP /YA ma D /YB mb D}if
+ /BP f D ty ST cvs ( ) join IX k get 0 lt{(\() join ec join (\) ) join}if
+ k ST cvs join ty 3 eq{AB ST cvs ( ) join E join}if
+ ty 4 eq{X ST cvs ( ) join Y ST cvs join ( ) join E join}if C1 E join
+ ( DI ) join FP 2 eq FP 1 eq AF and or{( FM ) join}if
+ ( Il Cp ) apa /C1 E D /EN f D}if /HM t D /T f D} D
+/DI {II /Xc CP /Yc E D D /YN YW neg D /HM t D /CI 0 D /K2 IX K get D gsave
+ TY 4 eq{OX X IS mul add OY FY add YS sub Y IS mul sub}
+ {/FY YS D CP MB sub 2 copy /OY E D /OX E D}ie
+ translate K2 0 ge{/DP AZ K2 get D /BV BM K2 get D XS YS scale /N 0 D XW YW DP
+ [XW 0 0 YN 0 YW] {IP} FC K2 get 1 eq{image}{f 3 colorimage}ie}
+ {EX}ie grestore XS 0 R /Ms t D} D
+/FM {gsave 0 Sg CP MB sub translate XS neg 0 M 0 YS RL XS 0 RL 0 YS neg RL
+ XS neg 0 RL stroke grestore} D
+/NA {/AT E D /AL AL 1 add D AV AL AT put} D
+/OA {AL 0 gt{/AL AL 1 sub D /AT AV AL get D}if} D
+/D1 {/BR {CP E pop E BN Mb{CP E pop eq{0 YI R}if}{pop}ie} D
+ /Sn {OU{C1 E ST cvs join ( Ld ) join /C1 E D}{pop}ie} D} D
+/D1 {/BR {BN} D /Sn {OU {C1 E ST cvs join ( Ld ) join /C1 E D} {pop} ie} D} D
+/TC {/TF t D /ML 0 D HN{SW pop dup ML gt{/ML E D}{pop}ie}forall NP /RM RM not D
+ RC /OU Tc D Ep /PN 0 D Ms not TP and{Ip}if /W IW ML sub Ts sub D
+ /A0 0 D TH{/BR {( ) join BT} D /Sn {pop} D /Au () D}if} D
+/TN {0 eq{E EA PF HF or not XR and{HN E get Xr}{pop}ie}
+ {OU{Tn 0 ge{() BN}if /Tn E D}{pop}ie WB}ie} D
+/NT {OU LB not and Tn 0 ge and{PL 0 eq{Ms not{CS CF FS}if CP dup
+ /y E YA sub D W 9 sub CS -1.8 mul XO L1 add 2 add{y M (.) show}for
+ HN Tn get dup SW pop IW E sub y M show CP BB M}if /Tn -1 D}if} D
+/Ld {/DN E D HN DN Pn put [/View [/XYZ -4 Fl{PS}{CP YA add US E pop}ie null]
+ /Dest DN ST cvs cvn /DEST pdfmark} D
+/C {ND 1 eq{1 sub}if TI mul /XO E D NL Nf not{pop()}if 0 3 -1 roll 1 A} D
+/OP {BP not{NP}if PN 2 mod 0 eq{/Ms t D NP}if}D
+/Ep {Xp PN 2 mod 0 eq and OU and{/Pn (-) D showpage /PM 1 D LA}if}D
+/Dg [73 86 88 76 67 68 77] D
+/Rd [0 [1 1 0][2 1 0][3 1 0][2 1 1][1 1 1][2 2 1][3 3 1][4 4 1][2 1 2]] D
+/Ns {/m E D /c E 32 mul D /j m 1000 idiv D /p j 12 add string D
+ c 96 le m 0 gt and{c 32 le {/i 0 D /d 77 D /l 100 D /m m j 1000 mul sub D
+  j -1 1 {pop p i d c add put /i i 1 add D}for
+  4 -2 0 {/j E D /n m l idiv D /m m n l mul sub D /d Dg j get D
+   n 0 gt {/x Rd n get D x 0 get -1 1 {pop p i d c add put /i i 1 add D}for
+   p i x 1 get sub Dg x 2 get j add get c add put}if /l l 10 idiv D
+  }for p 0 i GI}
+  {/i ST length 1 sub D m {1 sub dup 0 ge{dup 26 mod c add 1 add
+   ST i 3 -1 roll put 26 idiv dup 0 eq{pop exit}if}if /i i 1 sub D}loop
+   ST i ST length i sub GI}ie}
+ {m p cvs}ie} D
+/US {matrix currentmatrix matrix defaultmatrix matrix invertmatrix
+ matrix concatmatrix transform} D
+/GB {Gb{US}if}D
+/Tl {/Rn E D Xc CP pop ne{
+ [/Rect [Xc 1 sub Yc cS 0.25 mul sub GB CP E 1 add E cS 0.85 mul add GB]
+  /Subtype /Link /Border [0 0 Cf Lc and LX and AU or{0}{1}ie] Rn type
+  /nametype eq {/Dest Rn}{/Action [/Subtype /URI /URI Rn] Cd}ie
+  /ANN pdfmark}if} D
+/Il {/Rn E D [/Rect [Xc Yc GB Xc XS add Yc YS add GB] /Subtype /Link
+ /Border [0 0 0] Rn type /nametype eq{/Dest Rn}
+ {/Action [/Subtype /URI /URI Rn] Cd}ie /ANN pdfmark} D
+/XP {[{/Z Bz 2 div D Z 0 R Z Z RL Z neg Z RL Z neg Z neg RL Z Z neg RL
+ Fi cH 1 eq and{fill}if} {Bz 0 RL 0 Bz RL Bz neg 0 RL 0 Bz neg RL
+ Fi cH 1 eq and{fill}if} {0 -5 R Bz 0 RL 0 21 RL Bz neg 0 RL 0 -21 RL}]} D
+/MS {/Sm E D WB}D
+/O {BN()0 Sm BX} D
+/BX {/Bt E D Bt 2 lt{/Ch E D CS 0.8 mul}{11 mul}ie W XO sub MR sub
+ 2 copy gt{E}if pop /HZ E D Bt 2 eq{Fi not{pop()}if ( )E join /Ft E D TT
+ /PF t D /MW 1 D /Li 1 D /Fw Ft SW pop D Fw HZ gt{/HZ Fw 8 add D}if
+ HZ ST cvs( )join}{WB Ch ST cvs( )join}ie L1 HZ add XO add MR add W gt{NL}if
+ Bt 2 eq{Ft ES Fw neg HM{CS sub}if Pd}if Bt ST cvs join( Bx )join
+ Bt 2 eq HM and{CS Pd}if C1 E join /C1 E D /L1 L1 HZ add D /T f D
+ ( ) Pd /PF f D Bt 2 lt{YA CS .8 mul lt{/YA CS .8 mul D}if}
+ {YB 5 lt{/YB 5 D}if YA 21 lt{/YA 21 D}if}ie /CI 0 D} D
+/Bx {dup 2 eq{E /Bz E D}{E /cH E D /Bz CS .8 mul D}ie
+ OU {gsave 0 Sg XP E get exec stroke grestore}{pop}ie Bz 0 R /Ms t D}D
+/SD {FD 4 mul Dy add DZ NF newpath 0 0 M DX t charpath pathbbox
+ 3 -1 roll sub /DY E D E dup /X1 E D sub WM mul WX DY mul add WM DG mul E div
+ /DF E D /DR WX DF mul DY mul WM div 2 div D} d
+/Sd {gsave 0 IL Di mul neg translate IL IW atan Di 0 eq{neg}if rotate
+ FD 4 mul Dy add DZ NF DR X1 sub DY 2 div neg M cD VC DX show grestore} d
+/Pt {/tp t D Tp{NP /Pn (TP) D 0 Tt neg R Th BN NP Ep ET RC ZF}if /tp f D} D
+/RC {/AI 0 D /LG 0 D /BC 0 D /UI 0 D /PF f D /Cc 0 D /cC 0 D /Dc 10 array D
+ /NR [0 1 9{pop 0}for] D /La Ds D /AR 10 array D /TR 10 array D /AV 30 array D
+ SI /AL -1 D /AT A0 D AT NA /OV 9 array D /Yo 0 D /Co 0 D /Io 0 D /Hy f D
+ /Ph f D /CL -1 D Ct Sc}D
+/ZF {/FR [0 1 30{pop 0}for] D /SZ [0 1 30{pop 0}for] D /FO [0 1 30{pop 0}for] D
+ /SL 0 D /CF 0 D /FN 0 D 0 Ts SF}D
+/QO [[(\234)(\233)(\253\240)(\273)(\232)(\253)][(')(`)(\253\240)(\273)(\231)(\253)]] D
+/QC [[(\234)(\234)(\240\273)(\253)(\233)(\273)][(')(')(\240\273)(\253)(`)(\273)]] D
+/Hf EF length 2 sub D
+/Hz EZ Hf get D
+/HS Ey Hf get D
+/Fz EZ Hf 1 add get D
+/Fs Ey Hf 1 add get D
+/LE IL D
+/Ps EZ 1 get D
+/Fp EF 1 get D
+/XO 0 D
+/YI 0 D
+/CI 0 D
+/FP 0 D
+/WW Ts 7 mul D
+/Mf 0 D
+/YA 0 D
+/YB 0 D
+/Cs Ts D
+/GS Ts D
+/F0 0 D
+/NS 0 D
+/NB 0 D
+/N 0 D
+/C0 [] D
+/C1 () D
+/Lo 0 D
+/L1 0 D
+/LM 0 D
+/PH 0 D
+/EC 0 D
+/Lh 0 D
+/LT 0 D
+/CH 1 string D
+/ST 16 string D
+/CA 9 array D
+/HC (\255) D
+/HM f D
+/PF f D
+/EN f D
+/TB f D
+/UF f D
+/sF f D
+/AE f D
+/AF f D
+/BP t D
+/CD f D
+/PA t D
+/GL f D
+/T t D
+/HF f D
+/AH f D
+/SA f D
+/PB f D
+/f1 f D
+/mF f D
+/OX 0 D
+/OY 0 D
+/FY 0 D
+/EO 0 D
+/FB 0 D
+/PL 0 D
+/Bw 0 D
+/PD -1 D
+/TP f D
+/tp f D
+/TH t D
+/Ty 4 D
+/Tn -1 D
+/Fl t D
+/LB t D
+/PM 1 D
+/Ms f D
+/Ba f D
+/Bb f D
+/Hl 3 D
+/hl 6 D
+/Hv 6 D
+/Hs f D
+/HI 0 D
+/hi 0 D
+/PO t D
+/TE f D
+/LF t D
+/BO 0 D
+/Sm 1 D
+/Bf 3 D
+/A1 0 D
+/A2 0 D
+/Ds 1 D
+/QL -1 D
+/Cb Db D
+/Ct Dt D
+/Cl Dl D
+[/Creator (html2ps version 1.0 beta7) /Author () /Keywords () /Subject (toolchain)
+ /Title (The build2 Toolchain Introduction) /DOCINFO pdfmark
+/ND 1 D
+/HN [(1) (1) (1) (1) (2) (2) (13) (15) (19) (21) (27) (33) (36) (38) (40) (42)
+(45) (47) (48) (50) (1) (1) (2) (2) (13) (15) (19) (21) (27) (33) (36) (38)
+(40) (42) (45) (47) (48) (50)] D
+/h0 [()(Table of Contents)] D
+/h1 [(1\240\240)(Preface)] D
+/h2 [(2\240\240)(1 TL;DR)] D
+/h3 [(3\240\240)(2 Getting Started Guide)] D
+/h4 [(3.1\240\240)(2.1 Hello, World)] D
+/h5 [(3.2\240\240)(2.2 Package Repositories)] D
+/h6 [(3.3\240\240)(2.3 Adding and Removing Dependencies)] D
+/h7 [(3.4\240\240)(2.4 Upgrading and Downgrading Dependencies)] D
+/h8 [(3.5\240\240)(2.5 Versioning and Release Management)] D
+/h9 [(3.6\240\240)(2.6 Developing Multiple Packages and Projects)] D
+/h10 [(3.7\240\240)(2.7 Package Consumption)] D
+/h11 [(3.8\240\240)(2.8 Using System-Installed Dependencies)] D
+/h12 [(3.9\240\240)(2.9 Using Unpackaged Dependencies)] D
+/h13 [(4\240\240)(3 Canonical Project Structure)] D
+/h14 [(4.1\240\240)(3.1 Source Directory)] D
+/h15 [(4.2\240\240)(3.2 Source Naming)] D
+/h16 [(4.3\240\240)(3.3 Source Contents)] D
+/h17 [(4.4\240\240)(3.4 Tests)] D
+/h18 [(4.5\240\240)(3.5 Build Output)] D
+/Hr [20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37]D
+/HV [1 1 1 2 2 2 2 2 2 2 2 2 1 2 2 2 2 2]D
+/Cn [0 0 9 0 0 0 0 0 0 0 0 0 5 0 0 0 0 0]D
+Hr length 0 gt{[/PageMode /UseOutlines /DOCVIEW pdfmark}if
+/Hn 1 D
+0 1 Hr length 1 sub{
+ /Bn E D [Cn Bn get dup 0 gt{/Count E HV Bn get Bl ge{neg}if}{pop}ie
+ /Dest Hr Bn get dup abs ST cvs cvn E 0 ge{(h)Hn ST cvs join cvx exec
+ dup 1 get E Nf{0 get E join}{pop}ie /Hn Hn 1 add D}{()}ie
+ /Title E dup length 255 gt{0 255 getinterval}if /OUT pdfmark}for
+ZF /FN Fp D Ps 0 FS /WC Wf{( )}{<A1A1>}ie SW pop D
+ET RC ZF
+/Df f D
+/R1 (https://build2.org/doc.xhtml) D
+/R2 (https://build2.org/install.xhtml) D
+/R3 (https://ci.cppget.org/) D
+/R4 (https://ci.cppget.org?build-configs/) D
+/R5 (https://ci.cppget.org?ci/) D
+/R6 (https://cppget.org/) D
+/R7 (https://pkg.cppget.org/) D
+/R8 (https://cppget.org/?builds) D
+/R9 (https://cppget.org/brep) D
+/R10 (https://cppget.org/bbot) D
+/R11 (https://cppget.org/libhello) D
+/R12 (https://cppget.org/?about) D
+/R13 (https://git.build2.org/cgit/hello/libhello/) D
+/R14 (https://semver.org/) D
+/R15 (https://queue.cppget.org/) D
+/R16 (https://cppget.org?submit/) D
+/R17 (https://build2.org/article/symlinks.xhtml) D
+/R18 (https://cppget.org/libsqlite3) D
+/Ba f D /BO 0 D Bs
+/UR (-) D
+/Ti (The build2 Toolchain Introduction) D
+/Au () D
+/Df f D
+/ME [(0.13)(Toolchain Introduction)(2014-2020 the build2 authors)(toolchain)] D
+Pt
+/BO 0 D TC /Ba f D Bs /AU f D /UR () D RC ZF
+ tH WB
+ND 1 gt{Ts 3 mul Np 0()0 C()BD(The build2 Toolchain Introduction)ES()0 1 TN()EA()BN}if
+1 NH le{20(1\240\240)1 C(Preface)WB 2 Sn()20 1 TN()EA()BN}if
+1 NH le{21(2\240\240)1 C(1)WB 3 Sn( TL;DR)21 1 TN()EA()BN}if
+1 NH le{22(3\240\240)1 C(2)WB 4 Sn( Getting Started Guide)22 1 TN()EA()BN}if
+2 NH le{23(3.1\240\240)2 C(2.1)WB 5 Sn( Hello, World)23 1 TN()EA()BN}if
+2 NH le{24(3.2\240\240)2 C(2.2)WB 6 Sn( Package Repos)HY(i)HY(to)HY(ries)YH()24 1 TN()EA()BN}if
+2 NH le{25(3.3\240\240)2 C(2.3)WB 7 Sn( Adding and Remov)HY(ing)YH( Depen)HY(den)HY(cies)YH()25 1 TN()EA()BN}if
+2 NH le{26(3.4\240\240)2 C(2.4)WB 8 Sn( Upgrad)HY(ing)YH( and Down)HY(grad)HY(ing)YH(
+  Depen)HY(den)HY(cies)YH()26 1 TN()EA()BN}if
+2 NH le{27(3.5\240\240)2 C(2.5)WB 9 Sn( Version)HY(ing)YH( and Release
+  Manage)HY(ment)YH()27 1 TN()EA()BN}if
+2 NH le{28(3.6\240\240)2 C(2.6)WB 10 Sn( Devel)HY(op)HY(ing)YH( Multi)HY(ple)YH( Pack)HY(ages)YH( and Projects)28 1 TN()EA()BN}if
+2 NH le{29(3.7\240\240)2 C(2.7)WB 11 Sn( Package Consump)HY(tion)YH()29 1 TN()EA()BN}if
+2 NH le{30(3.8\240\240)2 C(2.8)WB 12 Sn( Using System-Installed Depen)HY(den)HY(cies)YH()30 1 TN()EA()BN}if
+2 NH le{31(3.9\240\240)2 C(2.9)WB 13 Sn( Using Unpack)HY(aged)YH( Depen)HY(den)HY(cies)YH()31 1 TN()EA()BN}if
+1 NH le{32(4\240\240)1 C(3)WB 14 Sn( Canon)HY(i)HY(cal)YH( Project Struc)HY(ture)YH()32 1 TN()EA()BN}if
+2 NH le{33(4.1\240\240)2 C(3.1)WB 15 Sn( Source Direc)HY(tory)YH()33 1 TN()EA()BN}if
+2 NH le{34(4.2\240\240)2 C(3.2)WB 16 Sn( Source Naming)34 1 TN()EA()BN}if
+2 NH le{35(4.3\240\240)2 C(3.3)WB 17 Sn( Source Contents)35 1 TN()EA()BN}if
+2 NH le{36(4.4\240\240)2 C(3.4)WB 18 Sn( Tests)36 1 TN()EA()BN}if
+2 NH le{37(4.5\240\240)2 C(3.5)WB 19 Sn( Build Output)37 1 TN()EA()BN}if
+/OU t D /Cb Db D NP Ep ET 
+/Cb Db D /Ct [16#00 16#00 16#00] D /Cl [16#00 16#00 16#00] D /CL -1 D Ct Sc
+
+/Ba f D /BO 0 D Bs
+/UR (-) D
+/Ti (The build2 Toolchain Introduction) D
+/Au () D
+/Df f D
+/ME [(0.13)(Toolchain Introduction)(2014-2020 the build2 authors)(toolchain)] D
+
+NP RC ZF
+()1 Sl()WB 0 Sn(
+)BR()WB 1 Sn(
+   
+  )0 1 0 H(Preface)WB 20 Sn()WB 2 Sn()EH(
+
+  )0 P(This docu)HY(ment)YH( is an overall intro)HY(duc)HY(tion)YH( to the )SM(build2)ES(
+  toolchain that shows how the main compo)HY(nents)YH(, namely the build system, the
+  package depen)HY(dency)YH( manager, and the project depen)HY(dency)YH( manager are used
+  together to handle the entire C/C++ project devel)HY(op)HY(ment)YH( life)HY(cy)HY(cle)YH(: creation,
+  devel)HY(op)HY(ment)YH(, testing, and deliv)HY(ery)YH(. For addi)HY(tional)YH( infor)HY(ma)HY(tion)YH(, includ)HY(ing)YH(
+  docu)HY(men)HY(ta)HY(tion)YH( for indi)HY(vid)HY(ual)YH( toolchain compo)HY(nents)YH(, man pages, etc., refer to
+  the )SM(build2)ES( project )R1 2 A(Docu)HY(men)HY(ta)HY(tion)YH()EA( page.)EP(
+
+  )0 1 1 H(1)WB 21 Sn()WB 3 Sn( TL;DR)EH(
+
+  ) 58 69 PR($ git clone ssh://example.org/hello.git
+$ tree hello
+hello/
+|-- hello/
+|   |-- hello.cxx
+|   \267-- buildfile
+|-- manifest
+\267-- repositories.manifest
+
+$ cd hello
+$ bdep init --config-create ../hello-gcc cc config.cxx=g++
+initializing in project /tmp/hello/
+created configuration /tmp/hello-gcc/ default,auto-synchronized
+synchronizing:
+  new hello/0.1.0
+
+$ b
+c++ hello/cxx{hello}@../hello-gcc/hello/hello/
+ld ../hello-gcc/hello/hello/exe{hello}
+ln ../hello-gcc/hello/hello/exe{hello} -> hello/
+
+$ hello/hello World
+Hello, World!
+
+$ edit repositories.manifest   # add https://example.org/libhello.git
+$ edit manifest                # add 'depends: libhello ^1.0.0'
+$ edit hello/buildfile         # import libhello
+$ edit hello/hello.cxx         # use libhello
+
+$ b
+fetching from https://example.org/libhello.git)WR(
+synchronizing /tmp/hello-gcc/:
+  new libhello/1.0.0 \201required by hello\202
+  reconfigure hello/0.1.0
+c++ ../hello-gcc/libhello-1.0.0/libhello/cxx{hello}
+ld ../hello-gcc/libhello-1.0.0/libhello/libs{hello}
+c++ hello/cxx{hello}@../hello-gcc/hello/hello/
+ld ../hello-gcc/hello/hello/exe{hello}
+ln ../hello-gcc/hello/hello/exe{hello} -> hello/
+
+$ bdep fetch                   # refresh available versions
+$ bdep status -i               # review available versions
+hello configured 0.1.0
+  libhello ^1.0.0 configured 1.0.0 available [1.1.0]
+
+$ bdep sync libhello           # upgrade to latest
+synchronizing:
+  new libformat/1.0.0 \201required by libhello\202
+  new libprint/1.0.0 \201required by libhello\202
+  upgrade libhello/1.1.0
+  reconfigure hello/0.1.0
+
+$ bdep sync libhello/1.0.0     # downgrade
+synchronizing:
+  drop libprint/1.0.0 \201unused\202
+  drop libformat/1.0.0 \201unused\202
+  downgrade libhello/1.0.0
+  reconfigure hello/0.1.0)RP(
+
+  )0 1 2 H(2)WB 22 Sn()WB 4 Sn( Getting Started Guide)EH(
+
+  )0 P(The aim of this guide is to get you started devel)HY(op)HY(ing)YH( C/C++ projects
+  with the )SM(build2)ES( toolchain. All the exam)HY(ples)YH( in this section
+  include the rele)HY(vant)YH( command output so if you just want to get a sense of
+  what )SM(build2)ES( is about, then you don't have to install the
+  toolchain and run the commands in order to follow along. Or, alter)HY(na)HY(tively)YH(,
+  you can take a short detour to the )R2 2 A(Instal)HY(la)HY(tion)YH( Instruc)HY(tions)YH()EA( and
+  then try the exam)HY(ples)YH( for your)HY(self)YH(.)EP(
+
+  )0 P(One of the primary goals of the )SM(build2)ES( toolchain is to
+  provide a uniform inter)HY(face)YH( across all the plat)HY(forms)YH( and compil)HY(ers)YH(. While
+  most of the exam)HY(ples)YH( in this docu)HY(ment)YH( assume a UNIX-like oper)HY(a)HY(tion)YH( system,
+  they will look pretty similar if you are on Windows. You just have to use
+  appro)HY(pri)HY(ate)YH( paths, compil)HY(ers)YH(, and options.)EP(
+
+  )0 P(The ques)HY(tion)YH( we will try to answer in this section can be summa)HY(rized)YH(
+  as:)EP(
+
+  ) 1 38 PR($ git clone .../hello.git && now-what?)RP(
+
+  )0 P(That is, we clone an exist)HY(ing)YH( C/C++ project or would like to create a new
+  one and then start hacking on it. We want to spend as little time and energy
+  as possi)HY(ble)YH( on the initial and ongoing infras)HY(truc)HY(ture)YH( main)HY(te)HY(nance)YH(: setting
+  up build config)HY(u)HY(ra)HY(tions)YH(, manag)HY(ing)YH( depen)HY(den)HY(cies)YH(, contin)HY(u)HY(ous)YH( inte)HY(gra)HY(tion)YH( and
+  testing, release manage)HY(ment)YH(, etc. Or, as one C++ user aptly put it, ")I(All
+  I want to do is program.)ES(")EP(
+
+  )0 2 3 H(2.1)WB 23 Sn()WB 5 Sn( Hello, World)EH(
+
+  )0 P(Let's see what program)HY(ming)YH( with )SM(build2)ES( feels like by
+  start)HY(ing)YH( with a custom)HY(ary)YH( )I("Hello, World!")ES( program \201here we assume our
+  current working direc)HY(tory)YH( is )SM(/tmp)ES(\202:)EP(
+
+  ) 2 51 PR($ bdep new -l c++ -t exe hello
+created new executable project hello in /tmp/hello/)RP(
+
+  )0 P(The )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  command creates a )I(canon)HY(i)HY(cal)YH()ES( )SM(build2)ES( project. In our case
+  it is an executable imple)HY(mented)YH( in C++.)EP(
+
+  )BR(
+  )0 P(To create a library, pass )SM(-t\240lib)ES(. By default
+  )SM(new)ES( also initial)HY(izes)YH( a )SM(git)ES( repos)HY(i)HY(tory)YH( and
+  gener)HY(ates)YH( suit)HY(able)YH( )SM(.gitig)HY(nore)YH()ES( files \201pass
+  )SM(-s\240none)ES( if you don't want that\202. And for details on naming
+  your projects, see )0 2 A(Package
+  Name)EA(.)EP(
+  )BR(
+
+  )BR(
+  )0 P(Note to Windows users: the )SM(build2-baseu)HY(tils)YH()ES( package includes
+  core )SM(git)ES( util)HY(i)HY(ties)YH( that are suffi)HY(cient)YH( for the
+  )SM(bdep)ES( func)HY(tion)HY(al)HY(ity)YH(.)EP(
+  )BR(
+
+  )0 P(Let's take a look inside our new project:)EP(
+
+  ) 13 25 PR($ tree hello
+hello/
+|-- .git/
+|-- .bdep/
+|-- build/
+|-- hello/
+|   |-- hello.cxx
+|   |-- buildfile
+|   \267-- testscript
+|-- buildfile
+|-- manifest
+|-- README.md
+\267-- repositories.manifest)RP(
+
+  )BR(
+  )0 P(See )0 14 1 A(Canon)HY(i)HY(cal)YH( Project Struc)HY(ture)YH()14 0 TN TL()Ec /AF f D( for a detailed
+  discus)HY(sion)YH( and ratio)HY(nale)YH( behind this layout. While it is recom)HY(mended)YH(,
+  espe)HY(cially)YH( for new projects, )SM(build2)ES( is flex)HY(i)HY(ble)YH( enough to
+  support various arrange)HY(ments)YH( used in today's C and C++ projects.
+  Further)HY(more)YH(, the )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  command provides a number of customiza)HY(tion)YH( options and chances are you will
+  be able to create your preferred layout auto)HY(mat)HY(i)HY(cally)YH(. See )0 2 A(SOURCE LAYOUT)EA( for more
+  infor)HY(ma)HY(tion)YH( and exam)HY(ples)YH(.)EP(
+  )BR(
+
+  )0 P(Similar to version control tools, we normally run all )SM(build2)ES(
+  tools from the project's source direc)HY(tory)YH( or one of its subdi)HY(rec)HY(to)HY(ries)YH(,
+  so:)EP(
+
+  ) 1 10 PR($ cd hello)RP(
+
+  )0 P(While the project layout is discussed in more detail in later sections,
+  let's examine a couple of inter)HY(est)HY(ing)YH( files to get a sense of what's going
+  on. We start with the source file which should look famil)HY(iar)YH(:)EP(
+
+  ) 16 46 PR($ cat hello/hello.cxx
+
+#include <iostream>
+
+int main \201int argc, char* argv[]\202
+{
+  using namespace std;
+
+  if \201argc < 2\202
+  {
+    cerr << "error: missing name" << endl;
+    return 1;
+  }
+
+  cout << "Hello, " << argv[1] << '!' << endl;
+})RP(
+
+  )BR(
+  )0 P(If you prefer the )SM(.?pp)ES( exten)HY(sions)YH( over )SM(.?xx)ES( for
+  your C++ source files, pass )SM(-l\240c++,cpp)ES( to the
+  )SM(new)ES( command. See )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA( for
+  details on this and other customiza)HY(tion)YH( options.)EP(
+  )BR(
+
+  )0 P(Let's take a look at the accom)HY(pa)HY(ny)HY(ing)YH( )SM(build)HY(file)YH()ES(:)EP(
+
+  ) 6 50 PR($ cat hello/buildfile
+
+libs =
+#import libs += libhello%lib{hello}
+
+exe{hello}: {hxx ixx txx cxx}{**} $libs testscript)RP(
+
+  )0 P(As the name suggests, this file describes how to build things. While its
+  content might look a bit cryptic, let's try to infer a couple of points
+  without going into too much detail \201for details see the build system )0 2 A(Intro)HY(duc)HY(tion)YH()EA(\202.)EP(
+
+  )0 P(That )SM(exe{hello})ES( on the left of )SM(:)ES( is a
+  )I(target)ES( \201executable named )SM(hello)ES(\202 and what we have on the
+  right are )I(prereq)HY(ui)HY(sites)YH()ES( \201C++ source files, libraries, etc\202. This
+  )SM(build)HY(file)YH()ES( uses wild)HY(card)YH( patterns \201that )SM(**)ES(\202 to
+  auto)HY(mat)HY(i)HY(cally)YH( locate all the C++ source files. This means we don't have to
+  edit our )SM(build)HY(file)YH()ES( every time we add, remove, or rename a
+  source file in our project. There also appears to be some \201commented out\202
+  infras)HY(truc)HY(ture)YH( for import)HY(ing)YH( and linking libraries \201that )SM(libs)ES(
+  vari)HY(able)YH(\202. We will see how to use it in a moment.)EP(
+
+  )BR(
+  )0 P(In simple projects that follow the canon)HY(i)HY(cal)YH( struc)HY(ture)YH( we can often
+  completely ignore the pres)HY(ence)YH( of the build defi)HY(ni)HY(tion)YH( files thus
+  approach)HY(ing)YH( the )I(build system-less)ES( work)HY(flow)YH( found in languages like
+  Rust and Go.)EP(
+  )BR(
+
+  )0 P(Finally, the )SM(build)HY(file)YH()ES( also lists )SM(testscript)ES( as
+  a prereq)HY(ui)HY(site)YH( of )SM(hello)ES(. This file tests our target. Let's take
+  a look inside:)EP(
+
+  ) 11 27 PR($ cat hello/testscript
+
+: basics
+:
+$* 'World' >'Hello, World!'
+
+: missing-name
+:
+$* 2>>EOE != 0
+error: missing name
+EOE)RP(
+
+  )0 P(Again, we are not going into detail here \201see )0 2 A(Testscript
+  Intro)HY(duc)HY(tion)YH()EA( for a proper intro)HY(duc)HY(tion)YH(\202, but to give you an idea, here
+  we have two tests: the first \201with id )SM(basics)ES(\202 veri)HY(fies)YH( that our
+  program prints the expected greet)HY(ing)YH( while the second makes sure it handles
+  the missing name error condi)HY(tion)YH(. Tests written in Testscript are concise,
+  portable, and executed in paral)HY(lel)YH(.)EP(
+
+  )0 P(Next up is )SM(mani)HY(fest)YH()ES(:)EP(
+
+  ) 10 30 PR($ cat manifest
+: 1
+name: hello
+version: 0.1.0-a.0.z
+summary: hello C++ executable
+license: other: proprietary
+description-file: README.md
+url: https://example.org/hello
+email: you@example.org
+#depends: libhello ^1.0.0)RP(
+
+  )0 P(The )SM(mani)HY(fest)YH()ES( file is what makes a build system project a
+  )I(package)ES(. It contains all the meta)HY(data)YH( that a user of a package might
+  need to know: its name, version, license, depen)HY(den)HY(cies)YH(, etc., all in one
+  place.)EP(
+
+  )BR(
+  )0 P(Refer to )0 2 A(Mani)HY(fest)YH(
+  Format)EA( for the general format of )SM(build2)ES( mani)HY(fest)YH( files and
+  to )0 2 A(Package
+  Mani)HY(fest)YH()EA( for details on the package mani)HY(fest)YH( values.)EP(
+  )BR(
+
+  )0 P(As you can see, )SM(mani)HY(fest)YH()ES( created by )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  contains some dummy values which you would want to adjust before publish)HY(ing)YH(
+  your package. Specif)HY(i)HY(cally)YH(, you would want to review )0 2 A()SM(summary)ES()EA(,
+  )0 2 A()SM(license)ES()EA(,
+  )0 2 A()SM(url)ES()EA(,
+  and )0 2 A()SM(email)ES()EA(
+  as well as the )SM(README.md)ES( file refer)HY(enced)YH( by )0 2 A()SM(descrip)HY(tion)YH(-file)ES()EA(.
+  Let's, however, resist the urge to adjust that strange looking
+  )SM(0.1.0-a.0.z)ES( until we discuss package version)HY(ing)YH(.)EP(
+
+  )BR(
+  )0 P(Next to )SM(mani)HY(fest)YH()ES( you might have noticed the
+  )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES( file \235 we will discuss its func)HY(tion)YH(
+  later, when we talk about depen)HY(den)HY(cies)YH( and where they come from.)EP(
+  )BR(
+
+  )0 P(Project in hand, let's build it. Unlike other program)HY(ming)YH( languages, C++
+  devel)HY(op)HY(ment)YH( usually involves juggling a handful of build config)HY(u)HY(ra)HY(tions)YH(:
+  several compil)HY(ers)YH( and/or targets \201)SM(build2)ES( is big on
+  cross-compil)HY(ing)YH(\202, debug/release, differ)HY(ent)YH( sani)HY(tiz)HY(ers)YH( and/or static anal)HY(y)HY(sis)YH(
+  tools, and so on. As a result, )SM(build2)ES( is opti)HY(mized)YH( for
+  multi-config)HY(u)HY(ra)HY(tion)YH( usage. However, as we will see shortly, one build
+  config)HY(u)HY(ra)HY(tion)YH( can be desig)HY(nated)YH( as the default with addi)HY(tional)YH(
+  conve)HY(niences)YH(.)EP(
+
+  )0 P(The )0 2 A()SM()BD(bdep-init\2011\202)ES()ES()EA(
+  command is used to initial)HY(ize)YH( a project in a build config)HY(u)HY(ra)HY(tion)YH(. As a
+  short)HY(cut)YH(, it can also create a new build config)HY(u)HY(ra)HY(tion)YH( in the process, which
+  is just what we need here. Let's start with GCC \201remem)HY(ber)YH( we are in the
+  project's root direc)HY(tory)YH(\202:)EP(
+
+  ) 5 68 PR($ bdep init -C ../hello-gcc @gcc cc config.cxx=g++
+initializing in project /tmp/hello/
+created configuration @gcc /tmp/hello-gcc/ default,auto-synchronized
+synchronizing:
+  new hello/0.1.0-a.0.19700101000000)RP(
+
+  )0 P(The )SM(--config-create|-C)ES( option instructs )SM(init)ES( to
+  create a new config)HY(u)HY(ra)HY(tion)YH( in the spec)HY(i)HY(fied)YH( direc)HY(tory)YH(
+  \201)SM(../hello-gcc)ES( in our case\202. To make refer)HY(ring)YH( to config)HY(u)HY(ra)HY(tions)YH(
+  easier, we can give it a name, which is what we do with )SM(@gcc)ES(.
+  The next argu)HY(ment)YH( \201)SM(cc)ES(, stands for )I(C-common)ES(\202 is the build
+  system module we would like to config)HY(ure)YH(. It imple)HY(ments)YH( compi)HY(la)HY(tion)YH( and
+  linking rules for the C and C++ languages. Finally,
+  )SM(config.cxx=g++)ES( is \201one of\202 this module's config)HY(u)HY(ra)HY(tion)YH(
+  vari)HY(ables)YH( that spec)HY(i)HY(fies)YH( the C++ compiler we would like to use \201the
+  corre)HY(spond)HY(ing)YH( C compiler will be deter)HY(mined)YH( auto)HY(mat)HY(i)HY(cally)YH(\202. Let's for now
+  also ignore that )SM(synchro)HY(niz)HY(ing)YH(:...)ES( bit along with
+  strange-looking )SM(19700101000000)ES( in the version \235 it will
+  become clear what's going on here in a moment.)EP(
+
+  )BR(
+  )0 P(Note to Windows users: a command line argu)HY(ment)YH( with leading
+  )SM(@)ES( has a special meaning in Power)HY(Shell)YH(. To work around this, you
+  can use the alter)HY(na)HY(tive)YH( )SM(-@gcc)ES( syntax or the
+  )SM(-n\240gcc)ES( option.)EP(
+  )BR(
+
+  )0 P(Now the same for Clang:)EP(
+
+  ) 5 64 PR($ bdep init -C ../hello-clang @clang cc config.cxx=clang++
+initializing in project /tmp/hello/
+created configuration @clang /tmp/hello-clang/ auto-synchronized
+synchronizing:
+  new hello/0.1.0-a.0.19700101000000)RP(
+
+  )0 P(If we check the parent direc)HY(tory)YH(, we should now see two build
+  config)HY(u)HY(ra)HY(tions)YH( next to our project:)EP(
+
+  ) 4 12 PR($ ls ..
+hello/
+hello-gcc/
+hello-clang/)RP(
+
+  )BR(
+  )0 P(If, as in the above exam)HY(ples)YH(, our config)HY(u)HY(ra)HY(tion)YH( direc)HY(to)HY(ries)YH( are next to
+  the project and their names are in the
+  )SM()I(prj-name)ES()BD(-)ES()I(cfg-name)ES()ES( form, then we can use
+  the short)HY(cut)YH( version of the )SM(init)ES( command:)EP(
+
+  ) 1 43 PR($ bdep init -C @clang cc config.cxx=clang++)RP(
+  )BR(
+
+  )0 P(Things will also look pretty similar if you are on Windows instead of a
+  UNIX-like oper)HY(at)HY(ing)YH( system. For example, to initial)HY(ize)YH( our project on
+  Windows with Visual Studio, start a command prompt and then run:)EP(
+
+  ) 8 45 PR(> bdep init -C ..\200hello-debug @debug cc ^
+  "config.cxx=cl /MDd"                  ^
+  "config.cc.coptions=/Od /Zi"          ^
+  config.cc.loptions=/DEBUG
+
+> bdep init -C ..\200hello-release @release cc ^
+  config.cxx=cl                             ^
+  config.cc.coptions=/O2)RP(
+
+  )BR(
+  )0 P(For Visual Studio, )SM(build2)ES( by default will use the latest
+  avail)HY(able)YH( version and build for the )SM(x86_64)ES( target
+  \201)SM(x64)ES( in the Microsoft's termi)HY(nol)HY(ogy)YH(\202. You can, however,
+  over)HY(ride)YH( these defaults by either running from a suit)HY(able)YH( Visual Studio
+  devel)HY(op)HY(ment)YH( command prompt or by spec)HY(i)HY(fy)HY(ing)YH( an abso)HY(lute)YH( path to
+  )SM(cl.exe)ES( that you wish to use. For example:)EP(
+
+  ) 3 69 PR(> bdep init -C ..\200hello-debug-32 @debug-32 cc                       ^
+  "config.cxx=...\200VC\200Tools\200MSVC\20014.23.28105\200bin\200Hostx64\200x86\200cl.exe"
+  ...)RP(
+  )BR(
+
+  )BR(
+  )0 P(Besides the )SM(coptions)ES( \201compile options\202 and
+  )SM(loptions)ES( \201link options\202, other commonly used )SM(cc)ES(
+  module config)HY(u)HY(ra)HY(tion)YH( vari)HY(ables)YH( are )SM(poptions)ES( \201prepro)HY(cess)YH(
+  options\202 and )SM(libs)ES( \201extra libraries to link\202. Here is the
+  complete list with their rough )SM(make)ES( equiv)HY(a)HY(lents)YH(:)EP(
+
+  ) 5 46 PR(*.poptions   preprocess        CPPFLAGS
+*.coptions   compile           CFLAGS/CXXFLAGS
+*.loptions   link              LDFLAGS
+*.aoptions   archive           ARFLAGS
+*.libs       extra libraries   LIBS/LDLIBS)RP(
+
+  )0 P(We can also use their )SM(config.c.*)ES( \201C compi)HY(la)HY(tion)YH(\202 and
+  )SM(config.cxx.*)ES( \201C++ compi)HY(la)HY(tion)YH(\202 vari)HY(ants)YH( if we only want them
+  applied during the respec)HY(tive)YH( language compi)HY(la)HY(tion)YH(. For example:)EP(
+
+  ) 4 43 PR($ bdep init ... cc                       \200
+  config.cxx=g++                         \200
+  config.cc.poptions=-D_FORTIFY_SOURCE=2 \200
+  config.cxx.poptions=-D_GLIBCXX_ASSERTIONS)RP(
+
+  )0 P(Finally, we can specify the "compiler mode" options as part of the
+  compiler executable in )SM(config.c)ES( and )SM(config.cxx)ES(.
+  Such options cannot be modi)HY(fied)YH( by build)HY(files)YH( and they will appear last on
+  the command lines. For example:)EP(
+
+  ) 3 42 PR($ bdep init ... cc      \200
+  config.c="clang -m32" \200
+  config.cxx="clang++ -m32 -stdlib=libc++")RP(
+
+  )0 P(The compiler mode options are also the correct place to specify
+  )I(system-like)ES( header \201)SM(-I)ES(\202 and library \201)SM(-L)ES(,
+  )SM(/LIBPATH)ES(\202 search paths. Where by system-like we mean common
+  instal)HY(la)HY(tion)YH( direc)HY(to)HY(ries)YH( like )SM(/usr/include)ES( or
+  )SM(/usr/local/lib)ES( which may contain older versions of the
+  libraries we are trying to build and/or use. By spec)HY(i)HY(fy)HY(ing)YH( these paths as
+  part of the mode options \201as opposed to )SM(config.*.poptions)ES( and
+  )SM(config.*.loptions)ES(\202 we make sure they will be consid)HY(ered)YH( last,
+  similar to the compiler's build-in search paths. For example:)EP(
+
+  ) 1 50 PR($ bdep init ... cc config.cxx="g++ -L/opt/install")RP(
+  )BR(
+
+  )0 P(One differ)HY(ence)YH( you might have noticed when creat)HY(ing)YH( the )SM(gcc)ES(
+  and )SM(clang)ES( config)HY(u)HY(ra)HY(tions)YH( above is that the first one was
+  desig)HY(nated)YH( as the default. The default config)HY(u)HY(ra)HY(tion)YH( is used by
+  )SM(bdep)ES( commands if no config)HY(u)HY(ra)HY(tion)YH( is spec)HY(i)HY(fied)YH( explic)HY(itly)YH( \201see
+  )0 2 A()SM()BD(bdep-projects-configs\2011\202)ES()ES()EA(
+  for details\202. It is also the config)HY(u)HY(ra)HY(tion)YH( that is used if we run the build
+  system in the project's source direc)HY(tory)YH(. So, normally, you would make your
+  every day devel)HY(op)HY(ment)YH( config)HY(u)HY(ra)HY(tion)YH( the default. Let's try that:)EP(
+
+  ) 13 69 PR($ bdep status
+hello configured 0.1.0-a.0.19700101000000
+
+$ b
+c++ hello/cxx{hello}@../hello-gcc/hello/hello/
+ld ../hello-gcc/hello/hello/exe{hello}
+ln ../hello-gcc/hello/hello/exe{hello} -> hello/
+
+$ b test
+test hello/testscript{testscript} ../hello-gcc/hello/hello/exe{hello}
+
+$ hello/hello World
+Hello, World!)RP(
+
+  )BR(
+  )0 P(To see the actual compi)HY(la)HY(tion)YH( command lines, run )SM(b\240-v)ES(
+  and for even more details, run )SM(b\240-V)ES(. See )0 2 A()SM()BD(b\2011\202)ES()ES()EA( for more
+  infor)HY(ma)HY(tion)YH( on these and other build system options.)EP(
+  )BR(
+
+  )0 P(In contrast, the Clang config)HY(u)HY(ra)HY(tion)YH( has to be requested explic)HY(itly)YH(:)EP(
+
+  ) 12 71 PR($ bdep status @clang
+hello configured 0.1.0-a.0.19700101000000
+
+$ b ../hello-clang/hello/
+c++ hello/cxx{hello}@../hello-clang/hello/hello/
+ld ../hello-clang/hello/hello/exe{hello}
+
+$ b test: ../hello-clang/hello/
+test hello/testscript{testscript} ../hello-clang/hello/hello/exe{hello}
+
+$ ../hello-clang/hello/hello/hello World
+Hello, World!)RP(
+
+  )0 P(As you can see, using the build system directly on config)HY(u)HY(ra)HY(tions)YH( other
+  than the default requires explic)HY(itly)YH( spec)HY(i)HY(fy)HY(ing)YH( their paths. It would have
+  been more conve)HY(nient)YH( if we could refer to them by names. The )0 2 A()SM()BD(bdep-update\2011\202)ES()ES()EA(
+  and )0 2 A()SM()BD(bdep-test\2011\202)ES()ES()EA(
+  commands allow us to do exactly that:)EP(
+
+  ) 4 71 PR($ bdep test @clang
+c++ hello/cxx{hello}@../hello-clang/hello/hello/
+ld ../hello-clang/hello/hello/exe{hello}
+test hello/testscript{testscript} ../hello-clang/hello/hello/exe{hello})RP(
+
+  )0 P(And we can also perform the desired build system oper)HY(a)HY(tion)YH( on several \201or
+  )SM(--all|-a)ES(\202 config)HY(u)HY(ra)HY(tions)YH( at once:)EP(
+
+  ) 6 71 PR($ bdep test @gcc @clang
+in configuration @gcc:
+test hello/testscript{testscript} ../hello-gcc/hello/hello/exe{hello}
+
+in configuration @clang:
+test hello/testscript{testscript} ../hello-clang/hello/hello/exe{hello})RP(
+
+  )BR(
+  )0 P(As we will see later, the )0 2 A()SM()BD(bdep-test\2011\202)ES()ES()EA(
+  command also allows us to test imme)HY(di)HY(ate)YH( \201)SM(--imme)HY(di)HY(ate)YH(|-i)ES(\202 or
+  all \201)SM(--recur)HY(sive)YH(|-r)ES(\202 depen)HY(den)HY(cies)YH( of our project. We call it
+  )I(deep testing)ES(.)EP(
+  )BR(
+
+  )0 P(While we are here, let's also check how hard it would be to
+  cross-compile:)EP(
+
+  ) 9 73 PR($ bdep init -C ../hello-mingw @mingw cc config.cxx=x86_64-w64-mingw32-g++
+initializing in project /tmp/hello/
+created configuration @mingw /tmp/hello-mingw/ auto-synchronized
+synchronizing:
+  new hello/0.1.0-a.0.19700101000000
+
+$ bdep update @mingw
+c++ hello/cxx{hello}@../hello-mingw/hello/hello/
+ld ../hello-mingw/hello/hello/exe{hello})RP(
+
+  )0 P(As you can see, cross-compil)HY(ing)YH( in )SM(build2)ES( is nothing
+  special. In our case, on a prop)HY(erly)YH( setup GNU/Linux machine \201that
+  auto)HY(mat)HY(i)HY(cally)YH( uses )SM(wine)ES( as an )SM(.exe)ES( inter)HY(preter)YH(\202 we
+  can even run tests \201in )SM(build2)ES( this is called
+  )I(cross-testing)ES(\202:)EP(
+
+  ) 5 71 PR($ bdep test @mingw
+test hello/testscript{testscript} ../hello-mingw/hello/hello/exe{hello}
+
+$ ../hello-mingw/hello/hello/hello.exe Windows
+Hello, Windows!)RP(
+
+  )0 P(Let's review what it takes to initial)HY(ize)YH( a project's infras)HY(truc)HY(ture)YH( and
+  perform the first build. For an exist)HY(ing)YH( project:)EP(
+
+  ) 4 50 PR($ git clone .../hello.git
+$ cd hello
+$ bdep init -C ../hello-gcc @gcc cc config.cxx=g++
+$ b)RP(
+
+  )0 P(For a new project:)EP(
+
+  ) 4 50 PR($ bdep new -l c++ -t exe hello
+$ cd hello
+$ bdep init -C ../hello-gcc @gcc cc config.cxx=g++
+$ b)RP(
+
+  )0 P(If you prefer, the )SM(new)ES( and )SM(init)ES( steps can be
+  combined into a single command:)EP(
+
+  ) 1 66 PR($ bdep new -l c++ -t exe hello -C hello-gcc @gcc cc config.cxx=g++)RP(
+
+  )0 P(And if you need to deini)HY(tial)HY(ize)YH( a project in one or more build
+  config)HY(u)HY(ra)HY(tions)YH(, there is the )0 2 A()SM()BD(bdep-deinit\2011\202)ES()ES()EA(
+  command for that:)EP(
+
+  ) 9 37 PR($ bdep deinit @gcc @clang
+deinitializing in project /tmp/hello/
+in configuration @gcc:
+synchronizing:
+  drop hello
+
+in configuration @clang:
+synchronizing:
+  drop hello)RP(
+
+  )0 P(As mentioned earlier, by default )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  initial)HY(izes)YH( a )SM(git)ES( repos)HY(i)HY(tory)YH( for us. Now that we have
+  success)HY(fully)YH( built and tested our project, it might be a good idea to make a
+  first commit and publish it to a remote repos)HY(i)HY(tory)YH( where others can find it.
+  Using GitHub as an example:)EP(
+
+  ) 4 57 PR($ git add .
+$ git commit -m "Initial implementation"
+$ git remote add origin git@github.com:john-doe/hello.git
+$ git push -u)RP(
+
+  )0 P(We could have also done it the other way around: first created a project
+  on one of the hosting services \201GitHub, GitLab, etc\202 cloned it, and then ran
+  )SM(new)ES( on that. One advan)HY(tage)YH( of this approach is the
+  )SM(new)ES( command's ability to auto)HY(mat)HY(i)HY(cally)YH( extract the license and
+  descrip)HY(tion)YH( from the exist)HY(ing)YH( )SM(LICENSE)ES( and
+  )SM(README.md)ES( files and use that to gener)HY(ate)YH( the
+  )SM(mani)HY(fest)YH()ES( file. This way we only need to specify things once and
+  every)HY(thing)YH( is nice and consis)HY(tent)YH(. Here is an example of this stream)HY(lined)YH(
+  project creation work)HY(flow)YH( \201notice also the omitted project name in the
+  )SM(new)ES( command\202:)EP(
+
+  ) 7 63 PR(# Create a project with LICENSE and README.md on one of the Git
+# hosting services \201GitHub, GitLab, etc\202 and then:
+
+$ git clone .../hello.git
+$ cd hello
+
+$ bdep new -l c++ -t exe)RP(
+
+  )0 P(While we have managed to test a couple of plat)HY(forms)YH( \201Linux and Windows\202
+  and compiler versions \201Clang and GCC\202 locally, there are quite a few
+  combi)HY(na)HY(tions)YH( that we haven't tried \201Mac OS with Apple Clang and Windows with
+  MSVC, to name the major ones\202. We could test them manu)HY(ally)YH(, some with the
+  help of virtu)HY(al)HY(iza)HY(tion)YH( while for others \201such as Mac OS\202 we may need
+  phys)HY(i)HY(cal)YH( hard)HY(ware)YH(. Add a few versions for each compiler and we are looking
+  at a dozen build config)HY(u)HY(ra)HY(tions)YH(. Need)HY(less)YH( to say, testing on all of them
+  manu)HY(ally)YH( is a lot of work. Now that we have our project avail)HY(able)YH( from a
+  public remote repos)HY(i)HY(tory)YH(, we can instead use the remote testing
+  func)HY(tion)HY(al)HY(ity)YH( offered by the )0 2 A()SM()BD(bdep-ci\2011\202)ES()ES()EA(
+  command. For example:)EP(
+
+  ) 10 68 PR($ bdep ci
+submitting:
+  to:      https://ci.cppget.org
+  in:      https://github.com/john-doe/hello.git#master@93e1dbc94baa
+  package: hello
+  version: 0.1.0-a.0.20180907091517.93e1dbc94baa
+continue? [y/n] y
+############################################################# 100.0%
+CI request is queued:
+  https://ci.cppget.org/@d6ee90f4-21a9-47a0-ab5a-7cd2f521d3d8)RP(
+
+  )0 P(Let's see what's going on here. By default )SM(ci)ES( submits a test
+  request to )R3 2 A(ci.cppget.org)EA(, a public CI
+  service run by the )SM(build2)ES( project \201see avail)HY(able)YH( )R4 2 A(Build Config)HY(u)HY(ra)HY(tions)YH()EA( and )R5 2 A(Use Poli)HY(cies)YH()EA(\202. It is testing the current
+  working tree state \201branch and commit\202 of our package which should be
+  avail)HY(able)YH( from our remote repos)HY(i)HY(tory)YH( \201on GitHub in this example\202 since
+  that's where the CI service expects to find it. In response we get a URL
+  where we can see the build and test results, logs, etc.)EP(
+
+  )BR(
+  )0 P(This )I(push)ES( CI model works partic)HY(u)HY(larly)YH( well with the "feature
+  branch" devel)HY(op)HY(ment)YH( work)HY(flow)YH(. Specif)HY(i)HY(cally)YH(, you would develop a new feature
+  in a sepa)HY(rate)YH( branch, publish)HY(ing)YH( and remote-testing it as neces)HY(sary)YH(. When
+  the feature is ready, you would merge any changes from )SM(master)ES(,
+  test the result one more time, and then merge the feature into master.)EP(
+  )BR(
+
+  )0 P(Now is a good time to get an overview of the )SM(build2)ES(
+  toolchain. After all, we have already used two of its tools
+  \201)SM(bdep)ES( and )SM(b)ES(\202 without a clear under)HY(stand)HY(ing)YH( of what
+  they actu)HY(ally)YH( are.)EP(
+
+  )0 P(Unlike most other program)HY(ming)YH( languages that encap)HY(su)HY(late)YH( the build
+  system, package depen)HY(dency)YH( manager, and project depen)HY(dency)YH( manager into a
+  single tool \201such as Rust's )SM(cargo)ES( or Go's )SM(go)ES(\202,
+  )SM(build2)ES( is a hier)HY(ar)HY(chy)YH( of several tools that you will be using
+  directly and which together with your version control system \201VCS\202 will
+  consti)HY(tute)YH( the core of your project manage)HY(ment)YH( toolset.)EP(
+
+  )BR(
+  )0 P(While )SM(build2)ES( can work without a VCS, this will result in
+  reduced func)HY(tion)HY(al)HY(ity)YH(.)EP(
+  )BR(
+
+  )0 P(At the bottom of the hier)HY(ar)HY(chy)YH( is the build system, )0 2 A()SM()BD(b\2011\202)ES()ES()EA(. Next comes the
+  package depen)HY(dency)YH( manager, )0 2 A()SM()BD(bpkg\2011\202)ES()ES()EA(. It is
+  primar)HY(ily)YH( used for )I(package consump)HY(tion)YH()ES( and depends on the build
+  system. The top of the hier)HY(ar)HY(chy)YH( is the project depen)HY(dency)YH( manager, )0 2 A()SM()BD(bdep\2011\202)ES()ES()EA(. It is used
+  for )I(project devel)HY(op)HY(ment)YH()ES( and relies on )SM(bpkg)ES( for build)HY(ing)YH(
+  project pack)HY(ages)YH( and their depen)HY(den)HY(cies)YH(.)EP(
+
+  )BR(
+  )0 P(The main reason for this sepa)HY(ra)HY(tion)YH( is modu)HY(lar)HY(ity)YH( and the result)HY(ing)YH(
+  flex)HY(i)HY(bil)HY(ity)YH(: there are situ)HY(a)HY(tions)YH( where we only need the build system \201for
+  example, when build)HY(ing)YH( a package for a system package manager where all the
+  depen)HY(den)HY(cies)YH( should be satis)HY(fied)YH( from the system repos)HY(i)HY(tory)YH(\202, or only the
+  build system and package manager \201for example, when a build bot is build)HY(ing)YH(
+  a package for testing\202.)EP(
+
+  )0 P(Note also that strictly speak)HY(ing)YH( )SM(build2)ES( is not
+  C/C++-specific; its build model is general enough to handle any DAG-based
+  oper)HY(a)HY(tions)YH( and its package/project depen)HY(dency)YH( manage)HY(ment)YH( can be used for any
+  compiled language.)EP(
+  )BR(
+
+  )BR(
+  )0 P(As we will see in a moment, )SM(build2)ES( also inte)HY(grates)YH( with your
+  VCS in order to auto)HY(mate)YH( project version)HY(ing)YH(. Note that currently only
+  )SM(git\2011\202)ES( is supported.)EP(
+  )BR(
+
+  )0 P(Now that we under)HY(stand)YH( the tooling, let's also revisit the notion of
+  )I(build config)HY(u)HY(ra)HY(tion)YH()ES( \201those )SM(hello-gcc)ES( and
+  )SM(hello-clang)ES( direc)HY(to)HY(ries)YH(\202. A )SM(bdep)ES( build
+  config)HY(u)HY(ra)HY(tion)YH( is actu)HY(ally)YH( a )SM(bpkg)ES( build config)HY(u)HY(ra)HY(tion)YH( which, in
+  the build system terms, is an )I(amal)HY(ga)HY(ma)HY(tion)YH()ES( \235 a project that
+  contains )I(subpro)HY(jects)YH()ES(. In our case, the subpro)HY(jects)YH( in these
+  amal)HY(ga)HY(ma)HY(tions)YH( will be the projects we have initial)HY(ized)YH( with
+  )SM(init)ES( and, as we will see later, pack)HY(ages)YH( that they depend on.
+  For example, here is what our )SM(hello-gcc)ES( contains:)EP(
+
+  ) 11 24 PR($ tree hello-gcc
+hello-gcc/
+|-- .bpkg/
+|-- build/
+|   \267-- config.build
+\267-- hello/
+    |-- build/
+    |   \267-- config.build
+    \267-- hello/
+        |-- hello
+        \267-- hello.o)RP(
+
+  )BR(
+  )0 P(Under)HY(neath)YH( )0 2 A()SM()BD(bdep-init\2011\202)ES()ES()EA(
+  with the )SM(--config-create|-C)ES( option calls )0 2 A()SM()BD(bpkg-cfg-create\2011\202)ES()ES()EA(
+  which, in turn, performs the build system )SM(create)ES( meta-oper)HY(a)HY(tion)YH(
+  \201see )0 2 A()SM()BD(b\2011\202)ES()ES()EA( for
+  details\202.)EP(
+
+  )0 P(The impor)HY(tant)YH( point here is that the )SM(bdep)ES( build
+  config)HY(u)HY(ra)HY(tion)YH( is not a black box that you should never look inside of. On
+  the contrary, it is a normal and predictable concept of the package manager
+  and the build system and as long as you under)HY(stand)YH( what you are doing, you
+  should feel free to inter)HY(act)YH( with it directly.)EP(
+  )BR(
+
+  )0 P(Let's now move on to the reason why there is )I(dep)ES( in the
+  )SM(bdep)ES( name: depen)HY(dency)YH( manage)HY(ment)YH(.)EP(
+
+  )0 2 4 H(2.2)WB 24 Sn()WB 6 Sn( Package Repos)HY(i)HY(to)HY(ries)YH()EH(
+
+  )0 P(Say we have real)HY(ized)YH( that writing )I("Hello, World!")ES( programs is a
+  fairly common task and that someone must have written a library to help with
+  that. So let's see if we can find some)HY(thing)YH( suit)HY(able)YH( to use in our
+  project.)EP(
+
+  )0 P(Where should we look? That's a good ques)HY(tion)YH(. But before we can try to
+  answer it, we need to under)HY(stand)YH( where )SM(build2)ES( can source
+  depen)HY(den)HY(cies)YH(. In )SM(build2)ES( pack)HY(ages)YH( come from )I(package
+  repos)HY(i)HY(to)HY(ries)YH()ES(. Two commonly used repos)HY(i)HY(tory)YH( types are )I(version
+  control)ES( and )I(archive)ES(-based \201see )0 2 A()SM()BD(bpkg-repos)HY(i)HY(tory)YH(-types\2011\202)ES()ES()EA(
+  for details\202.)EP(
+
+  )0 P(As the name suggests, a version control-based repos)HY(i)HY(tory)YH( uses a VCS as
+  its distri)HY(bu)HY(tion)YH( mech)HY(a)HY(nism)YH(. Currently, only
+  )SM(git)ES( is supported. Such a repos)HY(i)HY(tory)YH( normally contains
+  multi)HY(ple)YH( versions of a single package or, perhaps, of a few related
+  pack)HY(ages)YH(.)EP(
+
+  )0 P(An archive-based repos)HY(i)HY(tory)YH( contains multi)HY(ple)YH(, poten)HY(tially)YH( unre)HY(lated)YH(
+  pack)HY(ages)YH(/versions as archives along with some meta infor)HY(ma)HY(tion)YH( \201package
+  list, prereq)HY(ui)HY(site)YH(/comple)HY(ment)YH( repos)HY(i)HY(to)HY(ries)YH(, signa)HY(tures)YH(, etc\202 that are all
+  acces)HY(si)HY(ble)YH( via HTTP\201S\202.)EP(
+
+  )0 P(Version control and archive-based repos)HY(i)HY(to)HY(ries)YH( have differ)HY(ent)YH( trade-offs.
+  Version control-based repos)HY(i)HY(to)HY(ries)YH( are great for package devel)HY(op)HY(ers)YH(: With
+  services like GitHub they are trivial to setup. In fact, your project's
+  \201already exist)HY(ing)YH(\202 VCS repos)HY(i)HY(tory)YH( will normally be the )SM(build2)ES(
+  package repos)HY(i)HY(tory)YH( \235 you might need to add a few files, but that's
+  about it.)EP(
+
+  )0 P(However, version control-based repos)HY(i)HY(to)HY(ries)YH( are not without draw)HY(backs)YH(: It
+  will be hard for your users to discover your pack)HY(ages)YH( \201try search)HY(ing)YH( for
+  "hello library" on GitHub \235 most of the results are not even in C++
+  let alone pack)HY(aged)YH( for )SM(build2)ES(\202. There is also the issue of
+  contin)HY(u)HY(ous)YH( avail)HY(abil)HY(ity)YH(: users can delete their repos)HY(i)HY(to)HY(ries)YH(, services may
+  change their poli)HY(cies)YH( or go out of busi)HY(ness)YH(, and so on. Version
+  control-based repos)HY(i)HY(to)HY(ries)YH( also lack repos)HY(i)HY(tory)YH( authen)HY(ti)HY(ca)HY(tion)YH( and package
+  signing. Finally, obtain)HY(ing)YH( the avail)HY(able)YH( package list for such repos)HY(i)HY(to)HY(ries)YH(
+  can be slow.)EP(
+
+  )0 P(A central, archive-based repos)HY(i)HY(tory)YH( would address all these draw)HY(backs)YH(: It
+  would be a single place to search for pack)HY(ages)YH(. Published pack)HY(ages)YH( will
+  never disap)HY(pear)YH( and can be easily mirrored. Pack)HY(ages)YH( are signed and the
+  repos)HY(i)HY(tory)YH( is authen)HY(ti)HY(cated)YH( \201see )0 2 A()SM()BD(bpkg-repos)HY(i)HY(tory)YH(-signing\2011\202)ES()ES()EA(
+  for details\202. And, last, but not least, archive-based repos)HY(i)HY(to)HY(ries)YH( are
+  fast.)EP(
+
+  )0 P()R6 2 A(cppget.org)EA( is the )SM(build2)ES(
+  commu)HY(nity)YH('s central package repos)HY(i)HY(tory)YH(. While central)HY(ized)YH(, it is also easy
+  to mirror since its contents are acces)HY(si)HY(ble)YH( via plain HTTPS \201you can browse
+  )R7 2 A(pkg.cppget.org)EA( to get an idea\202. As an
+  added benefit, pack)HY(ages)YH( on )R6 2 A(cppget.org)EA( are
+  contin)HY(u)HY(ously)YH( )R8 2 A(built and tested)EA( on
+  all the major plat)HY(form)YH(/compiler combi)HY(na)HY(tions)YH( with the results avail)HY(able)YH( as
+  part of the package descrip)HY(tion)YH(.)EP(
+
+  )BR(
+  )0 P(The main draw)HY(back)YH( of archive-based repos)HY(i)HY(to)HY(ries)YH( is the setup cost.
+  Getting a basic repos)HY(i)HY(tory)YH( going is rela)HY(tively)YH( easy \235 all you need is
+  an HTTP\201S\202 server. Adding a repos)HY(i)HY(tory)YH( web inter)HY(face)YH( like that on )R6 2 A(cppget.org)EA( will require running )R9 2 A()SM(brep)ES()EA(. And adding CI will
+  require running a bunch of build bots \201)R10 2 A()SM(bbot)ES()EA(\202. Note also that in
+  )SM(build2)ES( archive-based repos)HY(i)HY(to)HY(ries)YH( can be feder)HY(ated)YH( with
+  differ)HY(ent)YH( sections of the repos)HY(i)HY(tory)YH( being hosted/managed poten)HY(tially)YH(
+  inde)HY(pen)HY(dently)YH(.)EP(
+  )BR(
+
+  )0 P(To summa)HY(rize)YH(, version control-based repos)HY(i)HY(to)HY(ries)YH( are great for package
+  devel)HY(op)HY(ers)YH( while a central, archive-based repos)HY(i)HY(tory)YH( is conve)HY(nient)YH( for
+  package consumers. A reason)HY(able)YH( strat)HY(egy)YH( is then for package devel)HY(op)HY(ers)YH( to
+  publish their releases to a central repos)HY(i)HY(tory)YH(. Package consumers can then
+  decide which repos)HY(i)HY(tory)YH( to use based on their needs. For example, one could
+  use )R6 2 A(cppget.org)EA( as a \201fast, reli)HY(able)YH(, and
+  secure\202 source of stable versions but also add, say, )SM(git)ES(
+  repos)HY(i)HY(to)HY(ries)YH( for select pack)HY(ages)YH( \201perhaps with the )SM(#HEAD)ES(
+  frag)HY(ment)YH( filter to improve down)HY(load)YH( speed\202 for testing devel)HY(op)HY(ment)YH(
+  snap)HY(shots)YH(. In this model the two repos)HY(i)HY(tory)YH( types comple)HY(ment)YH( each other.)EP(
+
+  )BR(
+  )0 P(Publish)HY(ing)YH( of pack)HY(ages)YH( to archive-based repos)HY(i)HY(to)HY(ries)YH( is discussed in )0 9 1 A(Version)HY(ing)YH( and Release
+  Manage)HY(ment)YH()9 0 TN TL()Ec /AF f D(.)EP(
+  )BR(
+
+  )0 P(Let's see how all this works in prac)HY(tice)YH(. Go over to )R6 2 A(cppget.org)EA( and type "hello library" in the
+  search box. At the top of the search result you should see the )R11 2 A()SM(libhello)ES()EA( package and if
+  you follow the link you will see the package descrip)HY(tion)YH( page along with a
+  list of avail)HY(able)YH( versions. Pick a version that you like and you will see
+  the package version descrip)HY(tion)YH( page with quite a bit of infor)HY(ma)HY(tion)YH(,
+  includ)HY(ing)YH( the list of plat)HY(form)YH(/compiler combi)HY(na)HY(tions)YH( that this version has
+  been success)HY(fully)YH( \201or unsuc)HY(cess)HY(fully)YH(\202 tested with. If you like what you see,
+  copy the )SM(loca)HY(tion)YH()ES( value \235 this is the repos)HY(i)HY(tory)YH( loca)HY(tion)YH(
+  where this package version can be sourced from.)EP(
+
+  )BR(
+  )0 P(The )R6 2 A(cppget.org)EA( repos)HY(i)HY(tory)YH( is split into
+  several sections: )SM(stable)ES(, )SM(testing)ES(,
+  )SM(beta)ES(, )SM(alpha)ES( and )SM(legacy)ES(, with each
+  section having its own repos)HY(i)HY(tory)YH( loca)HY(tion)YH( \201see the repos)HY(i)HY(tory)YH('s )R12 2 A(about)EA( page for details on each
+  section's poli)HY(cies)YH(\202. Note also that )SM(testing)ES( is comple)HY(mented)YH( by
+  )SM(stable)ES(, )SM(beta)ES( by )SM(testing)ES(, and so on,
+  so you only need to choose the lowest stabil)HY(ity)YH( level and you will
+  auto)HY(mat)HY(i)HY(cally)YH( "see" pack)HY(ages)YH( from the more stable sections.)EP(
+  )BR(
+
+  )BR(
+  )0 P(The )R6 2 A(cppget.org)EA( )SM(stable)ES(
+  sections will always contain the )SM(libhello)ES( library version
+  )SM(1.0.X)ES( that was gener)HY(ated)YH( using the follow)HY(ing)YH( )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  command line:)EP(
+
+  ) 1 33 PR($ bdep new -l c++ -t lib libhello)RP(
+
+  )0 P(It can be used as a predictable test depen)HY(dency)YH( when setting up new
+  projects.)EP(
+  )BR(
+
+  )0 P(Let's say we've visited the )SM(libhello)ES( project's )R13 2 A(home page)EA( \201for
+  example by follow)HY(ing)YH( a link from the package details page\202 and noticed that
+  it is being devel)HY(oped)YH( in a )SM(git)ES( repos)HY(i)HY(tory)YH(. How can we see
+  what's avail)HY(able)YH( there? If the releases are tagged, then we can infer the
+  avail)HY(able)YH( released versions from the tags. But that doesn't tell us anything
+  about what's happen)HY(ing)YH( on the )SM(HEAD)ES( or in the branches. For that
+  we can use the package manager's )0 2 A()SM()BD(bpkg-rep-info\2011\202)ES()ES()EA(
+  command:)EP(
+
+  ) 3 57 PR($ bpkg rep-info https://git.build2.org/hello/libhello.git
+libhello/1.0.0
+libhello/1.1.0)RP(
+
+  )0 P(As you can see, besides )SM(1.0.0)ES( that we have seen in
+  )SM(cppget.org/stable)ES(, there is also )SM(1.1.0)ES( \201which is
+  perhaps being tested in )SM(cppget.org/testing)ES(\202. We can also check
+  what might be avail)HY(able)YH( on the )SM(HEAD)ES( \201see )0 2 A()SM()BD(bpkg-repos)HY(i)HY(tory)YH(-types\2011\202)ES()ES()EA(
+  for details on the )SM(git)ES( repos)HY(i)HY(tory)YH( URL format\202:)EP(
+
+  ) 2 62 PR($ bpkg rep-info https://git.build2.org/hello/libhello.git#HEAD
+libhello/1.1.1-a.0.20180504111511.2e82f7378519)RP(
+
+  )BR(
+  )0 P(We can also use the )SM(rep-info)ES( command on archive-based
+  repos)HY(i)HY(to)HY(ries)YH(, however, if avail)HY(able)YH(, the web inter)HY(face)YH( is usually more
+  conve)HY(nient)YH( and provides more infor)HY(ma)HY(tion)YH(.)EP(
+  )BR(
+
+  )0 P(To summa)HY(rize)YH(, we found two repos)HY(i)HY(to)HY(ries)YH( for the )SM(libhello)ES(
+  package: the archive-based )R6 2 A(cppget.org)EA( that
+  contains the released versions as well as its devel)HY(op)HY(ment)YH( )SM(git)ES(
+  repos)HY(i)HY(tory)YH( where we can get the bleed)HY(ing)YH( edge stuff. Let's now see how we
+  can add )SM(libhello)ES( to our project.)EP(
+
+  )0 2 5 H(2.3)WB 25 Sn()WB 7 Sn( Adding and Remov)HY(ing)YH( Depen)HY(den)HY(cies)YH()EH(
+
+  )0 P(So we found )SM(libhello)ES( that we would like to use in our
+  )SM(hello)ES( project. First, we edit the
+  )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES( file found in the root direc)HY(tory)YH( of our
+  project and add one of the )SM(libhello)ES( repos)HY(i)HY(to)HY(ries)YH( as a
+  prereq)HY(ui)HY(site)YH(. Let's start with )R6 2 A(cppget.org)EA(:)EP(
+
+  ) 2 41 PR(role: prerequisite
+location: https://pkg.cppget.org/1/stable)RP(
+
+  )BR(
+  )0 P(Refer to )0 2 A(Repos)HY(i)HY(tory)YH(
+  Mani)HY(fest)YH()EA( for details on the repos)HY(i)HY(tory)YH( mani)HY(fest)YH( values.)EP(
+  )BR(
+
+  )0 P(Next, we edit the )SM(mani)HY(fest)YH()ES( file \201again, found in the root of
+  our project\202 and specify the depen)HY(dency)YH( on )SM(libhello)ES( with
+  optional version constraint. For example:)EP(
+
+  ) 1 24 PR(depends: libhello ^1.0.0)RP(
+
+  )0 P(Let's briefly discuss version constraints \201for details see the )0 2 A()SM(depends)ES()EA(
+  value docu)HY(men)HY(ta)HY(tion)YH(\202. A version constraint can be expressed with a
+  compar)HY(i)HY(son)YH( oper)HY(a)HY(tor)YH( \201)SM(==)ES(, )SM(>)ES(, )SM(<)ES(,
+  )SM(>=)ES(, )SM(<=)ES(\202, a range short)HY(cut)YH( oper)HY(a)HY(tor)YH(
+  \201)SM(~)ES( and )SM(^)ES(\202, or a range. Here are a few
+  exam)HY(ples)YH(:)EP(
+
+  ) 7 31 PR(depends: libhello == 1.2.3
+depends: libhello >= 1.2.3
+
+depends: libhello ~1.2.3
+depends: libhello ^1.2.3
+
+depends: libhello [1.2.3 1.2.9\202)RP(
+
+  )0 P(You may already be famil)HY(iar)YH( with the tilde \201)SM(~)ES(\202 and caret
+  \201)SM(^)ES(\202 constraints from depen)HY(dency)YH( managers for other languages.
+  To recap, tilde allows upgrades to any further patch versions while caret
+  also allows upgrades to further minor versions. They are equiv)HY(a)HY(lent)YH( to the
+  follow)HY(ing)YH( ranges:)EP(
+
+  ) 4 35 PR(~X.Y.Z  [X.Y.Z  X.Y+1.0\202
+
+^X.Y.Z  [X.Y.Z  X+1.0.0\202  if X >  0
+^0.Y.Z  [0.Y.Z  0.Y+1.0\202  if X == 0)RP(
+
+  )BR(
+  )0 P(Zero major version compo)HY(nent)YH( is custom)HY(ar)HY(ily)YH( used during early devel)HY(op)HY(ment)YH(
+  where the minor version effec)HY(tively)YH( becomes major. As a result, the tilde
+  constraint has a special treat)HY(ment)YH( of this case.)EP(
+  )BR(
+
+  )0 P(Unless you have good reasons not to \201for example, a depen)HY(dency)YH( does not
+  use seman)HY(tic)YH( version)HY(ing)YH(\202, we suggest that you use the )SM(^)ES(
+  constraint which provides a good balance between compat)HY(i)HY(bil)HY(ity)YH( and
+  upgrad)HY(abil)HY(ity)YH( with )SM(~)ES( being a more conser)HY(va)HY(tive)YH( option.)EP(
+
+  )0 P(Ok, we've spec)HY(i)HY(fied)YH( where our package comes from
+  \201)SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES(\202 and which versions we find accept)HY(able)YH(
+  \201)SM(mani)HY(fest)YH()ES(\202. The next step is to edit
+  )SM(hello/build)HY(file)YH()ES( and import the )SM(libhello)ES( library
+  into our build:)EP(
+
+  ) 1 34 PR(import libs += libhello%lib{hello})RP(
+
+  )0 P(Finally, we modify our source code to use the library:)EP(
+
+  ) 8 35 PR(#include <libhello/hello.hxx>
+...
+
+int main \201int argc, char* argv[]\202
+{
+  ...
+  hello::say_hello \201cout, argv[1]\202;
+})RP(
+
+  )BR(
+  )0 P(You are prob)HY(a)HY(bly)YH( wonder)HY(ing)YH( why we have to specify this repeat)HY(ing)YH(
+  infor)HY(ma)HY(tion)YH( in so many places. Let's start with the source code: we can't
+  specify the version constraint or loca)HY(tion)YH( there because it will have to be
+  repeated in every source file that uses the depen)HY(dency)YH(.)EP(
+
+  )0 P(Moving up, )SM(build)HY(file)YH()ES( is also not a good place to specify
+  this infor)HY(ma)HY(tion)YH( for the same reason \201a library can be imported in multi)HY(ple)YH(
+  build)HY(files)YH(\202 plus the build system doesn't really know anything about version
+  constraints or repos)HY(i)HY(to)HY(ries)YH( which is the purview of the depen)HY(dency)YH(
+  manage)HY(ment)YH( tools.)EP(
+
+  )0 P(Finally, we have to sepa)HY(rate)YH( the version constraint and the loca)HY(tion)YH(
+  because the same package can be present in multi)HY(ple)YH( repos)HY(i)HY(to)HY(ries)YH( with
+  differ)HY(ent)YH( poli)HY(cies)YH(. For example, when a package from a version control-based
+  repos)HY(i)HY(tory)YH( is published in an archive-based repos)HY(i)HY(tory)YH(, its
+  )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES( file is ignored and all its depen)HY(den)HY(cies)YH(
+  should be avail)HY(able)YH( from the archive-based repos)HY(i)HY(tory)YH( itself \201or its fixed
+  set of prereq)HY(ui)HY(site)YH( repos)HY(i)HY(to)HY(ries)YH(\202. In other words, )SM(mani)HY(fest)YH()ES(
+  belongs to a package while )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES( \235 to a
+  repos)HY(i)HY(tory)YH(.)EP(
+
+  )0 P(Also note that this is unlikely to become burden)HY(some)YH( since adding new
+  depen)HY(den)HY(cies)YH( is not some)HY(thing)YH( that happens often. There are also ideas to
+  auto)HY(mate)YH( this with a )SM(bdep-add\2011\202)ES( command in the future.)EP(
+  )BR(
+
+  )0 P(To summa)HY(rize)YH(, these are the files we had to modify to add a depen)HY(dency)YH( to
+  our project:)EP(
+
+  ) 4 61 PR(repositories.manifest   # add https://pkg.cppget.org/1/stable
+manifest                # add 'depends: libhello ^1.0.0'
+buildfile               # import libhello
+hello.cxx               # use libhello)RP(
+
+  )0 P(With a new depen)HY(dency)YH( added, let's check the status of our project:)EP(
+
+  ) 11 66 PR($ bdep status
+fetching pkg:cppget.org/stable \201prerequisite of dir:/tmp/hello\202
+warning: authenticity of the certificate for pkg:cppget.org/stable
+         cannot be established
+certificate is for cppget.org, "Code Synthesis" <admin@cppget.org>
+certificate SHA256 fingerprint:
+86:BA:D4:DE:2C:87:1A:EE:38:<...>:5A:EA:F4:F7:8C:1D:63:30:C6
+trust this certificate? [y/n] y
+
+hello configured 0.1.0-a.0.19700101000000
+      available  0.1.0-a.0.19700101000000#1)RP(
+
+  )0 P(The )0 2 A()SM()BD(bdep-status\2011\202)ES()ES()EA(
+  command has detected that the depen)HY(dency)YH( infor)HY(ma)HY(tion)YH( has changed and tells
+  us that a new )I(iter)HY(a)HY(tion)YH()ES( of our project \201that )SM(#1)ES(\202 is now
+  avail)HY(able)YH( for )I(synchro)HY(niza)HY(tion)YH()ES( with the build config)HY(u)HY(ra)HY(tion)YH(.)EP(
+
+  )0 P(We've also been prompted to authen)HY(ti)HY(cate)YH( the prereq)HY(ui)HY(site)YH( repos)HY(i)HY(tory)YH(.
+  This will have to happen once for every build config)HY(u)HY(ra)HY(tion)YH( we initial)HY(ize)YH(
+  our project in and can quickly become tedious. To over)HY(come)YH( this, we can
+  mention the certifi)HY(cate)YH( finger)HY(print)YH( that we wish to auto)HY(mat)HY(i)HY(cally)YH( trust in
+  the )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES( file \201replace it with the actual
+  finger)HY(print)YH( from the repos)HY(i)HY(tory)YH('s about page\202:)EP(
+
+  ) 3 66 PR(role: prerequisite
+location: https://pkg.cppget.org/1/stable
+trust: 86:BA:D4:DE:2C:87:1A:EE:38:<...>:5A:EA:F4:F7:8C:1D:63:30:C6)RP(
+
+  )0 P(To synchro)HY(nize)YH( a project with one or more build config)HY(u)HY(ra)HY(tions)YH( we use the
+  )0 2 A()SM()BD(bdep-sync\2011\202)ES()ES()EA(
+  command:)EP(
+
+  ) 4 42 PR($ bdep sync
+synchronizing:
+  new libhello/1.0.0 \201required by hello\202
+  upgrade hello/0.1.0-a.0.19700101000000#1)RP(
+
+  )0 P(Or we could just build the project without an explicit )SM(sync)ES(
+  \235 if neces)HY(sary)YH(, it will be auto)HY(mat)HY(i)HY(cally)YH( synchro)HY(nized)YH(:)EP(
+
+  ) 9 51 PR($ b
+synchronizing:
+  new libhello/1.0.0 \201required by hello\202
+  upgrade hello/0.1.0-a.0.19700101000000#1
+c++ ../hello-gcc/libhello-1.0.0/libhello/cxx{hello}
+ld ../hello-gcc/libhello-1.0.0/libhello/libs{hello}
+c++ hello/cxx{hello}@../hello-gcc/hello/hello/
+ld ../hello-gcc/hello/hello/exe{hello}
+ln ../hello-gcc/hello/hello/exe{hello} -> hello/)RP(
+
+  )0 P(The synchro)HY(niza)HY(tion)YH( as performed by the )SM(sync)ES( command is
+  two-way: depen)HY(dency)YH( pack)HY(ages)YH( are first added, removed, upgraded, or
+  down)HY(graded)YH( in build config)HY(u)HY(ra)HY(tions)YH( accord)HY(ing)YH( to the project's version
+  constraints and user input. Then the actual versions of the depen)HY(den)HY(cies)YH(
+  present in the build config)HY(u)HY(ra)HY(tions)YH( are recorded in the project's
+  )SM(lock)HY(file)YH()ES( so that if desired, the build can be repro)HY(duced)YH(
+  exactly. The )SM(lock)HY(file)YH()ES( func)HY(tion)HY(al)HY(ity)YH( is not
+  yet imple)HY(mented)YH(. For a new depen)HY(dency)YH( the latest avail)HY(able)YH( version
+  that satis)HY(fies)YH( the version constraint is used.)EP(
+
+  )BR(
+  )0 P(Synchro)HY(niza)HY(tion)YH( is also the last step in the )0 2 A()SM()BD(bdep-init\2011\202)ES()ES()EA(
+  command's logic.)EP(
+  )BR(
+
+  )0 P(Let's now examine the status in all \201)SM(--all|-a)ES(\202 the build
+  config)HY(u)HY(ra)HY(tions)YH( and include the imme)HY(di)HY(ate)YH( depen)HY(den)HY(cies)YH(
+  \201)SM(--imme)HY(di)HY(ate)YH(|-i)ES(\202:)EP(
+
+  ) 8 43 PR($ bdep status -ai
+in configuration @gcc:
+hello configured 0.1.0-a.0.19700101000000#1
+  libhello ^1.0.0 configured 1.0.0
+
+in configuration @clang:
+hello configured 0.1.0-a.0.19700101000000
+      available 0.1.0-a.0.19700101000000#1)RP(
+
+  )0 P(Since we didn't specify a config)HY(u)HY(ra)HY(tion)YH( explic)HY(itly)YH(, only the default
+  \201)SM(gcc)ES(\202 was synchro)HY(nized)YH(. Normally, you would try a new
+  depen)HY(dency)YH( in one config)HY(u)HY(ra)HY(tion)YH(, make sure every)HY(thing)YH( looks good, then
+  synchro)HY(nize)YH( the rest with )SM(--all|-a)ES( \201or, again, just build what
+  you need directly\202. Here are a few exam)HY(ples)YH( \201see )0 2 A()SM()BD(bdep-projects-configs\2011\202)ES()ES()EA(
+  for details\202:)EP(
+
+  ) 3 29 PR($ bdep sync -a
+$ bdep sync @gcc @clang
+$ bdep sync -c ../hello-mingw)RP(
+
+  )0 P(After adding a new \201or upgrad)HY(ing)YH(/down)HY(grad)HY(ing)YH( exist)HY(ing)YH(\202 depen)HY(dency)YH(, it's a
+  good idea to )I(deep-test)ES( our project: run not only our own tests but
+  also of its imme)HY(di)HY(ate)YH( \201)SM(--imme)HY(di)HY(ate)YH(|-i)ES(\202 or even all
+  \201)SM(--recur)HY(sive)YH(|-r)ES(\202 depen)HY(den)HY(cies)YH(. For example:)EP(
+
+  ) 8 71 PR($ bdep test -ai
+in configuration @gcc:
+test hello/testscript{testscript} ../hello-gcc/hello/hello/exe{hello}
+test ../hello-gcc/libhello-1.0.0/tests/basics/exe{driver}
+
+in configuration @clang:
+test hello/testscript{testscript} ../hello-clang/hello/hello/exe{hello}
+test ../hello-clang/libhello-1.0.0/tests/basics/exe{driver})RP(
+
+  )0 P(To get rid of a depen)HY(dency)YH(, we simply remove it from the
+  )SM(mani)HY(fest)YH()ES( file and synchro)HY(nize)YH( the project. For example,
+  assum)HY(ing)YH( )SM(libhello)ES( is no longer mentioned as a depen)HY(dency)YH( in our
+  )SM(mani)HY(fests)YH()ES(:)EP(
+
+  ) 8 43 PR($ bdep status
+hello configured 0.1.0-a.0.19700101000000#1
+      available  0.1.0-a.0.19700101000000#2
+
+$ bdep sync
+synchronizing:
+  drop libhello/1.0.0 \201unused\202
+  upgrade hello/0.1.0-a.0.19700101000000#2)RP(
+
+  )BR(
+  )0 P(If instead of build)HY(ing)YH( a depen)HY(dency)YH( from source you would prefer to use a
+  version that is installed by your system package manager, see )0 12 1 A(Using System-Installed Depen)HY(den)HY(cies)YH()12 0 TN TL()Ec /AF f D(. And for
+  infor)HY(ma)HY(tion)YH( on using depen)HY(den)HY(cies)YH( that are not )SM(build2)ES( pack)HY(ages)YH(
+  refer to )0 13 1 A(Using Unpack)HY(aged)YH(
+  Depen)HY(den)HY(cies)YH()13 0 TN TL()Ec /AF f D(.)EP(
+  )BR(
+
+  )0 2 6 H(2.4)WB 26 Sn()WB 8 Sn( Upgrad)HY(ing)YH( and Down)HY(grad)HY(ing)YH(
+  Depen)HY(den)HY(cies)YH()EH(
+
+  )0 P(Let's say we would like to try that )SM(1.1.0)ES( version we have
+  seen in the )SM(libhello)ES( )SM(git)ES( repos)HY(i)HY(tory)YH(. First, we
+  need to add the repos)HY(i)HY(tory)YH( to the )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES(
+  file:)EP(
+
+  ) 2 51 PR(role: prerequisite
+location: https://git.build2.org/hello/libhello.git)RP(
+
+  )BR(
+  )0 P(Note that we don't need the )SM(trust)ES( value since
+  )SM(git)ES( repos)HY(i)HY(to)HY(ries)YH( are not authen)HY(ti)HY(cated)YH(.)EP(
+  )BR(
+
+  )0 P(To refresh the list of avail)HY(able)YH( depen)HY(dency)YH( versions we use the )0 2 A()SM()BD(bdep-fetch\2011\202)ES()ES()EA(
+  command \201or the )SM(--fetch|-f)ES( option to )SM(status)ES(\202:)EP(
+
+  ) 3 43 PR($ bdep fetch
+$ bdep status libhello
+libhello configured 1.0.0 available [1.1.0])RP(
+
+  )0 P(To upgrade \201or down)HY(grade)YH(\202 depen)HY(den)HY(cies)YH( we again use the )0 2 A()SM()BD(bdep-sync\2011\202)ES()ES()EA(
+  command. We can upgrade one or more specific depen)HY(den)HY(cies)YH( by listing them as
+  argu)HY(ments)YH( to )SM(sync)ES(:)EP(
+
+  ) 6 44 PR($ bdep sync libhello
+synchronizing:
+  new libformat/1.0.0 \201required by libhello\202
+  new libprint/1.0.0 \201required by libhello\202
+  upgrade libhello/1.1.0
+  upgrade hello/0.1.0-a.0.19700101000000#3)RP(
+
+  )0 P(Without an explicit version or the )SM(--patch|-p)ES( option,
+  )SM(sync)ES( will upgrade the spec)HY(i)HY(fied)YH( depen)HY(den)HY(cies)YH( to the latest
+  avail)HY(able)YH( versions. For example, if we don't like version
+  )SM(1.1.0)ES(, we can down)HY(grade)YH( it back to )SM(1.0.0)ES( by
+  spec)HY(i)HY(fy)HY(ing)YH( the version explic)HY(itly)YH( \201we pass )SM(--old-avail)HY(able)YH(|-o)ES(
+  to )SM(status)ES( to see the old versions\202:)EP(
+
+  ) 9 51 PR($ bdep status -o libhello
+libhello configured 1.1.0 available \2011.1.0\202 [1.0.0]
+
+$ bdep sync libhello/1.0.0
+synchronizing:
+  drop libprint/1.0.0 \201unused\202
+  drop libformat/1.0.0 \201unused\202
+  downgrade libhello/1.0.0
+  reconfigure hello/0.1.0-a.0.19700101000000#3)RP(
+
+  )BR(
+  )0 P(The avail)HY(able)YH( versions are listed in the descend)HY(ing)YH( order with
+  )SM([])ES( indi)HY(cat)HY(ing)YH( that the version is only avail)HY(able)YH( as a
+  depen)HY(dency)YH( and )SM(\201\202)ES( marking the current version.)EP(
+  )BR(
+
+  )0 P(Instead of specific depen)HY(den)HY(cies)YH( we can also upgrade
+  \201)SM(--upgrade|-u)ES(\202 or patch \201)SM(--patch|-p)ES(\202 imme)HY(di)HY(ate)YH(
+  \201)SM(--imme)HY(di)HY(ate)YH(|-i)ES(\202 or all \201)SM(--recur)HY(sive)YH(|-r)ES(\202
+  depen)HY(den)HY(cies)YH( of our project.)EP(
+
+  )0 P(As a more real)HY(is)HY(tic)YH( example, version )SM(1.1.0)ES( of
+  )SM(libhello)ES( depends on two other libraries: )SM(libfor)HY(mat)YH()ES(
+  and )SM(libprint)ES(. Here is our project's depen)HY(dency)YH( tree while we
+  were still using that version:)EP(
+
+  ) 5 43 PR($ bdep status -r
+hello configured 0.1.0-a.0.19700101000000#3
+  libhello ^1.0.0 configured 1.1.0
+    libformat ^1.0.0 configured 1.0.0
+    libprint ^1.0.0 configured 1.0.0)RP(
+
+  )0 P(A typical conser)HY(va)HY(tive)YH( depen)HY(dency)YH( manage)HY(ment)YH( work)HY(flow)YH( would look like
+  this:)EP(
+
+  ) 9 69 PR($ bdep status -fi  # refresh and examine immediate dependencies
+hello configured 0.1.0-a.0.19700101000000#3
+  libhello configured 1.1.0 available [2.0.0] [1.2.0] [1.1.2] [1.1.1]
+
+$ bdep sync -pi    # upgrade immediate to latest patch version
+synchronizing:
+  upgrade libhello/1.1.2
+  reconfigure hello/0.1.0-a.0.19700101000000#3
+continue? [Y/n] y)RP(
+
+  )0 P(Notice that in case of such mass upgrades you are prompted for
+  confir)HY(ma)HY(tion)YH( before anything is actu)HY(ally)YH( changed \201unless you pass
+  )SM(--yes|-y)ES(\202.)EP(
+
+  )0 P(In contrast, the follow)HY(ing)YH( would be a fairly aggres)HY(sive)YH( work)HY(flow)YH( where we
+  upgrade every)HY(thing)YH( to the latest avail)HY(able)YH( version \201version constraints
+  permit)HY(ting)YH(; here we assume )SM(^1.0.0)ES( was used for all the
+  depen)HY(den)HY(cies)YH(\202:)EP(
+
+  ) 13 64 PR($ bdep status -fr  # refresh and examine all dependencies
+hello configured 0.1.0-a.0.19700101000000#3
+  libhello configured 1.1.0 available [2.0.0] [1.2.0] [1.1.1]
+    libprint configured 1.0.0 available [2.0.0] [1.1.0] [1.0.1]
+    libformat configured 1.0.0 available [2.0.0] [1.1.0] [1.0.1]
+
+$ bdep sync -ur    # upgrade all to latest available version
+synchronizing:
+  upgrade libprint/1.1.0
+  upgrade libformat/1.1.0
+  upgrade libhello/1.2.0
+  reconfigure hello/0.1.0-a.0.19700101000000#3
+continue? [Y/n] y)RP(
+
+  )0 P(We can also have some)HY(thing)YH( in between: patch all
+  \201)SM(sync\240-pr)ES(\202, upgrade imme)HY(di)HY(ate)YH(
+  \201)SM(sync\240-ui)ES(\202, or even upgrade imme)HY(di)HY(ate)YH( and patch the rest
+  \201)SM(sync\240-ui)ES( followed by )SM(sync\240-pr)ES(\202.)EP(
+
+  )0 2 7 H(2.5)WB 27 Sn()WB 9 Sn( Version)HY(ing)YH( and Release
+  Manage)HY(ment)YH()EH(
+
+  )0 P(Let's now discuss version)HY(ing)YH( and release manage)HY(ment)YH( and, yes, that
+  strange-looking )SM(0.1.0-a.0.19700101000000)ES( we keep seeing. While
+  a build system project doesn't need a version and a )SM(bpkg)ES(
+  package can use custom version)HY(ing)YH( schemes \201see )0 2 A(Package
+  Version)EA(\202, a project managed by )SM(bdep)ES( must use )I(stan)HY(dard)YH(
+  version)HY(ing)YH()ES(. A depen)HY(dency)YH(, which is a
+  )SM(bpkg)ES( package, need not use stan)HY(dard)YH( version)HY(ing)YH(.)EP(
+
+  )0 P(Stan)HY(dard)YH( version)HY(ing)YH( \201)I(stdver)ES(\202 is a )R14 2 A(seman)HY(tic)YH( version)HY(ing)YH()EA( \201)I(semver)ES(\202 scheme
+  with a more precisely defined pre-release compo)HY(nent)YH( and without any build
+  meta)HY(data)YH(.)EP(
+
+  )BR(
+  )0 P(If you believe that )I(semver)ES( is just
+  )SM()I(major)ES(.)I(minor)ES(.)I(patch)ES()ES(, then in your world)HY(view)YH(
+  )I(stdver)ES( would be the same as )I(semver)ES(. In reality, )I(semver)ES(
+  also allows loosely defined pre-release and build meta)HY(data)YH( compo)HY(nents)YH(. For
+  example, )SM(1.2.3-beta.1+build.23456)ES( is a valid )I(semver)ES(.)EP(
+  )BR(
+
+  )0 P(A stan)HY(dard)YH( version has the follow)HY(ing)YH( form:)EP(
+
+  )0 P()SM()I(major)ES()BD(.)ES()I(minor)ES()BD(.)ES()I(patch)ES([)BD(-)ES()I(prerel)ES(])ES()EP(
+
+  )0 P(The )SM()I(major)ES()ES(, )SM()I(minor)ES()ES(, and
+  )SM()I(patch)ES()ES( compo)HY(nents)YH( have the same meaning as in
+  )I(semver)ES(. The )SM()I(prerel)ES()ES( compo)HY(nent)YH( is used to provide
+  )I(contin)HY(u)HY(ous)YH( version)HY(ing)YH()ES( of our project between releases. Specif)HY(i)HY(cally)YH(,
+  during devel)HY(op)HY(ment)YH( of a new version we may want to publish several
+  pre-releases, for example, alpha or beta. In between those we may also want
+  to publish a number of snap)HY(shots)YH(, for example, for CI. With contin)HY(u)HY(ous)YH(
+  version)HY(ing)YH( all these releases, pre-releases, and snap)HY(shots)YH( are assigned
+  unique, prop)HY(erly)YH( ordered versions.)EP(
+
+  )BR(
+  )0 P(Contin)HY(u)HY(ous)YH( version)HY(ing)YH( is a corner)HY(stone)YH( of the )SM(build2)ES( project
+  depen)HY(dency)YH( manage)HY(ment)YH(. In case of snap)HY(shots)YH(, an appro)HY(pri)HY(ate)YH( version is
+  assigned auto)HY(mat)HY(i)HY(cally)YH( in coop)HY(er)HY(a)HY(tion)YH( with your VCS.)EP(
+  )BR(
+
+  )0 P(The )SM()I(prerel)ES()ES( compo)HY(nent)YH( for a pre-release has the
+  follow)HY(ing)YH( form:)EP(
+
+  )0 P()SM(\201)BD(a)ES(|)BD(b)ES(\202)BD(.)ES()I(num)ES()ES()EP(
+
+  )0 P(Here )SM()BD(a)ES()ES( stands for alpha, )SM()BD(b)ES()ES( stands
+  for beta, and )SM()I(num)ES()ES( is the alpha/beta number. For
+  example:)EP(
+
+  ) 5 52 PR(1.1.0        # final              release  for 1.1.0
+1.2.0-a.1    # first  alpha   pre-release  for 1.2.0
+1.2.0-a.2    # second alpha   pre-release  for 1.2.0
+1.2.0-b.1    # first  beta    pre-release  for 1.2.0
+1.2.0        # final              release  for 1.2.0)RP(
+
+  )0 P(The )SM()I(prerel)ES()ES( compo)HY(nent)YH( for a snap)HY(shot)YH( has the follow)HY(ing)YH(
+  form:)EP(
+
+  )0 P()SM(\201)BD(a)ES(|)BD(b)ES(\202)BD(.)ES()I(num)ES()BD(.)ES()I(snapsn)ES([)BD(.)ES()I(snapid)ES(])ES()EP(
+
+  )0 P(Where )SM()I(snapsn)ES()ES( is the snap)HY(shot)YH( sequence number and
+  )SM()I(snapid)ES()ES( is the snap)HY(shot)YH( id. In case of )SM(git)ES(,
+  )SM()I(snapsn)ES()ES( is the commit times)HY(tamp)YH( in the
+  )SM(YYYYM)HY(MD)HY(Dhh)HY(mmss)YH()ES( form and UTC time)HY(zone)YH( while
+  )SM()I(snapid)ES()ES( is a 12-char)HY(ac)HY(ter)YH( abbre)HY(vi)HY(ated)YH( commit id. For
+  example:)EP(
+
+  ) 1 37 PR(1.2.3-a.1.20180319215815.26efe301f4a7)RP(
+
+  )0 P(Notice also that a snap)HY(shot)YH( version is ordered )I(after)ES( the
+  corre)HY(spond)HY(ing)YH( pre-release version. That is,
+  )SM(1.2.3-a.1\240<\2401.2.3-a.1.1)ES(. As a result, it is
+  custom)HY(ary)YH( to start the devel)HY(op)HY(ment)YH( of a new version with
+  )SM(X.Y.Z-a.0.z)ES(, that is, a snap)HY(shot)YH( after the \201non-exis)HY(tent)YH(\202
+  zero'th alpha release. We will explain the meaning of
+  )SM()BD(z)ES()ES( in this version momen)HY(tar)HY(ily)YH(. The follow)HY(ing)YH(
+  chrono)HY(log)HY(i)HY(cally)YH(-ordered versions illus)HY(trate)YH( a typical release flow of a
+  project that uses )SM(git)ES( as its VCS:)EP(
+
+  ) 15 67 PR(0.1.0-a.0.19700101000000               # snapshot \201no commits yet\202
+0.1.0-a.0.20180319215815.26efe301f4a7  # snapshot \201first commit\202
+...                                    # more commits/snapshots
+0.1.0-a.1                              # pre-release \201first alpha\202
+0.1.0-a.1.20180319221826.a6f0f41205b8  # snapshot
+...                                    # more commits/snapshots
+0.1.0-a.2                              # pre-release \201second alpha\202
+0.1.0-a.2.20180319231937.b701052316c9  # snapshot
+...                                    # more commits/snapshots
+0.1.0-b.1                              # pre-release \201first beta\202
+0.1.0-b.1.20180319242038.c812163417da  # snapshot
+...                                    # more commits/snapshots
+0.1.0                                  # release
+0.2.0-a.0.20180319252139.d923274528eb  # snapshot \201first in 0.2.0\202
+...)RP(
+
+  )0 P(For a more detailed discus)HY(sion)YH( of stan)HY(dard)YH( version)HY(ing)YH( and its support in
+  )SM(build2)ES( refer to )0 2 A()SM(version)ES(
+  Module)EA(.)EP(
+
+  )0 P(Let's now see how this works in prac)HY(tice)YH( by publish)HY(ing)YH( a couple of
+  versions for our )SM(hello)ES( project. By now it should be clear what
+  that )SM(0.1.0-a.0.19700101000000)ES( means \235 it is the first
+  snap)HY(shot)YH( version of our project. Since there are no commits yet, it has the
+  UNIX epoch as its commit times)HY(tamp)YH(. Let's see what changes after we've made
+  our first commit:)EP(
+
+  ) 6 54 PR($ git add .
+$ git commit -m "Initial implementation"
+
+$ bdep status
+hello configured 0.1.0-a.0.19700101000000
+      available  0.1.0-a.0.20180507062614.ee006880fc7e)RP(
+
+  )0 P(Just like with changes to depen)HY(dency)YH( infor)HY(ma)HY(tion)YH(, )SM(status)ES( has
+  detected that a new \201snap)HY(shot)YH(\202 version of our project is avail)HY(able)YH( for
+  synchro)HY(niza)HY(tion)YH(.)EP(
+
+  )BR(
+  )0 P(Another way to view the project's version \201which works even if we are not
+  using )SM(bdep)ES(\202 is with the build system's )SM(info)ES(
+  meta-oper)HY(a)HY(tion)YH(:)EP(
+
+  ) 5 46 PR($ b info
+project: hello
+version: 0.1.0-a.0.20180507062614.ee006880fc7e
+summary: hello C++ executable
+...)RP(
+  )BR(
+
+  )0 P(Let's synchro)HY(nize)YH( with the default build config)HY(u)HY(ra)HY(tion)YH(:)EP(
+
+  ) 6 54 PR($ bdep sync
+synchronizing:
+  upgrade hello/0.1.0-a.0.20180507062614.ee006880fc7e
+
+$ bdep status
+hello configured 0.1.0-a.0.20180507062614.ee006880fc7e)RP(
+
+  )BR(
+  )0 P(Notice that we didn't have to manu)HY(ally)YH( change the version anywhere. All
+  we had to do was commit our changes and a new snap)HY(shot)YH( version was
+  auto)HY(mat)HY(i)HY(cally)YH( derived by )SM(build2)ES( from the new )SM(git)ES(
+  commit. Without this automa)HY(tion)YH( contin)HY(u)HY(ous)YH( version)HY(ing)YH( would hardly be
+  prac)HY(ti)HY(cal)YH(.)EP(
+  )BR(
+
+  )0 P(If we now make another commit, we will see a similar picture:)EP(
+
+  ) 3 54 PR($ bdep status
+hello configured 0.1.0-a.0.20180507062614.ee006880fc7e
+      available  0.1.0-a.0.20180507062615.8fb9de05b38f)RP(
+
+  )BR(
+  )0 P(Note that you don't need to manu)HY(ally)YH( run )SM(sync)ES( after every
+  commit. As discussed earlier, you can simply run the build system to update
+  your project and things will get auto)HY(mat)HY(i)HY(cally)YH( synchro)HY(nized)YH( if
+  neces)HY(sary)YH(.)EP(
+  )BR(
+
+  )0 P(Ok, time for our first release. Let's start with )SM(0.1.0-a.1)ES(.
+  Unlike snap)HY(shots)YH(, for pre-releases as well as final releases we have to
+  change the version in the )SM(mani)HY(fest)YH()ES( file:)EP(
+
+  ) 1 18 PR(version: 0.1.0-a.1)RP(
+
+  )BR(
+  )0 P(The )SM(mani)HY(fest)YH()ES( file is the singu)HY(lar)YH( place where we specify the
+  package version. The build system's )0 2 A()SM(version)ES(
+  module)EA( makes it avail)HY(able)YH( in various forms in build)HY(files)YH( and even source
+  code.)EP(
+  )BR(
+
+  )0 P(To ensure contin)HY(u)HY(ous)YH( version)HY(ing)YH(, this change to version must be the last
+  commit for this \201pre-\202release which itself must be imme)HY(di)HY(ately)YH( followed by a
+  second change to the version start)HY(ing)YH( the devel)HY(op)HY(ment)YH( of the next
+  \201pre-\202release. We also recom)HY(mend)YH( that you tag the release commit with a tag
+  name in the )SM()BD(v)ES()I(X)ES(.)I(Y)ES(.)I(Z)ES()ES( form.)EP(
+
+  )BR(
+  )0 P(Having regular release tag names with the )SM()BD(v)ES()ES( prefix
+  allows one to distin)HY(guish)YH( them from other tags, for example, with wild)HY(card)YH(
+  patterns.)EP(
+  )BR(
+
+  )0 P(Here is the release work)HY(flow)YH( for our example:)EP(
+
+  ) 11 50 PR($ git commit -a -m "Release version 0.1.0-a.1"
+$ git tag -a v0.1.0-a.1 -m "Tag version 0.1.0-a.1"
+$ git push --follow-tags
+
+# Version 0.1.0-a.1 is now public.
+
+$ edit manifest  # change 'version: 0.1.0-a.1.z'
+$ git commit -a -m "Change version to 0.1.0-a.1.z"
+$ git push
+
+# Master is now open for business.)RP(
+
+  )0 P(Notice also that when spec)HY(i)HY(fy)HY(ing)YH( a snap)HY(shot)YH( version in
+  )SM(mani)HY(fest)YH()ES( we use the special )SM()BD(z)ES()ES( snap)HY(shot)YH(
+  value \201for example, )SM(0.1.0-a.1.z)ES(\202 which is recog)HY(nized)YH( and
+  auto)HY(mat)HY(i)HY(cally)YH( replaced by )SM(build2)ES( with, in case of
+  )SM(git)ES(, the current commit times)HY(tamp)YH( and id \201refer to )0 2 A()SM(version)ES(
+  Module)EA( for details\202.)EP(
+
+  )0 P(While not partic)HY(u)HY(larly)YH( compli)HY(cated)YH(, perform)HY(ing)YH( the release steps manu)HY(ally)YH(
+  is both tedious and error-prone. Instead, this process can be auto)HY(mated)YH( with
+  the )0 2 A()SM()BD(bdep-release\2011\202)ES()ES()EA(
+  command. Specif)HY(i)HY(cally)YH(, in its default mode, this command will update the
+  version in the )SM(mani)HY(fest)YH()ES( file, commit and tag this change, open
+  the next devel)HY(op)HY(ment)YH( cycle \201again, by chang)HY(ing)YH( )SM(mani)HY(fest)YH()ES( and
+  commit)HY(ting)YH(\202, and, finally, if )SM(--push)ES( is spec)HY(i)HY(fied)YH(, push
+  every)HY(thing)YH( to the remote. So, instead of the above manual steps, we could
+  have simply run:)EP(
+
+  ) 16 46 PR($ bdep release --alpha --push
+releasing:
+  package: hello
+  current: 0.1.0-a.0.z
+  release: 0.1.0-a.1
+  open:    0.1.0-a.1.z
+  commit:  yes
+  tag:     v0.1.0-a.1
+  push:    origin/master
+continue? [y/n] y
+[master 82a7e65] Release version 0.1.0-a.1
+[master e6cf3c0] Change version to 0.1.0-a.1.z
+pushing branch master, tag v0.1.0-a.1
+To github.com:john-doe/hello.git
+   26ec5c9..e6cf3c0  master -> master
+ * [new tag]         v0.1.0-a.1 -> v0.1.0-a.1)RP(
+
+  )BR(
+  )0 P(The )SM(release)ES( command has a number of alter)HY(na)HY(tive)YH( modes, such
+  as for releas)HY(ing)YH( a package revi)HY(sion)YH(, as well as a number of options that
+  control which version will be released and which version will be opened. See
+  )0 2 A()SM()BD(bdep-release\2011\202)ES()ES()EA(
+  for details.)EP(
+  )BR(
+
+  )0 P(Publish)HY(ing)YH( the final release to the version control repos)HY(i)HY(tory)YH( is exactly
+  the same. This time, however, let's see how we can also publish it to an
+  archive-based repos)HY(i)HY(tory)YH(. The first step is again to make the release, which
+  we will do with the help of the )SM(release)ES( command. Except now we
+  will delay opening the next devel)HY(op)HY(ment)YH( cycle by passing
+  )SM(--no-open)ES( \201there is also no )SM(--alpha)ES( since this is
+  the final release\202:)EP(
+
+  ) 14 38 PR($ bdep release --no-open --push
+releasing:
+  package: hello
+  current: 0.1.0-a.1.z
+  release: 0.1.0
+  commit:  yes
+  tag:     v0.1.0
+  push:    origin/master
+continue? [y/n] y
+[master 00ed45a] Release version 0.1.0
+pushing branch master, tag v0.1.0
+To github.com:john-doe/hello.git
+   5d5094c..00ed45a  master -> master
+ * [new tag]         v0.1.0 -> v0.1.0)RP(
+
+  )0 P(To publish our project to an archive-based repos)HY(i)HY(tory)YH( we use the )0 2 A()SM()BD(bdep-publish\2011\202)ES()ES()EA(
+  command. For example:)EP(
+
+  ) 15 68 PR($ bdep publish
+publishing:
+  to:      https://cppget.org
+  as:      John Doe <john@example.org>
+  package: hello
+  version: 0.1.0
+  project: hello
+  section: alpha
+  control: https://github.com/john-doe/hello.git
+continue? [y/n] y
+pushing branch build2-control
+submitting hello-0.1.0.tar.gz
+############################################################# 100.0%
+package submission is queued: https://queue.cppget.org/hello/0.1.0
+reference: 0c596fca2017)RP(
+
+  )0 P(Let's see what's going on here. By default )SM(publish)ES( submits
+  to the )R6 2 A(cppget.org)EA( repos)HY(i)HY(tory)YH(. On
+  )SM(cppget.org)ES( package names are assigned on a first come first
+  serve basis. But instead of using logins or emails to authen)HY(ti)HY(cate)YH( package
+  owner)HY(ship)YH(, )SM(cppget.org)ES( uses your version control repos)HY(i)HY(tory)YH( as a
+  proxy. In a nutshell, when we submit a package for the first time, its
+  control repos)HY(i)HY(tory)YH( is asso)HY(ci)HY(ated)YH( with its name and all subse)HY(quent)YH(
+  submis)HY(sions)YH( have to use the same control repos)HY(i)HY(tory)YH( \201the authen)HY(ti)HY(ca)HY(tion)YH(
+  part\202. When submit)HY(ting)YH( a package, )SM(publish)ES( also adds a file to
+  the )SM(build2-control)ES( branch of the control repos)HY(i)HY(tory)YH( with the
+  package archive check)HY(sum)YH(. On the other side, )SM(cppget.org)ES( checks
+  for the pres)HY(ence)YH( of this file to make sure that whomever is making this
+  submis)HY(sion)YH( has write access to the control repos)HY(i)HY(tory)YH( \201the autho)HY(riza)HY(tion)YH(
+  part\202. See )0 2 A()SM()BD(bdep-publish\2011\202)ES()ES()EA(
+  for details.)EP(
+
+  )0 P(The rest should be pretty straight)HY(for)HY(ward)YH(: )SM(publish)ES( prepares
+  and uploads a distri)HY(bu)HY(tion)YH( of our package which goes into the
+  )SM(alpha)ES( section of the repos)HY(i)HY(tory)YH( \201because it has )SM(0)ES(
+  major version\202. In response we get a URL which we can use to check the
+  status of our submis)HY(sion)YH( on )R15 2 A(queue.cppget.org)EA(. And after some basic
+  testing and veri)HY(fi)HY(ca)HY(tion)YH(, our package should appear on
+  )SM(cppget.org)ES( \201the exact steps are described in )R16 2 A(Submis)HY(sion)YH( Poli)HY(cies)YH()EA(\202. Note also that
+  package submis)HY(sions)YH( to )SM(cppget.org)ES( are public and perma)HY(nent)YH( and
+  cannot be removed under any circum)HY(stances)YH(.)EP(
+
+  )0 P(Finally, we also shouldn't forget to incre)HY(ment)YH( the version for the next
+  devel)HY(op)HY(ment)YH( cycle. For that we can use the )SM(--open)ES( mode of the
+  )SM(release)ES( command. For example:)EP(
+
+  ) 12 46 PR($ bdep release --open --push
+opening:
+  package: hello
+  current: 0.1.0
+  open:    0.2.0-a.0.z
+  commit:  yes
+  push:    origin/master
+continue? [y/n] y
+[master ace2f6e] Change version to 0.2.0-a.0.z
+pushing branch master
+To github.com:john-doe/hello.git
+   00ed45a..ace2f6e  master -> master)RP(
+
+  )BR(
+  )0 P(One sticky point of contin)HY(u)HY(ous)YH( version)HY(ing)YH( is choos)HY(ing)YH( the next version.
+  For example, above should we continue with )SM(0.1.1-a.0)ES(,
+  )SM(0.2.0-a.0)ES(, or )SM(1.0.0-a.0)ES(? The impor)HY(tant)YH( rule to
+  keep in mind is that we can jump forward to any further version at any time
+  and without break)HY(ing)YH( contin)HY(u)HY(ous)YH( version)HY(ing)YH(. But we can never jump
+  back)HY(wards)YH(.)EP(
+
+  )0 P(For example, we can start with )SM(0.2.0-a.0)ES( but if we later
+  realize that this will actu)HY(ally)YH( be a new major release, we can easily change
+  it to )SM(1.0.0-a.0)ES(. As a result, the general guide)HY(line)YH( is to start
+  conser)HY(va)HY(tively)YH( by either incre)HY(ment)HY(ing)YH( the patch or the minor version
+  compo)HY(nent)YH(. And the recom)HY(mended)YH( strat)HY(egy)YH( is to incre)HY(ment)YH( the minor compo)HY(nent)YH(
+  and, if required, release patch versions from a sepa)HY(rate)YH( branch \201created by
+  branch)HY(ing)YH( off from the release commit\202. This is the default behav)HY(ior)YH( of the
+  )SM(release)ES( command.)EP(
+
+  )0 P(Note also that you don't have to make any pre-releases if you don't need
+  them. While during devel)HY(op)HY(ment)YH( you would still keep the version as
+  )SM(X.Y.Z-a.0)ES(, at release you simply change it directly to the
+  final )SM(X.Y.Z)ES(.)EP(
+  )BR(
+
+  )0 P(When publish)HY(ing)YH( the final release you may also want to clean up now
+  obso)HY(lete)YH( pre-release tags. For example:)EP(
+
+  ) 2 56 PR($ git tag -l 'v0.1.0-*' | xargs git push --delete origin
+$ git tag -l 'v0.1.0-*' | xargs git tag --delete)RP(
+
+  )BR(
+  )0 P(While at first remov)HY(ing)YH( such tags may seem like a bad idea, pre-releases
+  are by nature tempo)HY(rary)YH( and their use only makes sense until the final
+  release is published.)EP(
+
+  )0 P(Also note that having a )SM(git)ES( repos)HY(i)HY(tory)YH( with a large number
+  of published but unused version tags may result in a signif)HY(i)HY(cant)YH( down)HY(load)YH(
+  over)HY(head)YH(.)EP(
+  )BR(
+
+  )0 P(Let's also briefly discuss in which situ)HY(a)HY(tions)YH( we should incre)HY(ment)YH( each
+  of the version compo)HY(nents)YH(. While )I(semver)ES( gives basic guide)HY(lines)YH(, there
+  are several ways to apply them in the context of C/C++ where there is a
+  distinc)HY(tion)YH( between binary and source compat)HY(i)HY(bil)HY(ity)YH(. We recom)HY(mend)YH( that you
+  reserve )I(patch)ES( releases for specific bug fixes and secu)HY(rity)YH( issues
+  that you can guar)HY(an)HY(tee)YH( with a high level of certainty to be
+  binary-compat)HY(i)HY(ble)YH(. Other)HY(wise)YH(, if the changes are source-compat)HY(i)HY(ble)YH(,
+  incre)HY(ment)YH( )I(minor)ES(. And if they are break)HY(ing)YH( \201that is, the user code
+  likely will need adjust)HY(ments)YH(\202, incre)HY(ment)YH( )I(major)ES(. During early
+  devel)HY(op)HY(ment)YH(, when break)HY(ing)YH( changes are frequent, it is custom)HY(ary)YH( to use the
+  )SM(0.Y.Z)ES( versions where )SM(Y)ES( effec)HY(tively)YH( becomes the
+  )I(major)ES( compo)HY(nent)YH(. Again, refer to the )0 2 A()SM(version)ES(
+  Module)EA( for a more detailed discus)HY(sion)YH( of this topic.)EP(
+
+  )0 2 8 H(2.6)WB 28 Sn()WB 10 Sn( Devel)HY(op)HY(ing)YH( Multi)HY(ple)YH( Pack)HY(ages)YH( and Projects)EH(
+
+  )0 P(How does a library like )SM(libhello)ES( get devel)HY(oped)YH(? It's
+  possi)HY(ble)YH( someone woke up one day and real)HY(ized)YH( that they were going to build
+  a useful library that every)HY(one)YH( was going to use. But somehow this doesn't
+  feel like how it really works. In the real world things start organ)HY(i)HY(cally)YH(:
+  someone had a project like )SM(hello)ES( and then needed the same
+  func)HY(tion)HY(al)HY(ity)YH( in another project. Or someone else needed it and asked the
+  author to factor it out into a library. For this approach to work, however,
+  moving such common func)HY(tion)HY(al)HY(ity)YH( into a library and then continue its
+  paral)HY(lel)YH( devel)HY(op)HY(ment)YH( must be a simple, fric)HY(tion)HY(less)YH( process. Let's see how
+  this works in )SM(build2)ES(.)EP(
+
+  )0 P(First, we need to decide whether to make )SM(libhello)ES( another
+  package in our )SM(hello)ES( project \201that is, in the same
+  )SM(git)ES( repos)HY(i)HY(tory)YH(\202 or a sepa)HY(rate)YH( project \201with a sepa)HY(rate)YH(
+  repos)HY(i)HY(tory)YH(\202. Both arrange)HY(ments)YH( are equally well supported.)EP(
+
+  )BR(
+  )0 P(A multi-package project works best if all the pack)HY(ages)YH( have the same
+  version and are released together. While the pack)HY(ages)YH( them)HY(selves)YH( can have
+  differ)HY(ent)YH( versions \201since each has its own )SM(mani)HY(fest)YH()ES(\202, in this
+  scenario follow)HY(ing)YH( the release tagging recom)HY(men)HY(da)HY(tions)YH( discussed earlier
+  will be prob)HY(lem)HY(atic)YH(.)EP(
+  )BR(
+
+  )0 P(Let's start with a sepa)HY(rate)YH( project since it is simpler. As the first
+  step we use )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA( to
+  create a new library project next to our )SM(hello)ES(:)EP(
+
+  ) 21 54 PR($ bdep new -l c++ -t lib libhello
+created new library project libhello in /tmp/libhello/
+
+$ ls
+hello/
+libhello/
+hello-gcc/
+hello-clang/
+
+$ tree libhello
+libhello/
+|-- build/
+|   \267-- ...
+|-- libhello/
+|   |-- hello.hxx
+|   |-- hello.cxx
+|   \267-- buildfile
+|-- buildfile
+|-- manifest
+|-- README.md
+\267-- repositories.manifest)RP(
+
+  )BR(
+  )0 P(Similar to the executable project, this layout is not manda)HY(tory)YH( and )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA( can
+  create a number of alter)HY(na)HY(tive)YH( library struc)HY(tures)YH(. For example, if you
+  prefer the )SM(include/src)ES( split, try:)EP(
+
+  ) 1 39 PR($ bdep new -l c++ -t lib,split libhello)RP(
+
+  )0 P(See )0 2 A(SOURCE LAYOUT)EA(
+  for more exam)HY(ples)YH(.)EP(
+  )BR(
+
+  )0 P(Let's edit the gener)HY(ated)YH( )SM(mani)HY(fest)YH()ES( file and add the
+  )SM(project)ES( value \201custom)HY(ar)HY(ily)YH( after )SM(version)ES(\202 to
+  indi)HY(cate)YH( that our library belongs to the same overall project as our
+  executable:)EP(
+
+  ) 7 26 PR($ cat libhello/manifest
+: 1
+name: libhello
+version: 0.1.0-a.0.z
+project: hello
+summary: hello C++ library
+...)RP(
+
+  )BR(
+  )0 P(The )SM(project)ES( value is used to group related pack)HY(ages)YH( together
+  in order to help with their orga)HY(ni)HY(za)HY(tion)YH( and discov)HY(ery)YH(. For example, if
+  later we create )SM(libhello2)ES( or )SM(libhello-extra)ES(, then
+  it would make sense for them to also belong to the )SM(hello)ES(
+  project. See the )0 2 A()SM(project)ES()EA(
+  value docu)HY(men)HY(ta)HY(tion)YH( for details.)EP(
+  )BR(
+
+  )0 P(Our two projects will be sharing the same set of build config)HY(u)HY(ra)HY(tions)YH(, so
+  next we initial)HY(ize)YH( )SM(libhello)ES( in )SM(hello-gcc)ES( and
+  )SM(hello-clang)ES( \201notice the use of )SM(--config-add|-A)ES(
+  instead of )SM(--config-create|-C)ES(\202:)EP(
+
+  ) 13 66 PR($ cd libhello
+
+$ bdep init -A ../hello-gcc @gcc
+initializing in project /tmp/libhello/
+added configuration @gcc /tmp/hello-gcc/ default,auto-synchronized
+synchronizing:
+  new libhello/0.1.0-a.0.19700101000000
+
+$ bdep init -A ../hello-clang @clang
+initializing in project /tmp/libhello/
+added configuration @clang /tmp/hello-clang/ auto-synchronized
+synchronizing:
+  new libhello/0.1.0-a.0.19700101000000)RP(
+
+  )BR(
+  )0 P(If two or more projects share the same build config)HY(u)HY(ra)HY(tion)YH(, then all of
+  them are always synchro)HY(nized)YH( at once, regard)HY(less)YH( of the orig)HY(i)HY(nat)HY(ing)YH( project.
+  It also makes sense to have the same default config)HY(u)HY(ra)HY(tion)YH( and use iden)HY(ti)HY(cal)YH(
+  config)HY(u)HY(ra)HY(tion)YH( names in all the projects.)EP(
+  )BR(
+
+  )0 P(The last step is to move the desired func)HY(tion)HY(al)HY(ity)YH( from
+  )SM(hello)ES( to )SM(libhello)ES( and at the same time add a
+  depen)HY(dency)YH( on )SM(libhello)ES(, just as we did earlier \201add a
+  )SM(depends)ES( entry to )SM(mani)HY(fest)YH()ES(, then import the library
+  in )SM(build)HY(file)YH()ES(, and so on\202. One inter)HY(est)HY(ing)YH( ques)HY(tion)YH( is what to
+  put as a prereq)HY(ui)HY(site)YH( repos)HY(i)HY(tory)YH( in )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES(. Our
+  own setup will work even if we don't put anything there \235 the
+  depen)HY(dency)YH( will be auto)HY(mat)HY(i)HY(cally)YH( resolved to our local version of
+  )SM(libhello)ES( since we have initial)HY(ized)YH( it in all our build
+  config)HY(u)HY(ra)HY(tions)YH(. However, in case our )SM(hello)ES( repos)HY(i)HY(tory)YH( is used
+  by someone else, it's a good idea to add the remote )SM(git)ES(
+  repos)HY(i)HY(tory)YH( for )SM(libhello)ES( as a prereq)HY(ui)HY(site)YH(.)EP(
+
+  )BR(
+  )0 P(By now you have prob)HY(a)HY(bly)YH( real)HY(ized)YH( that our project direc)HY(tory)YH( is just
+  another type of package repos)HY(i)HY(tory)YH(. See )0 2 A()SM()BD(bpkg-repos)HY(i)HY(tory)YH(-types\2011\202)ES()ES()EA(
+  for more infor)HY(ma)HY(tion)YH(.)EP(
+  )BR(
+
+  )0 P(And that's it, now we can build and test our new arrange)HY(ment)YH(:)EP(
+
+  ) 10 69 PR($ cd ../hello   # back to hello project root
+$ bdep test -i
+c++ ../libhello/libhello/cxx{hello}
+c++ ../libhello/tests/basics/cxx{driver}
+c++ hello/cxx{hello}
+ld ../hello-gcc/libhello/libhello/libs{hello}
+ld ../hello-gcc/libhello/tests/basics/exe{driver}
+ld ../hello-gcc/hello/hello/exe{hello}
+test ../hello-gcc/libhello/tests/basics/exe{driver}
+test hello/testscript{testscript} ../hello-gcc/hello/hello/exe{hello})RP(
+
+  )0 P(This is also the approach we would use if we wanted to fix a bug in
+  someone else's library. That is, we would clone their project repos)HY(i)HY(tory)YH( and
+  initial)HY(ize)YH( it in the build config)HY(u)HY(ra)HY(tions)YH( of our project which will
+  "upgrade" the depen)HY(dency)YH( to use the local version. Then we make the fix,
+  submit it upstream, and continue using the local version until our fix is
+  merged/published, at which point we deini)HY(tial)HY(ize)YH( the project and switch back
+  to using the upstream version.)EP(
+
+  )0 P(Let's now examine the second option: making )SM(libhello)ES( a
+  package inside )SM(hello)ES(. Here is the orig)HY(i)HY(nal)YH( struc)HY(ture)YH( of our
+  )SM(hello)ES( project:)EP(
+
+  ) 10 25 PR(hello/
+|-- .git/
+|-- build/
+|-- hello/
+|   |-- hello.cxx
+|   \267-- buildfile
+|-- buildfile
+|-- manifest
+|-- README.md
+\267-- repositories.manifest)RP(
+
+  )0 P(As the first step, we move the )SM(hello)ES( program into its own
+  subdi)HY(rec)HY(tory)YH(:)EP(
+
+  ) 11 25 PR(hello/
+|-- .git/
+|-- hello/
+|   |-- build/
+|   |-- hello/
+|   |   |-- hello.cxx
+|   |   \267-- buildfile
+|   |-- buildfile
+|   |-- manifest
+|   \267-- README.md
+\267-- repositories.manifest)RP(
+
+  )0 P(Next we again use )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA( to
+  create a new library but this time as a package inside an already exist)HY(ing)YH(
+  project:)EP(
+
+  ) 3 60 PR($ cd hello
+$ bdep new --package -l c++ -t lib libhello
+created new library package libhello in /tmp/hello/libhello/)RP(
+
+  )0 P(Let's see what our project looks like now:)EP(
+
+  ) 11 25 PR(hello/
+|-- .git/
+|-- hello/
+|   |-- ...
+|   \267-- manifest
+|-- libhello/
+|   |-- ...
+|   \267-- manifest
+|-- buildfile
+|-- packages.manifest
+\267-- repositories.manifest)RP(
+
+  )BR(
+  )0 P(Notice that, as discussed earlier, )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES(
+  belongs to the project \201repos)HY(i)HY(tory)YH(\202 while )SM(mani)HY(fest)YH()ES( \235 to
+  the package.)EP(
+  )BR(
+
+  )0 P(Besides the )SM(libhello)ES( direc)HY(tory)YH( the )SM(new)ES( command
+  also created the )SM(build)HY(file)YH()ES( and )SM(pack)HY(ages)YH(.mani)HY(fest)YH()ES(
+  files in the root direc)HY(tory)YH( of our project. First let's take a look inside
+  )SM(build)HY(file)YH()ES(:)EP(
+
+  ) 3 16 PR(import pkgs = */
+
+./: $pkgs)RP(
+
+  )0 P(This is what we call a )I(glue )SM(build)HY(file)YH()ES()ES(. Its purpose is
+  to "pull" together several pack)HY(ages)YH( so that we are able to invoke the build
+  system driver from the project root. See )0 2 A(Target
+  Impor)HY(ta)HY(tion)YH()EA( for details.)EP(
+
+  )0 P(Now let's examine )SM(pack)HY(ages)YH(.mani)HY(fest)YH()ES(:)EP(
+
+  ) 3 23 PR($ cat packages.manifest
+: 1
+location: libhello/)RP(
+
+  )0 P(Up until now our )SM(hello)ES( was a simple, single-package project
+  that didn't need this file \235 )SM(mani)HY(fest)YH()ES( in its root
+  direc)HY(tory)YH( was suffi)HY(cient)YH( \201see )0 2 A()SM()BD(bpkg-repos)HY(i)HY(tory)YH(-types\2011\202)ES()ES()EA(
+  for details on the project repos)HY(i)HY(tory)YH( struc)HY(ture)YH(\202. But now it contains
+  several pack)HY(ages)YH( and we need to specify where they are located within the
+  project. So let's go ahead and add the loca)HY(tion)YH( of the )SM(hello)ES(
+  package:)EP(
+
+  ) 5 23 PR($ cat packages.manifest
+: 1
+location: libhello/
+:
+location: hello/)RP(
+
+  )BR(
+  )0 P(Pack)HY(ages)YH( in a project can reside next to each other or in subdi)HY(rec)HY(to)HY(ries)YH(
+  but they cannot nest. When published to an archive-based repos)HY(i)HY(tory)YH(, each
+  such package will be placed into its own archive.)EP(
+  )BR(
+
+  )0 P(Next we initial)HY(ize)YH( the new package in all our build config)HY(u)HY(ra)HY(tions)YH(:)EP(
+
+  ) 12 42 PR($ cd libhello
+$ bdep init -a
+initializing in project /tmp/hello/
+in configuration @gcc:
+synchronizing:
+  upgrade hello/0.1.0-a.0.19700101000000#1
+  new libhello/0.1.0-a.0.19700101000000
+
+in configuration @clang:
+synchronizing:
+  upgrade hello/0.1.0-a.0.19700101000000#1
+  new libhello/0.1.0-a.0.19700101000000)RP(
+
+  )BR(
+  )0 P(Notice that the )SM(hello)ES( package has been "upgraded" to reflect
+  its new loca)HY(tion)YH(.)EP(
+  )BR(
+
+  )0 P(Finally, as before, we move the desired func)HY(tion)HY(al)HY(ity)YH( from
+  )SM(hello)ES( to )SM(libhello)ES( and at the same time add a
+  depen)HY(dency)YH( on )SM(libhello)ES(. Note, however, that in this case we
+  don't need to add anything to )SM(repos)HY(i)HY(to)HY(ries)YH(.mani)HY(fest)YH()ES( since both
+  pack)HY(ages)YH( are in the same project \201repos)HY(i)HY(tory)YH(\202. And that's it, now we can
+  build and test our new arrange)HY(ment)YH(:)EP(
+
+  ) 10 75 PR($ cd ..      # back to hello project root
+$ bdep test
+c++ libhello/libhello/cxx{hello}
+c++ libhello/tests/basics/cxx{driver}
+c++ hello/hello/cxx{hello}
+ld ../hello-gcc/libhello/libhello/libs{hello}
+ld ../hello-gcc/libhello/tests/basics/exe{driver}
+ld ../hello-gcc/hello/hello/exe{hello}
+test ../hello-gcc/libhello/tests/basics/exe{driver}
+test hello/hello/testscript{testscript} ../hello-gcc/hello/hello/exe{hello})RP(
+
+  )BR(
+  )0 P(A multi-package project could have several files, such as
+  )SM(README.md)ES( and )SM(LICENSE)ES(, which, while shared by all
+  the pack)HY(ages)YH(, must never)HY(the)HY(less)YH( reside within each package's direc)HY(tory)YH(. The
+  recom)HY(mended)YH( way to avoid the dupli)HY(ca)HY(tion)YH( is to use symlinks. For
+  example:)EP(
+
+  ) 14 30 PR(hello/
+|-- .git/
+|-- hello/
+|   |-- ...
+|   |-- LICENSE  -> ../LICENSE
+|   \267-- manifest
+|-- libhello/
+|   |-- ...
+|   |-- LICENSE  -> ../LICENSE
+|   \267-- manifest
+|-- LICENSE
+|-- buildfile
+|-- packages.manifest
+\267-- repositories.manifest)RP(
+
+  )0 P(See )R17 2 A(Using Symlinks in
+  )SM(build2)ES( Projects)EA( for details.)EP(
+  )BR(
+
+  )0 2 9 H(2.7)WB 29 Sn()WB 11 Sn( Package Consump)HY(tion)YH()EH(
+
+  )0 P(Ok, now that we have published a few releases of )SM(hello)ES(, how
+  would the users of our project get them? While they could clone the
+  repos)HY(i)HY(tory)YH( and use )SM(bdep)ES( just like we did, this is more of a
+  devel)HY(op)HY(ment)YH( rather than consump)HY(tion)YH( work)HY(flow)YH(. For consump)HY(tion)YH( it is much
+  easier to use the package depen)HY(dency)YH( manager, )0 2 A()SM()BD(bpkg\2011\202)ES()ES()EA(,
+  directly.)EP(
+
+  )BR(
+  )0 P(Note that this approach also works for libraries in case you wish to use
+  them in a project with a build system other than )SM(build2)ES(. See )0 13 1 A(Using Unpack)HY(aged)YH( Depen)HY(den)HY(cies)YH()13 0 TN TL()Ec /AF f D( for
+  back)HY(ground)YH( on cross-build system library consump)HY(tion)YH(.)EP(
+  )BR(
+
+  )0 P(First, we create a suit)HY(able)YH( build config)HY(u)HY(ra)HY(tion)YH( with the )0 2 A()SM()BD(bpkg-cfg-create\2011\202)ES()ES()EA(
+  command. We can use the same place for build)HY(ing)YH( all our tools so let's call
+  the direc)HY(tory)YH( )SM(tools)ES(. Seeing that we are only inter)HY(ested)YH( in
+  using \201rather than devel)HY(op)HY(ing)YH(\202 such tools, let's build them opti)HY(mized)YH( and
+  also config)HY(ure)YH( a suit)HY(able)YH( instal)HY(la)HY(tion)YH( loca)HY(tion)YH(:)EP(
+
+  ) 8 40 PR($ bpkg create -d tools cc        \200
+  config.cxx=g++                 \200
+  config.cc.coptions=-O3         \200
+  config.install.root=/usr/local \200
+  config.install.sudo=sudo
+created new configuration in /tmp/tools/
+
+$ cd tools)RP(
+
+  )0 P(The same step on Windows using Visual Studio would look like this:)EP(
+
+  ) 4 33 PR($ bpkg create -d tools cc ^
+  config.cxx=cl           ^
+  config.cc.coptions=/O2  ^
+  config.install.root= C:\200install)RP(
+
+  )0 P(To fetch and build pack)HY(ages)YH( \201as well as all their depen)HY(den)HY(cies)YH(\202 we use
+  the )0 2 A()SM()BD(bpkg-pkg-build\2011\202)ES()ES()EA(
+  command. We can use either an archive-based repos)HY(i)HY(tory)YH( like )R6 2 A(cppget.org)EA( or build directly from
+  )SM(git)ES(:)EP(
+
+  ) 20 57 PR($ bpkg build hello@https://git.build2.org/hello/hello.git
+fetching from https://git.build2.org/hello/hello.git
+  new libformat/1.0.0 \201required by libhello\202
+  new libprint/1.0.0 \201required by libhello\202
+  new libhello/1.1.0 \201required by hello\202
+  new hello/1.0.0
+continue? [Y/n] y
+configured libformat/1.0.0
+configured libprint/1.0.0
+configured libhello/1.1.0
+configured hello/1.0.0
+c++ libprint-1.0.0/libprint/cxx{print}
+c++ hello-1.0.0/hello/cxx{hello}
+c++ libhello-1.1.0/libhello/cxx{hello}
+c++ libformat-1.0.0/libformat/cxx{format}
+ld libprint-1.0.0/libprint/libs{print}
+ld libformat-1.0.0/libformat/libs{format}
+ld libhello-1.1.0/libhello/libs{hello}
+ld hello-1.0.0/hello/exe{hello}
+updated hello/1.0.0)RP(
+
+  )BR(
+  )0 P(Passing a repos)HY(i)HY(tory)YH( URL to the )SM(build)ES( command is a short)HY(cut)YH(
+  to the follow)HY(ing)YH( sequence of commands:)EP(
+
+  ) 3 67 PR($ bpkg add https://git.build2.org/hello/hello.git  # add repository
+$ bpkg fetch                             # fetch package list
+$ bpkg build hello                       # build package by name)RP(
+  )BR(
+
+  )0 P(Once built, we can install the package to the loca)HY(tion)YH( that we have
+  spec)HY(i)HY(fied)YH( with )SM(config.install.root)ES( using the )0 2 A()SM()BD(bpkg-pkg-install\2011\202)ES()ES()EA(
+  command:)EP(
+
+  ) 9 46 PR($ bpkg install hello
+...
+install libformat-1.0.0/libformat/libs{format}
+install libprint-1.0.0/libprint/libs{print}
+install libhello-1.1.0/libhello/libs{hello}
+install hello-1.0.0/hello/exe{hello}
+
+$ hello World
+Hello, World!)RP(
+
+  )BR(
+  )0 P(If on your system the installed executa)HY(bles)YH( don't run from
+  )SM(/usr/local)ES( because of the unre)HY(solved)YH( shared libraries \201or if
+  you are installing some)HY(where)YH( else, such as )SM(/opt)ES(\202, then the
+  easiest way to fix this is with )I(rpath)ES(. Simply add the follow)HY(ing)YH(
+  config)HY(u)HY(ra)HY(tion)YH( vari)HY(able)YH( when creat)HY(ing)YH( the build config)HY(u)HY(ra)HY(tion)YH( \201or as an
+  argu)HY(ment)YH( to the )SM(install)ES( command\202:)EP(
+
+  ) 1 31 PR(config.bin.rpath=/usr/local/lib)RP(
+
+  )0 P(Note to Windows users: this is not an issue on this plat)HY(form)YH( since
+  executa)HY(bles)YH( and shared \201DLL\202 libraries are installed into the same
+  subdi)HY(rec)HY(tory)YH( \201)SM(bin)ES(\202 of the instal)HY(la)HY(tion)YH( direc)HY(tory)YH(.)EP(
+  )BR(
+
+  )0 P(The instal)HY(la)HY(tion)YH( contents and layout under
+  )SM(config.install.root)ES( would be along these lines:)EP(
+
+  ) 38 40 PR(/usr/local/
+|-- bin/
+|   \267-- hello
+|-- include/
+|   |-- libformat/
+|   |   |-- export.hxx
+|   |   |-- format.hxx
+|   |   \267-- version.hxx
+|   |-- libhello/
+|   |   |-- export.hxx
+|   |   |-- hello.hxx
+|   |   \267-- version.hxx
+|   \267-- libprint/
+|       |-- export.hxx
+|       |-- print.hxx
+|       \267-- version.hxx
+|-- lib/
+|   |-- libformat-1.0.so
+|   |-- libformat.so -> libformat-1.0.so
+|   |-- libhello-1.1.so
+|   |-- libhello.so -> libhello-1.1.so
+|   |-- libprint-1.0.so
+|   |-- libprint.so -> libprint-1.0.so
+|   \267-- pkgconfig/
+|       |-- libformat.pc
+|       |-- libhello.pc
+|       \267-- libprint.pc
+\267-- share/
+    \267-- doc/
+        |-- libformat/
+        |   |-- manifest)WR(
+        |   \267-- README.md
+        |-- libhello/
+        |   |-- manifest
+        |   \267-- README.md
+        \267-- libprint/
+            |-- manifest
+            \267-- README.md)RP(
+
+  )BR(
+  )0 P(The instal)HY(la)HY(tion)YH( loca)HY(tions)YH( of various types of files \201executa)HY(bles)YH(,
+  libraries, headers, docu)HY(men)HY(ta)HY(tion)YH(, etc\202 can be customized using a number of
+  the )SM(config.install.*)ES( vari)HY(ables)YH( with the most commonly used ones
+  and their defaults \201rela)HY(tive)YH( to )SM(config.install.root)ES(\202 listed
+  below \201see the )SM(install)ES( build system module docu)HY(men)HY(ta)HY(tion)YH( for
+  the complete list\202.)EP(
+
+  ) 5 40 PR(config.install.bin     = root/bin/
+config.install.lib     = root/lib/
+config.install.doc     = root/share/doc/
+config.install.man     = root/share/man/
+config.install.include = root/include/)RP(
+  )BR(
+
+  )0 P(If we need to unin)HY(stall)YH( a previ)HY(ously)YH( installed package, there is the )0 2 A()SM()BD(bpkg-pkg-unin)HY(stall)YH(\2011\202)ES()ES()EA(
+  command:)EP(
+
+  ) 6 48 PR($ bpkg uninstall hello
+uninstall hello-1.0.0/hello/exe{hello}
+uninstall libhello-1.1.0/libhello/libs{hello}
+uninstall libprint-1.0.0/libprint/libs{print}
+uninstall libformat-1.0.0/libformat/libs{format}
+...)RP(
+
+  )0 P(To upgrade or down)HY(grade)YH( pack)HY(ages)YH( we again use the )SM(build)ES(
+  command. Here is a typical upgrade work)HY(flow)YH(:)EP(
+
+  ) 6 61 PR($ bpkg fetch              # refresh available package list
+$ bpkg status             # see if new versions are available
+
+$ bpkg uninstall hello    # uninstall old version
+$ bpkg build     hello    # upgrade to the latest version
+$ bpkg install   hello    # install new version)RP(
+
+  )0 P(Similar to )SM(bdep)ES(, to down)HY(grade)YH( we have to specify the desired
+  version explic)HY(itly)YH(. There are also the )SM(--upgrade|-u)ES( and
+  )SM(--patch|-p)ES( as well as )SM(--imme)HY(di)HY(ate)YH(|-i)ES( and
+  )SM(--recur)HY(sive)YH(|-r)ES( options that allow us to upgrade or patch
+  pack)HY(ages)YH( that we have built and/or their imme)HY(di)HY(ate)YH( or all depen)HY(den)HY(cies)YH( \201see
+  )0 2 A()SM()BD(bpkg-pkg-build\2011\202)ES()ES()EA(
+  for details\202. For example, to make sure every)HY(thing)YH( is patched, run:)EP(
+
+  ) 2 16 PR($ bpkg fetch
+$ bpkg build -pr)RP(
+
+  )0 P(If a package is no longer needed, we can remove it from the config)HY(u)HY(ra)HY(tion)YH(
+  with )0 2 A()SM()BD(bpkg-pkg-drop\2011\202)ES()ES()EA(:)EP(
+
+  ) 16 51 PR($ bpkg drop hello
+following dependencies were automatically built but
+will no longer be used:
+  libhello
+  libformat
+  libprint
+drop unused packages? [Y/n] y
+  drop hello
+  drop libhello
+  drop libformat
+  drop libprint
+continue? [Y/n] y
+purged hello
+purged libhello
+purged libformat
+purged libprint)RP(
+
+  )0 2 10 H(2.8)WB 30 Sn()WB 12 Sn( Using System-Installed Depen)HY(den)HY(cies)YH()EH(
+
+  )0 P(Our oper)HY(at)HY(ing)YH( system might already have a package manager \201which we will
+  refer to as )I(system package manager)ES(\202 and for various reasons we may
+  want to use the system-installed version of a depen)HY(dency)YH( rather than
+  build)HY(ing)YH( one from source.)EP(
+
+  )BR(
+  )0 P(Using system-installed versions works best for mature rather than
+  rapidly-devel)HY(oped)YH( pack)HY(ages)YH( since for the latter you often need to track the
+  latest version \201which may not yet be avail)HY(able)YH( from the system repos)HY(i)HY(tory)YH(\202
+  and/or test with multi)HY(ple)YH( versions \201which is not some)HY(thing)YH( that many system
+  package managers support\202.)EP(
+
+  )0 P(We can also have some build config)HY(u)HY(ra)HY(tions)YH( using a system-installed
+  version of a depen)HY(dency)YH( while others build)HY(ing)YH( it from source, for example,
+  for testing.)EP(
+  )BR(
+
+  )0 P(We can instruct )SM(build2)ES( to config)HY(ure)YH( a depen)HY(dency)YH( package as
+  avail)HY(able)YH( from the system rather than build)HY(ing)YH( it from source. Let's see how
+  this works in an example. Say, we want to use )R18 2 A()SM(libsqlite3)ES()EA( in our
+  )SM(hello)ES( project.)EP(
+
+  )0 P(The first step is to add it as a depen)HY(dency)YH(, just like we did for
+  )SM(libhello)ES(. That is, add another )SM(depends)ES( entry to
+  )SM(mani)HY(fest)YH()ES(, then import it in )SM(build)HY(file)YH()ES(, and so
+  on.)EP(
+
+  )0 P(Now, if we just run )SM(sync)ES( or try to build our project,
+  )SM(build2)ES( will down)HY(load)YH( and build the new depen)HY(dency)YH( from source,
+  just like it did for )SM(libhello)ES(. Instead, we can issue an
+  explicit )SM(sync)ES( command that config)HY(ures)YH( the
+  )SM(libsqlite3)ES( package as coming from the system:)EP(
+
+  ) 4 42 PR($ bdep sync ?sys:libsqlite3
+synchronizing:
+  configure sys:libsqlite3/*
+  upgrade hello/0.1.0-a.0.19700101000000#3)RP(
+
+  )0 P(Here )SM()BD(?)ES()ES( is a package )I(flag)ES( that instructs
+  )SM(build2)ES( to treat it as a depen)HY(dency)YH( and )SM()BD(sys)ES()ES(
+  is a package )I(scheme)ES( that tells )SM(build2)ES( it comes from the
+  system. See )0 2 A()SM()BD(bpkg-pkg-build\2011\202)ES()ES()EA(
+  for details.)EP(
+
+  )BR(
+  )0 P(The system-installed depen)HY(dency)YH( doesn't really have to come from the
+  system package manager. It can also be manu)HY(ally)YH( installed and, as discussed
+  in )0 13 1 A(Using Unpack)HY(aged)YH( Depen)HY(den)HY(cies)YH()13 0 TN TL()Ec /AF f D(, not
+  neces)HY(sar)HY(ily)YH( into the system-default loca)HY(tion)YH( like
+  )SM(/usr/local)ES(.)EP(
+  )BR(
+
+  )0 P(In the above example our depen)HY(dency)YH( still has to be pack)HY(aged)YH( and
+  avail)HY(able)YH( from one of the project's prereq)HY(ui)HY(site)YH( repos)HY(i)HY(to)HY(ries)YH(. But it can be
+  a )I(stub)ES( \235 a package that does not contain any source code and
+  that can only be "obtained" from the system \201see )0 2 A(Package
+  Version)EA( for details\202. However, if we would like to use a completely
+  unpack)HY(aged)YH( depen)HY(dency)YH(, then we will have to specify its version explic)HY(itly)YH(
+  either as the actual version or as the )SM(*)ES( wild)HY(card)YH(, for
+  example:)EP(
+
+  ) 1 49 PR($ bdep sync ?sys:libsqlite3/* ?sys:libcurl/7.47.0)RP(
+
+  )BR(
+  )0 P(Currently, unless we specify the installed version explic)HY(itly)YH(, a
+  system-installed package is assumed to satisfy any depen)HY(dency)YH( constraint. In
+  the future, )SM(build2)ES( will auto)HY(mat)HY(i)HY(cally)YH( query commonly used
+  system package managers for the installed version and maybe even request
+  instal)HY(la)HY(tion)YH( of the absent pack)HY(ages)YH(. To support this func)HY(tion)HY(al)HY(ity)YH(, the
+  package mani)HY(fest)YH( may need to specify package name mappings for various
+  system package managers \201which is the ratio)HY(nale)YH( behind stub pack)HY(ages)YH(\202.)EP(
+  )BR(
+
+  )0 2 11 H(2.9)WB 31 Sn()WB 13 Sn( Using Unpack)HY(aged)YH( Depen)HY(den)HY(cies)YH()EH(
+
+  )0 P(Gener)HY(ally)YH(, we will have a much better time if all our depen)HY(den)HY(cies)YH( come
+  as )SM(build2)ES( pack)HY(ages)YH(. Unfor)HY(tu)HY(nately)YH(, this won't always be the
+  case in the real world and some libraries that you may need will use other
+  build systems.)EP(
+
+  )BR(
+  )0 P(There is also the oppo)HY(site)YH( problem: you may want to consume a library
+  that uses )SM(build2)ES( in a project that uses a differ)HY(ent)YH( build
+  system. For that refer to )0 11 1 A(Package
+  Consump)HY(tion)YH()11 0 TN TL()Ec /AF f D(.)EP(
+  )BR(
+
+  )0 P(The stan)HY(dard)YH( way to consume such unpack)HY(aged)YH( libraries is to install them
+  \201not neces)HY(sar)HY(ily)YH( into a system-default loca)HY(tion)YH( like
+  )SM(/usr/local)ES(\202 so that we have a single direc)HY(tory)YH( with their
+  headers and a single direc)HY(tory)YH( with their libraries. We can then config)HY(ure)YH(
+  our builds to use these direc)HY(to)HY(ries)YH( when search)HY(ing)YH( for imported
+  libraries.)EP(
+
+  )BR(
+  )0 P(Need)HY(less)YH( to say, none of the )SM(build2)ES( depen)HY(dency)YH( manage)HY(ment)YH(
+  mech)HY(a)HY(nisms)YH( such as version constraints or upgrade/down)HY(grade)YH( will work on
+  such unpack)HY(aged)YH( libraries. You will have to manage all these your)HY(self)YH(
+  manu)HY(ally)YH(.)EP(
+  )BR(
+
+  )0 P(Let's see how this all works in an example. Say, we want to use
+  )SM(libex)HY(tra)YH()ES( that uses a differ)HY(ent)YH( build system in our
+  )SM(hello)ES( project. The first step is to manu)HY(ally)YH( build and install
+  this library for each build config)HY(u)HY(ra)HY(tion)YH( that we have. For example, we can
+  install all such unpack)HY(aged)YH( libraries into )SM(unpkg-gcc)ES( and
+  )SM(unpkg-clang)ES(, next to our )SM(hello-gcc)ES( and
+  )SM(hello-clang)ES( build config)HY(u)HY(ra)HY(tions)YH(:)EP(
+
+  ) 6 12 PR($ ls
+hello/
+hello-gcc/
+unpkg-gcc/
+hello-clang/
+unpkg-clang/)RP(
+
+  )BR(
+  )0 P(If you would like to try this out but don't have a suit)HY(able)YH(
+  )SM(libex)HY(tra)YH()ES(, you can create and install one with these
+  commands:)EP(
+
+  ) 2 67 PR($ bdep new -l c++ -t lib libextra -C libextra-gcc cc config.cxx=g++
+$ b install: libextra-gcc/ config.install.root=/tmp/unpkg-gcc)RP(
+  )BR(
+
+  )0 P(If we look inside one of these )SM(unpkg-*)ES( direc)HY(to)HY(ries)YH(, we
+  should see some)HY(thing)YH( like this:)EP(
+
+  ) 10 23 PR($ tree unpkg-gcc
+unpkg-gcc/
+|-- include/
+|   \267-- libextra/
+|       \267-- extra.hxx
+\267-- lib/
+    |-- libextra.a
+    |-- libextra.so
+    \267-- pkgconfig/
+        \267-- libextra.pc)RP(
+
+  )0 P(Notice that )SM(libex)HY(tra)YH(.pc)ES( \235 it's a
+  )SM()BD(pkg-config\2011\202)ES()ES( file that contains any extra compile and
+  link options that may be neces)HY(sary)YH( to consume this library. This is the
+  )I(de facto)ES( stan)HY(dard)YH( for build systems to commu)HY(ni)HY(cate)YH( library build
+  infor)HY(ma)HY(tion)YH( to each other and is today supported by most commonly used
+  imple)HY(men)HY(ta)HY(tions)YH(. Speak)HY(ing)YH( of )SM(build2)ES(, it both recog)HY(nizes)YH(
+  )SM(.pc)ES( files when consum)HY(ing)YH( third-party libraries and
+  auto)HY(mat)HY(i)HY(cally)YH( produces them when installing its own.)EP(
+
+  )BR(
+  )0 P(While this may all seem foreign to Windows users, there is nothing
+  plat)HY(form)YH(-specific about this approach, includ)HY(ing)YH( support for
+  )SM(pkg-config)ES(, which, at least in case of )SM(build2)ES(,
+  works equally well on Windows.)EP(
+  )BR(
+
+  )0 P(Next, we create a build config)HY(u)HY(ra)HY(tion)YH( and config)HY(ure)YH( it to use one of
+  these )SM(unpkg-*)ES( direc)HY(to)HY(ries)YH( \201replace )SM(...)ES( with the
+  abso)HY(lute)YH( path\202:)EP(
+
+  ) 3 52 PR($ bdep init -C ../hello-gcc @gcc cc config.cxx=g++ \200
+  config.cc.poptions=-I.../unpkg-gcc/include       \200
+  config.cc.loptions=-L.../unpkg-gcc/lib)RP(
+
+  )BR(
+  )0 P(If using Visual Studio, replace )SM(-I)ES( with )SM(/I)ES( and
+  )SM(-L)ES( with )SM(/LIBPATH:)ES(.)EP(
+  )BR(
+
+  )0 P(Alter)HY(na)HY(tively)YH(, if you want to recon)HY(fig)HY(ure)YH( one of the exist)HY(ing)YH( build
+  config)HY(u)HY(ra)HY(tions)YH(, then simply edit the )SM(build/config.build)ES( file
+  \201that is, )SM(hello-gcc/build/config.build)ES( in our case\202 and adjust
+  the )SM(poptions)ES( and )SM(loptions)ES( values. Or you can use
+  the build system directly to recon)HY(fig)HY(ure)YH( the build config)HY(u)HY(ra)HY(tion)YH( \201see )0 2 A()SM()BD(b\2011\202)ES()ES()EA( for
+  details\202:)EP(
+
+  ) 3 47 PR(b configure: ../hello-gcc/                    \200
+  config.cc.poptions+=-I.../unpkg-gcc/include \200
+  config.cc.loptions+=-L.../unpkg-gcc/lib)RP(
+
+  )BR(
+  )0 P(If all the unpack)HY(aged)YH( libraries included )SM(.pc)ES( files, then the
+  )SM(-L)ES( alone would have been suffi)HY(cient)YH(. However, it doesn't hurt
+  to also add )SM(-I)ES(, for good measure.)EP(
+  )BR(
+
+  )0 P(Once this is done, adjust your )SM(build)HY(file)YH()ES( to import the
+  library:)EP(
+
+  ) 1 34 PR(import libs += libextra%lib{extra})RP(
+
+  )0 P(And your source code to use it:)EP(
+
+  ) 1 29 PR(#include <libextra/extra.hxx>)RP(
+
+  )BR(
+  )0 P(Notice that we don't add the corre)HY(spond)HY(ing)YH( )SM(depends)ES( value to
+  the project's )SM(mani)HY(fest)YH()ES( since this library is not a package.
+  However, it is a good idea to instead add a )0 2 A()SM(requires)ES()EA(
+  entry as a docu)HY(men)HY(ta)HY(tion)YH( to users of our project.)EP(
+  )BR(
+
+  )0 1 12 H(3)WB 32 Sn()WB 14 Sn( Canon)HY(i)HY(cal)YH( Project Struc)HY(ture)YH()EH(
+
+  )0 P(The goal of estab)HY(lish)HY(ing)YH( a canon)HY(i)HY(cal)YH( )SM(build2)ES( project
+  struc)HY(ture)YH( is to create an ecosys)HY(tem)YH( of pack)HY(ages)YH( that can coexist, are easy
+  to compre)HY(hend)YH( by both humans and tools, scale to complex, real-world
+  require)HY(ments)YH(, and, last but not least, are pleas)HY(ant)YH( to work with.)EP(
+
+  )BR(
+  )0 P(Here by )I(canon)HY(i)HY(cal)YH()ES( we mean a struc)HY(ture)YH( that on balance achieves
+  these objec)HY(tives)YH( in the simplest possi)HY(ble)YH( way. However, not every)HY(one)YH( agrees
+  with where that balance should be struck. As a result, this struc)HY(ture)YH( is
+  only recom)HY(mended)YH( and )SM(build2)ES( is flex)HY(i)HY(ble)YH( enough to support
+  various arrange)HY(ments)YH( used in modern C and C++ projects. Further)HY(more)YH(, the )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  command provides a number of customiza)HY(tion)YH( options and chances are you will
+  be able to create your preferred layout auto)HY(mat)HY(i)HY(cally)YH(. See )0 2 A(SOURCE LAYOUT)EA( for more
+  infor)HY(ma)HY(tion)YH( and exam)HY(ples)YH(.)EP(
+  )BR(
+
+  )0 P(This canon)HY(i)HY(cal)YH( struc)HY(ture)YH( is primar)HY(ily)YH( meant for a package \235 a
+  single library or program \201or, some)HY(times)YH(, a collec)HY(tion)YH( of related libraries
+  or programs\202 with a specific and well-defined func)HY(tion)YH(. While it may be less
+  suit)HY(able)YH( for more elab)HY(o)HY(rate)YH(, multi-library/program )I(end-prod)HY(ucts)YH()ES( that
+  are not meant to be pack)HY(aged)YH(, most of the recom)HY(men)HY(da)HY(tions)YH( discussed below
+  would still apply. Often)HY(times)YH(, you would start with a canon)HY(i)HY(cal)YH( project and
+  expand from there. Note also that while the discus)HY(sion)YH( below focuses on C++,
+  most of it applies equally to C projects.)EP(
+
+  )BR(
+  )0 P(We often find ourselves factor)HY(ing)YH( common func)HY(tion)HY(al)HY(ity)YH( out of such
+  end-prod)HY(ucts)YH( and into sepa)HY(rate)YH( pack)HY(ages)YH(, for example, in order to be reused
+  in another end-product\202. In this light, it can be helpful to orga)HY(nize)YH( a new
+  end-product project as a compo)HY(si)HY(tion)YH( of indi)HY(vid)HY(ual)YH( pack)HY(ages)YH( or source
+  subdi)HY(rec)HY(to)HY(ries)YH( that follow the canon)HY(i)HY(cal)YH( struc)HY(ture)YH(. The )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  )SM(--package)ES( and )SM(--source)ES( modes can be used to
+  auto)HY(mate)YH( this process.)EP(
+  )BR(
+
+  )0 P(By default, projects created by the )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  command have the canon)HY(i)HY(cal)YH( struc)HY(ture)YH(. The overall layouts for executable
+  \201)SM(-t\240exe)ES(\202 and library \201)SM(-t\240lib)ES(\202 projects
+  are presented below.)EP(
+
+  ) 10 23 PR(<name>/
+|-- build/
+|-- <name>/
+|   |-- <name>.cxx
+|   |-- <name>.test.cxx
+|   |-- testscript
+|   \267-- buildfile
+|-- buildfile
+|-- manifest
+\267-- README.md)RP(
+
+  ) 13 23 PR(lib<name>/
+|-- build/
+|-- lib<name>/
+|   |-- <name>.hxx
+|   |-- <name>.cxx
+|   |-- <name>.test.cxx
+|   |-- export.hxx
+|   |-- version.hxx.in
+|   \267-- buildfile
+|-- tests/
+|-- buildfile
+|-- manifest
+\267-- README.md)RP(
+
+  )0 P(The canon)HY(i)HY(cal)YH( struc)HY(ture)YH( for both project types is discussed in detail in
+  the follow)HY(ing)YH( sections with a short summary of the key points presented
+  below.)EP(
+
+  )UL(  )-1 LI()I(Header and source files \201or module inter)HY(face)YH(
+  and imple)HY(men)HY(ta)HY(tion)YH( files\202 are next to each other \201no )SM(include/)ES(
+  and )SM(src/)ES( split\202.)ES(
+
+  )-1 LI()I(Headers are included with )SM(<>)ES(
+  and contain the project direc)HY(tory)YH( prefix, for example,
+  )SM(<libhello/hello.hxx>)ES(.)ES(
+
+  )-1 LI()I(Header and source file exten)HY(sions)YH( are either
+  )SM(.hpp/.cpp)ES( or )SM(.hxx/.cxx)ES( \201)SM(.mpp)ES( or
+  )SM(.mxx)ES( for module inter)HY(faces)YH(\202.)ES(
+
+  )-1 LI()I(No special char)HY(ac)HY(ters)YH( other
+  than )SM(_)ES( and )SM(-)ES( in file names with )SM(.)ES(
+  only used for exten)HY(sions)YH(.)ES(
+  )LU(
+
+  )0 P(Let's start with naming our projects: A project name should only contain
+  ASCII alpha)HY(betic)YH( char)HY(ac)HY(ters)YH( \201)SM([a-zA-Z])ES(\202, digits
+  \201)SM([0-9])ES(\202, under)HY(scores)YH( \201)SM(_)ES(\202, plus/minus
+  \201)SM(+-)ES(\202, and dots \201)SM(.)ES(\202 as well as be at least two
+  char)HY(ac)HY(ters)YH( long \201see )0 2 A(Package
+  Name)EA( for addi)HY(tional)YH( restric)HY(tions)YH( and recom)HY(men)HY(da)HY(tions)YH(\202.)EP(
+
+  )0 P(If a project consists of a library and an executable, then they should be
+  split into sepa)HY(rate)YH( pack)HY(ages)YH( \201see )0 10 1 A(Devel)HY(op)HY(ing)YH(
+  Multi)HY(ple)YH( Pack)HY(ages)YH( and Projects)10 0 TN TL()Ec /AF f D( for some common arrange)HY(ments)YH(\202. In this
+  case, by conven)HY(tion)YH(, the library name should start with the )SM(lib)ES(
+  prefix, for example, )SM(libhello)ES( and )SM(hello)ES(. It is
+  also recom)HY(mended)YH( \201but not required\202 to follow this conven)HY(tion)YH( in new
+  projects, even if there are no plans to have a related executable.)EP(
+
+  )BR(
+  )0 P(Using the )SM(lib)ES( prefix consis)HY(tently)YH( offers several
+  bene)HY(fits)YH(:)EP(
+
+  )4 OL(  )-1 LI(It is clear from the name to both humans and
+  tools what kind of project it is.
+
+  )-1 LI(All libraries are consis)HY(tently)YH( named \201as opposed
+  to some with the )SM(lib)ES( prefix and some without\202.
+
+  )-1 LI(All library names are future-proofed to co-exist
+  with executa)HY(bles)YH(. If one starts with a library without the )SM(lib)ES(
+  prefix but later decides to add an executable, renam)HY(ing)YH( the library would
+  unlikely be an option. And there is no need to spend mental energy on
+  think)HY(ing)YH( whether it's possi)HY(ble)YH( that an executable will be added later.
+  )LO(
+  )BR(
+
+  )0 P(The project's root direc)HY(tory)YH( should contain the root
+  )SM(build)HY(file)YH()ES( and package )SM(mani)HY(fest)YH()ES( file. Other
+  recom)HY(mended)YH( top-level subdi)HY(rec)HY(tory)YH( names are )SM(exam)HY(ples)YH(/)ES( \201for
+  libraries it is normally a subpro)HY(ject)YH( like )SM(tests/)ES(, as discussed
+  below\202, )SM(doc/)ES(, and )SM(etc/)ES( \201sample config)HY(u)HY(ra)HY(tions)YH(,
+  scripts, third-party contri)HY(bu)HY(tions)YH(, etc\202. See also build system )0 2 A(Project
+  Struc)HY(ture)YH()EA( for details on the build-related files
+  \201)SM(build)HY(file)YH()ES(\202 and subdi)HY(rec)HY(to)HY(ries)YH( \201)SM(build/)ES(\202 as well as
+  the avail)HY(able)YH( alter)HY(na)HY(tive)YH( naming scheme.)EP(
+
+  )0 2 13 H(3.1)WB 33 Sn()WB 15 Sn( Source Direc)HY(tory)YH()EH(
+
+  )0 P(The project's source code is placed into a subdi)HY(rec)HY(tory)YH( of the root
+  direc)HY(tory)YH( named the same as the project, for example,
+  )SM(hello/hello/)ES( or )SM(libhello/libhello/)ES(. It is called
+  the project's )I(source subdi)HY(rec)HY(tory)YH()ES(.)EP(
+
+  )0 P(There are several reasons for this layout: It imple)HY(ments)YH( the canon)HY(i)HY(cal)YH(
+  inclu)HY(sion)YH( scheme \201discussed below\202 where each header is prefixed with its
+  project name. It also has a predictable name where users \201and tools\202 can
+  expect to find our project's source code. Finally, this layout prevents
+  clutter in the project's root direc)HY(tory)YH( which usually contains various other
+  files \201like )SM(README)ES(, )SM(LICENSE)ES(\202 and direc)HY(to)HY(ries)YH( \201like
+  )SM(doc/)ES(, )SM(tests/)ES(, )SM(exam)HY(ples)YH(/)ES(\202.)EP(
+
+  )BR(
+  )0 P(Another popular approach is to place public headers into the
+  )SM(include/)ES( subdi)HY(rec)HY(tory)YH( and source files as well as private
+  headers into )SM(src/)ES(. The cited advan)HY(tage)YH( of this layout is the
+  predictable loca)HY(tion)YH( \201)SM(include/)ES(\202 that contains only the
+  project's public headers \201that is, its API\202. This can make the project
+  easier to navi)HY(gate)YH( and under)HY(stand)YH( while harder to misuse, for example, by
+  includ)HY(ing)YH( a private header.)EP(
+
+  )0 P(However, this split layout is not without draw)HY(backs)YH(:)EP(
+
+  )UL(  )-1 LI(Navi)HY(gat)HY(ing)YH( between corre)HY(spond)HY(ing)YH( headers and sources is cumber)HY(some)YH(. This
+  affects editing, grep'ing, as well as code brows)HY(ing)YH( \201for example, on
+  GitHub\202.
+
+  )-1 LI(Imple)HY(ment)HY(ing)YH( the canon)HY(i)HY(cal)YH( inclu)HY(sion)YH( scheme would require an extra level
+  of subdi)HY(rec)HY(to)HY(ries)YH( \201for example, )SM(include/libhello/)ES( and
+  )SM(src/libhello/)ES(\202, which only ampli)HY(fies)YH( the previ)HY(ous)YH( issue.
+
+  )-1 LI(Support)HY(ing)YH( gener)HY(ated)YH( source code can be chal)HY(leng)HY(ing)YH(: Source code
+  gener)HY(a)HY(tors)YH( rarely provide support for writing headers and sources into
+  differ)HY(ent)YH( direc)HY(to)HY(ries)YH(. Even if we can move things around post-gener)HY(a)HY(tion)YH(,
+  build systems may not support this arrange)HY(ment)YH( \201for example,
+  )SM(build2)ES( does not currently support target groups with members in
+  differ)HY(ent)YH( direc)HY(to)HY(ries)YH(\202.
+  )LU(
+
+  )0 P(Also, the stated advan)HY(tage)YH( of this layout \235 sepa)HY(ra)HY(tion)YH( of public
+  headers from private \235 is not as clear cut as it may seem at first.
+  The common assump)HY(tion)YH( of the split layout is that only headers from
+  )SM(include/)ES( are installed and, conversely, to use the headers
+  in-place, all one has to do is add )SM(-I)ES( point)HY(ing)YH( to
+  )SM(include/)ES(. On the other hand, it is common for public headers to
+  include private, for example, to call an imple)HY(men)HY(ta)HY(tion)YH( detail func)HY(tion)YH( in
+  inline or template code \201note that the same applies to private modules
+  imported in public module inter)HY(faces)YH(\202. Which means such private, \201or,
+  prob)HY(a)HY(bly)YH( now more accu)HY(rately)YH( called )I(imple)HY(men)HY(ta)HY(tion)YH( detail)ES(\202 headers
+  have to be placed in the )SM(include/)ES( direc)HY(tory)YH( as well, perhaps
+  into a subdi)HY(rec)HY(tory)YH( \201such as )SM(details/)ES(\202 or with a file name
+  suffix \201such as )SM(-impl)ES(\202 to signal to the user that they are
+  still "private". Need)HY(less)YH( to say, in an actively devel)HY(oped)YH( project, keeping
+  track of which private headers can still stay in )SM(src/)ES( and which
+  have to be moved to )SM(include/)ES( \201and vice versa\202 is a tedious,
+  error-prone task. As a result, prac)HY(ti)HY(cally)YH(, the split layout quickly
+  degrades into the "all headers in )SM(include/)ES(" arrange)HY(ment)YH( which
+  negates its main advan)HY(tage)YH(.)EP(
+
+  )0 P(It is also not clear how the split layout will trans)HY(late)YH( to modu)HY(lar)HY(ized)YH(
+  projects. With modules, both the inter)HY(face)YH( and imple)HY(men)HY(ta)HY(tion)YH( \201includ)HY(ing)YH(
+  non-inline/template func)HY(tion)YH( defi)HY(ni)HY(tions)YH(\202 can reside in the same file with a
+  substan)HY(tial)YH( number of C++ devel)HY(op)HY(ers)YH( finding this arrange)HY(ment)YH( appeal)HY(ing)YH(. If
+  a project consists of only such single-file modules, then
+  )SM(include/)ES( and )SM(src/)ES( have effec)HY(tively)YH( become the same
+  thing \201note that there couldn't be any "private" modules in
+  )SM(src/)ES( since there would be nobody to import them\202. In a sense,
+  we already have this situ)HY(a)HY(tion)YH( with header-only libraries except that in the
+  case of modules calling the direc)HY(tory)YH( )SM(include/)ES( would be an
+  anachro)HY(nism)YH(.)EP(
+
+  )0 P(To summa)HY(rize)YH(, the split direc)HY(tory)YH( arrange)HY(ment)YH( offers little benefit over
+  the combined direc)HY(tory)YH( layout, has a number of real draw)HY(backs)YH(, and does not
+  fit modu)HY(lar)HY(ized)YH( projects well. In prac)HY(tice)YH(, private headers are placed into
+  )SM(include/)ES(, often either in a subdi)HY(rec)HY(tory)YH( or with a special file
+  name suffix, a mech)HY(a)HY(nism)YH( that is readily avail)HY(able)YH( in the combined direc)HY(tory)YH(
+  layout.)EP(
+  )BR(
+
+  )0 P(All headers within a project should be included using the
+  )SM(<>)ES( style inclu)HY(sion)YH( and contain the project name as a
+  direc)HY(tory)YH( prefix. And all headers means )I(all headers)ES( \235 public,
+  private, or imple)HY(men)HY(ta)HY(tion)YH( detail, in executa)HY(bles)YH( or in libraries.)EP(
+
+  )0 P(As an example, let's say we've added )SM(utility.hxx)ES( to our
+  )SM(hello)ES( project. This is how it should be included in
+  )SM(hello.cxx)ES(:)EP(
+
+  ) 5 45 PR(// #include "utility.hxx"           // Wrong.
+// #include <utility.hxx>           // Wrong.
+// #include "../hello/utility.hxx"  // Wrong.
+
+#include <hello/utility.hxx>)RP(
+
+  )0 P(Simi)HY(larly)YH(, if we want to include )SM(hello.hxx)ES( from
+  )SM(libhello)ES(, then the inclu)HY(sion)YH( should look like this:)EP(
+
+  ) 1 29 PR(#include <libhello/hello.hxx>)RP(
+
+  )BR(
+  )0 P(The problem with the )SM("")ES( style inclu)HY(sion)YH( is if the header is
+  not found rela)HY(tive)YH( to the includ)HY(ing)YH( file, most compil)HY(ers)YH( will continue
+  looking for it in the include search paths, the same as for
+  )SM(<>)ES(. As a result, if the header is not present in the right
+  place \201for example, because it was mistak)HY(enly)YH( not listed as to be
+  installed\202, chances are that a completely unre)HY(lated)YH( header with the same
+  name will be found and included. Need)HY(less)YH( to say, debug)HY(ging)YH( situ)HY(a)HY(tions)YH( like
+  these is unpleas)HY(ant)YH(.)EP(
+
+  )0 P(Prefix)HY(ing)YH( all inclu)HY(sions)YH( with the project name also makes sure that
+  headers with common names \201for example, )SM(utility.hxx)ES(\202 can
+  coexist \201for example, when installed into a system-wide direc)HY(tory)YH(, such as
+  )SM(/usr/include)ES(\202. The prefix also plays an impor)HY(tant)YH( role in
+  support)HY(ing)YH( auto-gener)HY(ated)YH( headers.)EP(
+
+  )0 P(Note also that this header inclu)HY(sion)YH( scheme is consis)HY(tent)YH( with the module
+  impor)HY(ta)HY(tion)YH(, for example:)EP(
+
+  ) 1 21 PR(import hello.utility;)RP(
+
+  )0 P(Finally, note that while adding the project prefix to the )SM("")ES(
+  style inclu)HY(sion)YH( \201for example, )SM("libhello/hello.hxx")ES(\202 will make
+  finding an unre)HY(lated)YH( header unlikely, there is still a possi)HY(bil)HY(ity)YH(. And it
+  is not clear why take the chance when there are no bene)HY(fits)YH(. So let's
+  imagine the )SM("")ES( style inclu)HY(sion)YH( does not exist and we will all
+  have a much better time.)EP(
+  )BR(
+
+  )0 P(If you have to disre)HY(gard)YH( every rule and recom)HY(men)HY(da)HY(tion)YH( in this section
+  but one, for example, because you are working on an exist)HY(ing)YH( library, then
+  at minimum insist on this: )BD(public header inclu)HY(sions)YH( must use the library
+  name as a direc)HY(tory)YH( prefix)ES(.)EP(
+
+  )0 P(The project's source subdi)HY(rec)HY(tory)YH( can have subdi)HY(rec)HY(to)HY(ries)YH( of its own, for
+  example, to orga)HY(nize)YH( the code into compo)HY(nents)YH(. Natu)HY(rally)YH(, header inclu)HY(sions)YH(
+  will need to contain such subdi)HY(rec)HY(to)HY(ries)YH(, for example
+  )SM(<libhello/core/hello.hxx>)ES(. When the project's headers are
+  installed \201for example, into )SM(/usr/include)ES(\202, this subdi)HY(rec)HY(tory)YH(
+  hier)HY(ar)HY(chy)YH( is auto)HY(mat)HY(i)HY(cally)YH( recre)HY(ated)YH(.)EP(
+
+  )0 P(If you would like to sepa)HY(rate)YH( public API headers/modules from
+  imple)HY(men)HY(ta)HY(tion)YH( details, the conven)HY(tion)YH( is to place them into the
+  )SM(details/)ES( subdi)HY(rec)HY(tory)YH(. For example:)EP(
+
+  ) 5 23 PR(libhello/
+\267-- libhello/
+    |-- details/
+    |   \267-- utility.hxx
+    \267-- ...)RP(
+
+  )BR(
+  )0 P(If a project has truly private headers \201for example, propri)HY(etary)YH( code\202
+  that must be clearly sepa)HY(rated)YH( from public and imple)HY(men)HY(ta)HY(tion)YH( detail
+  headers, then they can be placed into the )SM(private/)ES(
+  subdi)HY(rec)HY(tory)YH(, next to )SM(details/)ES(. In a sense, this arrange)HY(ment)YH(
+  mimics the C++ public/protected/private member access.)EP(
+  )BR(
+
+  )0 P(It is recom)HY(mended)YH( that you still install the imple)HY(men)HY(ta)HY(tion)YH( detail
+  headers and modules for the reasons discussed above. If, however, you would
+  like to disable their instal)HY(la)HY(tion)YH(, you can add the follow)HY(ing)YH( line to your
+  source subdi)HY(rec)HY(tory)YH( )SM(build)HY(file)YH()ES(:)EP(
+
+  ) 1 31 PR(details/hxx{*}: install = false)RP(
+
+  )BR(
+  )0 P(If you are creat)HY(ing)YH( a )I(family of libraries)ES( with a common name
+  prefix, then it may make sense to use a nested source direc)HY(tory)YH( layout with
+  a common top-level direc)HY(tory)YH(. As an example, let's say we have the
+  )SM(libstud-path)ES( and )SM(libstud-url)ES( libraries that belong
+  to the same )SM(libstud)ES( family. Their source subdi)HY(rec)HY(tory)YH( layouts
+  could look like this:)EP(
+
+  ) 15 23 PR(libstud-path/
+\267-- libstud/
+    \267-- path/
+        |-- path.hxx
+        |-- path-io.hxx
+        |-- ...
+        \267-- buildfile
+
+libstud-url/
+\267-- libstud/
+    \267-- url/
+        |-- url.hxx
+        |-- url-io.hxx
+        |-- ...
+        \267-- buildfile)RP(
+
+  )0 P(With the header inclu)HY(sion)YH( paths adjusted accord)HY(ingly)YH(:)EP(
+
+  ) 2 32 PR(#include <libstud/path/path.hxx>
+#include <libstud/url/url.hxx>)RP(
+
+  )0 P(The )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  command provides the )SM(subdir)ES( project type sub-option that allows
+  us to customize the source subdi)HY(rec)HY(tory)YH( within a project. For example:)EP(
+
+  ) 1 57 PR($ bdep new -l c++ -t lib,subdir=libstud/path libstud-path)RP(
+  )BR(
+
+  )0 2 14 H(3.2)WB 34 Sn()WB 16 Sn( Source Naming)EH(
+
+  )0 P(When naming source files, only use ASCII alpha)HY(betic)YH( char)HY(ac)HY(ters)YH(, digits,
+  as well as )SM(_)ES( \201under)HY(score)YH(\202 and )SM(-)ES( \201minus\202. Use
+  )SM(.)ES( \201dot\202 only for exten)HY(sions)YH(, that is, trail)HY(ing)YH( parts of the
+  name that )I(clas)HY(sify)YH()ES( your files. Exam)HY(ples)YH( of good names:)EP(
+
+  ) 4 21 PR(SmallVector.hxx
+small-vector.hxx
+small_vector.hxx
+small-vector.test.cxx)RP(
+
+  )0 P(Exam)HY(ples)YH( of bad names:)EP(
+
+  ) 2 16 PR(small+vector.hxx
+small.vector.hxx)RP(
+
+  )BR(
+  )0 P(If you are using )SM(_)ES( or )SM(-)ES( as word sepa)HY(ra)HY(tors)YH( in
+  filesys)HY(tem)YH( names, pick one and use it consis)HY(tently)YH( through)HY(out)YH( the
+  project.)EP(
+  )BR(
+
+  )0 P(The C source file exten)HY(sions)YH( are always )SM(.h)ES(/)SM(.c)ES(.
+  The two alter)HY(na)HY(tive)YH( C++ source file exten)HY(sion)YH( schemes are )SM(.?pp)ES(
+  and )SM(.?xx)ES(:)EP(
+
+  ) 7 22 PR(file        .?pp  .?xx
+
+header      .hpp  .hxx
+module      .mpp  .mxx
+inline      .ipp  .ixx
+template    .tpp  .txx
+source      .cpp  .cxx)RP(
+
+  )BR(
+  )0 P(The )SM(.mxx)ES(/)SM(.mpp)ES( exten)HY(sion)YH( is for the module
+  inter)HY(face)YH( trans)HY(la)HY(tion)YH( units with module imple)HY(men)HY(ta)HY(tion)YH( units \201if any\202 using
+  the )SM(.cxx)ES(/)SM(.cpp)ES( exten)HY(sion)YH(. If both are present, then
+  it makes sense to use the same base name, similar to headers. For
+  example:)EP(
+
+  ) 2 14 PR(hello-core.mxx
+hello-core.cxx)RP(
+  )BR(
+
+  )0 P(The use of inline and template files is a matter of taste. If used, they
+  are included at the end of the header/module files and contain defi)HY(ni)HY(tions)YH(
+  of inline and non-inline template func)HY(tions)YH(, respec)HY(tively)YH(. The
+  )SM(.?xx)ES(/)SM(.?pp)ES( files with the same name \201or, some)HY(times)YH(,
+  name prefix\202 are assumed to be related and are collec)HY(tively)YH( called a
+  )I(module)ES(. This term is meant to corre)HY(spond)YH( directly
+  to a C++ module.)EP(
+
+  )0 P(By default the )0 2 A()SM()BD(bdep-new\2011\202)ES()ES()EA(
+  command uses the naming )SM(.?xx)ES( scheme. To use )SM(.?pp)ES(
+  instead, pass )SM(-t\240c++,cpp)ES(.)EP(
+
+  )BR(
+  )0 P(There are several reasons not to "reuse" the )SM(.h)ES( C header
+  exten)HY(sion)YH( for C++ files:)EP(
+
+  )UL(  )-1 LI(There can be a need for both C and C++ headers for the same module.
+
+  )-1 LI(It allows tools to accu)HY(rately)YH( deter)HY(mine)YH( the language from the file
+  name.
+
+  )-1 LI(It is easier to search for C++ source code using wild)HY(card)YH( patterns
+  \201)SM(*.?pp)ES(\202.
+  )LU(
+
+  )0 P(The last two reasons are also why headers without exten)HY(sions)YH( are prob)HY(a)HY(bly)YH(
+  not worth the trouble.)EP(
+  )BR(
+
+  )0 P(Source files corre)HY(spond)HY(ing)YH( to C++ modules need to embed a suffi)HY(cient)YH(
+  amount of "module name tail" in their names to unam)HY(bigu)HY(ously)YH( resolve all the
+  modules used in a project. When deriv)HY(ing)YH( file names from C++ module names,
+  )SM(.)ES( \201dot\202 should be replaced with either )SM(_)ES(
+  \201under)HY(score)YH(\202, )SM(-)ES( \201minus\202, a case change, or a direc)HY(tory)YH(
+  sepa)HY(ra)HY(tor)YH(, accord)HY(ing)YH( to your project's file naming scheme. For example, if
+  our )SM(libhello)ES( had two modules, )SM(hello.core)ES( and
+  )SM(hello.extra)ES(, then their inter)HY(face)YH( units could be named as
+  follows:)EP(
+
+  ) 14 15 PR(hello-core.mxx
+hello-extra.mxx
+
+hello_core.mxx
+hello_extra.mxx
+
+HelloCore.mxx
+HelloExtra.mxx
+
+hello/core.mxx
+hello/extra.mxx
+
+core.mxx
+extra.mxx)RP(
+
+  )0 P(As discussed in the next section, public module names should start with
+  the project name and for such modules it is custom)HY(ary)YH( to omit this first
+  compo)HY(nent)YH( from file names \201the last variant in the above example\202. See also
+  )0 2 A(Build)HY(ing)YH(
+  Modules)EA( for a more detailed discus)HY(sion)YH( of the module name to file name
+  mapping.)EP(
+
+  )0 2 15 H(3.3)WB 35 Sn()WB 17 Sn( Source Contents)EH(
+
+  )0 P(Let's now move inside our source files. All macros defined by a project,
+  such as include guards, version and symbol export macros, etc., must all
+  start with the project name \201includ)HY(ing)YH( the )SM(lib)ES( prefix for
+  libraries\202, for example )SM(LIBHELLO_VERSION)ES(. Simi)HY(larly)YH(, the
+  library's names)HY(pace)YH( and module names \201both public and imple)HY(men)HY(ta)HY(tion)YH( detail\202
+  should all start with the library name but without the )SM(lib)ES(
+  prefix. For example:)EP(
+
+  ) 8 25 PR(// libhello/hello.mxx
+
+export module hello.core;
+
+namespace hello
+{
+  ...
+})RP(
+
+  )0 P(An executable project may use a names)HY(pace)YH( \201in which case it is natural to
+  call it after the project\202 and its \201private\202 modules shouldn't be qual)HY(i)HY(fied)YH(
+  with the project name \201in order not to clash with simi)HY(larly)YH( named modules
+  from the corre)HY(spond)HY(ing)YH( library, if any\202. A library may
+  also have private modules in which case they shouldn't be qual)HY(i)HY(fied)YH(
+  either.)EP(
+
+  )BR(
+  )0 P(Hope)HY(fully)YH( by now the recom)HY(men)HY(da)HY(tion)YH( for the )SM(lib)ES( prefix
+  should be easy to under)HY(stand)YH(: often)HY(times)YH( executa)HY(bles)YH( and libraries come in
+  pairs, for example )SM(hello)ES( and )SM(libhello)ES(, with the
+  reusable func)HY(tion)HY(al)HY(ity)YH( being factored out from the executable into the
+  library. It is natural to want to use the same name )I(stem)ES(
+  \201)SM(hello)ES( in our case\202 for both.)EP(
+
+  )0 P(The above naming scheme \201with the )SM(lib)ES( prefix present in some
+  names but not others\202 is care)HY(fully)YH( chosen to allow such library/executable
+  pairs to coexist and be used together without too much fric)HY(tion)YH(. For
+  example, both the library and executable can have a header called
+  )SM(utility.hxx)ES( with the executable being able to include both and
+  even get the "merged" func)HY(tion)HY(al)HY(ity)YH( without extra effort \201since they use the
+  same names)HY(pace)YH(\202:)EP(
+
+  ) 9 40 PR(// hello/hello.cxx
+
+#include <hello/utility.hxx>
+#include <libhello/utility.hxx>
+
+namespace hello
+{
+  // Contains names from both utilities.
+})RP(
+  )BR(
+
+  )0 P(A canon)HY(i)HY(cal)YH( library project contains two special headers:
+  )SM(export.hxx)ES( \201or )SM(export.hpp)ES(\202 that defines the
+  library's symbol export)HY(ing)YH( macro as well as )SM(version.hxx)ES( \201or
+  )SM(version.hpp)ES(\202 that defines the library's version macros \201see )0 2 A()SM(version)ES(
+  Module)EA( for details\202.)EP(
+
+  )0 2 16 H(3.4)WB 36 Sn()WB 18 Sn( Tests)EH(
+
+  )0 P(A project may have )I(unit)ES( and/or )I(func)HY(tional)YH(/inte)HY(gra)HY(tion)YH()ES(
+  tests. Unit tests exer)HY(cise)YH( each module's \201poten)HY(tially)YH( private\202 func)HY(tion)HY(al)HY(ity)YH(
+  in isola)HY(tion)YH(. In contrast, func)HY(tional)YH(/inte)HY(gra)HY(tion)YH( tests exer)HY(cise)YH( the project
+  via its public API, just like the real users of the project would.)EP(
+
+  )0 P(A source file that imple)HY(ments)YH( a module's unit tests should be placed next
+  to that module's files and be called with the module's name plus the
+  )SM(.test)ES( second-level exten)HY(sion)YH(. It is expected to imple)HY(ment)YH( an
+  executable \201that is, define )SM(main\201\202)ES(\202. If a module uses
+  Testscript for unit testing, then the corre)HY(spond)HY(ing)YH( file should be called
+  with the module's name plus the )SM(.test.testscript)ES( exten)HY(sion)YH(. For
+  example:)EP(
+
+  ) 6 29 PR(libhello/
+\267-- libhello/
+    |-- hello.hxx
+    |-- hello.cxx
+    |-- hello.test.cxx
+    \267-- hello.test.testscript)RP(
+
+  )BR(
+  )0 P(All source files \201that is, headers, modules, etc\202 with the
+  )SM(.test)ES( second-level exten)HY(sion)YH( are assumed to belong to unit
+  tests and are auto)HY(mat)HY(i)HY(cally)YH( excluded from the library/executable
+  sources.)EP(
+  )BR(
+
+  )0 P(A library's func)HY(tional)YH(/inte)HY(gra)HY(tion)YH( tests should go into the
+  )SM(tests/)ES( subdi)HY(rec)HY(tory)YH(. Each such test should reside in a sepa)HY(rate)YH(
+  subdi)HY(rec)HY(tory)YH(, poten)HY(tially)YH( orga)HY(nized)YH( into nested subdi)HY(rec)HY(to)HY(ries)YH( \201for
+  instance, to corre)HY(spond)YH( to the source direc)HY(tory)YH( compo)HY(nents)YH(\202. For example, if
+  we were creat)HY(ing)YH( an XML parsing and seri)HY(al)HY(iza)HY(tion)YH( library, then our
+  )SM(tests/)ES( could have the follow)HY(ing)YH( layout:)EP(
+
+  ) 13 22 PR(tests/
+|-- basics/
+|   |-- driver.cxx
+|   \267-- buildfile
+|-- parser/
+|   |-- pull/
+|   |   |-- driver.cxx
+|   |   \267-- buildfile
+|   \267-- push/
+|       |-- driver.cxx
+|       \267-- buildfile
+\267-- serializer/
+    \267-- ...)RP(
+
+  )0 P(In the canon)HY(i)HY(cal)YH( library project created by )SM(bdep-new)ES( the
+  )SM(tests/)ES( subdi)HY(rec)HY(tory)YH( is an unnamed subpro)HY(ject)YH( \201in the build
+  system terms\202. This allows us to build and run tests against an installed
+  version of the library \201see )0 2 A(Testing)EA(
+  for more infor)HY(ma)HY(tion)YH( on the contents of this direc)HY(tory)YH(\202.)EP(
+
+  )BR(
+  )0 P(The )SM(build2)ES( CI imple)HY(men)HY(ta)HY(tion)YH( will auto)HY(mat)HY(i)HY(cally)YH( perform the
+  instal)HY(la)HY(tion)YH( test if a project contains the )SM(tests/)ES( subpro)HY(ject)YH(.
+  See )SM(bbot)ES( )0 2 A(Worker
+  Logic)EA( for details.)EP(
+  )BR(
+
+  )0 P(By default executable projects do not have the )SM(tests/)ES(
+  subpro)HY(jects)YH( instead placing inte)HY(gra)HY(tion)YH( tests next to the source code \201the
+  )SM(testscript)ES( file; see )0 2 A(The build2 Testscript
+  Language)EA( for details\202. However, if desired, executable projects can have
+  the )SM(tests/)ES( subpro)HY(ject)YH(, the same as libraries.)EP(
+
+  )BR(
+  )0 P(By default projects created by )SM(bdep-new)ES( include support for
+  func)HY(tional)YH(/inte)HY(gra)HY(tion)YH( testing but exclude support for unit testing. These
+  defaults, however, can be over)HY(rid)HY(den)YH( with )SM(no-tests)ES( and
+  )SM(unit-tests)ES( options, respec)HY(tively)YH(. For example:)EP(
+
+  ) 1 44 PR($ bdep new -l c++ -t lib,unit-tests libhello)RP(
+
+  )0 P(The ratio)HY(nale)YH( behind these defaults is that if a func)HY(tion)HY(al)HY(ity)YH( can be
+  tested through the public API, then we should gener)HY(ally)YH( prefer inte)HY(gra)HY(tion)YH(
+  to unit testing. And in simple projects the entire func)HY(tion)HY(al)HY(ity)YH( is often
+  exposed through the public API. At the same time, support for unit testing
+  adds extra complex)HY(ity)YH( to the build infras)HY(truc)HY(ture)YH(. Note also that it is
+  fairly straight)HY(for)HY(ward)YH( to add support for unit testing at a later stage. The
+  rele)HY(vant)YH( build logic is local)HY(ized)YH( in the source subdi)HY(rec)HY(tory)YH(
+  )SM(build)HY(file)YH()ES( so you can simply gener)HY(ate)YH( a new project with unit
+  tests enabled and copy over the rele)HY(vant)YH( parts.)EP(
+  )BR(
+
+  )0 2 17 H(3.5)WB 37 Sn()WB 19 Sn( Build Output)EH(
+
+  )0 P(There are no )SM(bin/)ES( or )SM(obj/)ES( subdi)HY(rec)HY(to)HY(ries)YH(: build
+  output \201object files, libraries, executa)HY(bles)YH(, etc\202 go into a paral)HY(lel)YH(
+  direc)HY(tory)YH( struc)HY(ture)YH( \201in case of an out of source build\202 or next to the
+  sources \201in case of an in source build\202. See )0 2 A(Output
+  Direc)HY(to)HY(ries)YH( and Scopes)EA( for details on in and out of source builds.)EP(
+
+  )0 P(Projects managed with )0 2 A()SM()BD(bdep\2011\202)ES()ES()EA( are always
+  built out-of-source. However, by default, the source direc)HY(tory)YH( is config)HY(ured)YH(
+  as )I(forwarded)ES( to one of the out-of-source builds. This has two
+  effects: we can run the build system driver )0 2 A()SM()BD(b\2011\202)ES()ES()EA( directly in the
+  source direc)HY(tory)YH( and certain "inter)HY(est)HY(ing)YH(" targets \201such as executa)HY(bles)YH(,
+  docu)HY(men)HY(ta)HY(tion)YH(, test results, etc\202 will be auto)HY(mat)HY(i)HY(cally)YH( )I(back)HY(linked)YH()ES( to
+  the source direc)HY(tory)YH( \201see )0 2 A(Config)HY(u)HY(ra)HY(tion)YH()EA(
+  for details on forwarded config)HY(u)HY(ra)HY(tions)YH(\202. The follow)HY(ing)YH( listing illus)HY(trates)YH(
+  this setup for our )SM(hello)ES( project \201executa)HY(bles)YH( are marked with
+  )SM(*)ES(\202:)EP(
+
+  ) 6 36 PR(                 hello-gcc/
+hello/    ~~>    \267-- hello/
+|-- build/    ~~>    |-- build/
+\267-- hello/    ~~>    \267-- hello/
+    |-- hello.cxx        |-- hello.o
+    \267-- hello     -->    \267-- *hello)RP(
+
+  )0 P(The result is an )I(as-if)ES( in-source build with all the bene)HY(fits)YH( \201such
+  as having both source and rele)HY(vant)YH( output in the same direc)HY(tory)YH(\202 but without
+  any of the draw)HY(back)YH( \201such as the inabil)HY(ity)YH( to have multi)HY(ple)YH( builds or source
+  direc)HY(tory)YH( clut)HY(tered)YH( with object files\202.)EP(
+
+  )BR(
+  )0 P(The often cited moti)HY(va)HY(tion)YH( for placing executa)HY(bles)YH( into )SM(bin/)ES(
+  is that in many build systems it is the only way to make things runnable in
+  a reason)HY(ably)YH( cross-plat)HY(form)YH( manner. The major draw)HY(back)YH( of this arrange)HY(ment)YH(
+  is the need for unique executable names which is espe)HY(cially)YH( constrain)HY(ing)YH(
+  when writing tests where it is conve)HY(nient)YH( to call the executable just
+  )SM(driver)ES( or )SM(test)ES(.)EP(
+
+  )0 P(In )SM(build2)ES( there is no such restric)HY(tion)YH( and all executa)HY(bles)YH(
+  can run )I(in-place)ES(. This is achieved with )SM(rpath)ES( which is
+  emulated with DLL assem)HY(blies)YH( on Windows.)EP(
+  )BR(
+
+)BR(
+
+)WB NL
+/TE t D NP /OU t D TU PM 1 eq and{/Pn () D showpage}if end restore

@@ -1,0 +1,3880 @@
+# file      : tests/pkg-build.testscript
+# license   : MIT; see accompanying LICENSE file
+
+.include common.testscript \
+         config.testscript \
+         remote.testscript \
+         remote-git.testscript
+
+# Source repository:
+#
+# pkg-build
+# |-- libbar-1.0.0.tar.gz -> libfoo
+# |-- libbaz-1.1.0.tar.gz -> libfoo, libbar
+# |-- libfix-0.0.1.tar.gz
+# |-- libfoo-0.0.1.tar.gz -> libfix
+# |-- libfoo-1.0.0.tar.gz
+# |
+# |-- libfoo-1.1.0
+# |   |-- build
+# |   |   `-- bootstrap.build
+# |   |-- buildfile
+# |   `-- manifest
+# |
+# |-- libfoo-1.1.0.tar.gz
+# |-- libfoo-1.2.0.tar.gz
+# |
+# |-- t0a
+# |   |-- libbar-0.0.1.tar.gz   -> libbaz == 0.0.1
+# |   |-- libbaz-0.0.1.tar.gz   -> libfox
+# |   |-- libbaz-0.0.3.tar.gz   -> libfoo
+# |   |-- libbox-0.0.1.tar.gz   -> libbaz
+# |   |-- libfix-0.0.1.tar.gz
+# |   |-- libfoo-0.0.1.tar.gz   -> libfix
+# |   |-- libfox-0.0.1.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t0b
+# |   |-- libbar-0.0.2.tar.gz   -> libbaz <= 0.0.2
+# |   |-- libbaz-0.0.2.tar.gz   -> libfoo
+# |   |-- libbiz-0.0.2.tar.gz   -> libbaz <= 0.0.3
+# |   |-- libfoo-1.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t0c
+# |   |-- libbar-0.0.3.tar.gz   -> libbaz
+# |   |-- libbar-1.0.0.tar.gz   -> libfoo
+# |   |-- libbaz-0.0.3.tar.gz   -> libfoo
+# |   |-- libbaz-0.0.4.tar.gz
+# |   |-- libbaz-0.1.0.tar.gz
+# |   |-- libbox-0.0.1.tar.gz   -> libbaz
+# |   |-- libfix-0.0.3.tar.gz   -> libbaz >= 0.0.3
+# |   |-- libfoo-1.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t0d
+# |   |-- libbiz-0.0.1.tar.gz   -> libbox, libfox
+# |   |-- libbox-0.0.2.tar.gz   -> libfoo == 1.0.0
+# |   |-- libfix-0.0.1.tar.gz
+# |   |-- libfox-0.0.2.tar.gz   -> libfoo == 0.0.1
+# |   |-- libfoo-0.0.1.tar.gz   -> libfix
+# |   |-- libfoo-1.0.0.tar.gz
+# |   |-- libfox-0.0.1.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t1
+# |   |-- libfoo-1.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t2
+# |   |-- libbar-1.0.0.tar.gz   -> libfoo
+# |   |-- libfoo-1.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t3                        -> t2 (prerequisite repository)
+# |   |-- libbaz-1.0.0.tar.gz   -> libbar
+# |   |-- libfox-1.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t4a
+# |   |-- libfoo-1.1.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t4b                       -> t4a (prerequisite repository)
+# |   |-- libbar-1.1.0.tar.gz   -> libfoo == 1.1.0
+# |   `-- repositories.manifest
+# |
+# |-- t4c                       -> t4b (prerequisite repository)
+# |   |-- libbaz-1.1.0.tar.gz   -> libfoo, libbar
+# |   |-- libfoo-1.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t4d                       -> t4c (complement repository)
+# |   |-- libbiz-1.0.0.tar.gz   -> libfox, libfoo, libbaz
+# |   |-- libfox-1.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t4e
+# |   |-- libfoo-1.1.0+1.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t5
+# |   |-- libbar-1.2.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- t6
+# |   |-- libBar-2.0.0.tar.gz
+# |   `-- repositories.manifest
+# |
+# |-- libhello-1.0.0
+# |   |-- build
+# |   |   |-- bootstrap.build
+# |   |   |-- export.build
+# |   |   `-- root.build
+# |   `-- *
+# |
+# `-- git
+#     |-- libbar.git            -> style-basic.git (prerequisite repository)
+#     |-- libbaz.git
+#     `-- style-basic.git
+
+# Prepare repositories used by tests if running in the local mode.
+#
++if! $remote
+  rep_create += 2>!
+
+  cp -r $src/t0a $out/t0a && $rep_create $out/t0a &$out/t0a/packages.manifest
+  cp -r $src/t0b $out/t0b && $rep_create $out/t0b &$out/t0b/packages.manifest
+  cp -r $src/t0c $out/t0c && $rep_create $out/t0c &$out/t0c/packages.manifest
+  cp -r $src/t0d $out/t0d && $rep_create $out/t0d &$out/t0d/packages.manifest
+  cp -r $src/t1  $out/t1  && $rep_create $out/t1  &$out/t1/packages.manifest
+  cp -r $src/t2  $out/t2  && $rep_create $out/t2  &$out/t2/packages.manifest
+  cp -r $src/t3  $out/t3  && $rep_create $out/t3  &$out/t3/packages.manifest
+  cp -r $src/t4a $out/t4a && $rep_create $out/t4a &$out/t4a/packages.manifest
+  cp -r $src/t4b $out/t4b && $rep_create $out/t4b &$out/t4b/packages.manifest
+  cp -r $src/t4c $out/t4c && $rep_create $out/t4c &$out/t4c/packages.manifest
+  cp -r $src/t4d $out/t4d && $rep_create $out/t4d &$out/t4d/packages.manifest
+  cp -r $src/t4e $out/t4e && $rep_create $out/t4e &$out/t4e/packages.manifest
+  cp -r $src/t5  $out/t5  && $rep_create $out/t5  &$out/t5/packages.manifest
+  cp -r $src/t6  $out/t6  && $rep_create $out/t6  &$out/t6/packages.manifest
+
+  # Create git repositories.
+  #
+  $git_extract $src/git/style-basic.tar
+  $git_extract $src/git/libbar.tar &$out_git/state0/***
+  $git_extract $src/git/libbaz.tar &$out_git/state1/***
+end
+
+config_cxx = config.cxx=$quote($recall($cxx.path) $cxx.config.mode, true)
+
+pkg_configure += -d cfg $config_cxx 2>!
+pkg_disfigure += -d cfg
+pkg_drop      += -d cfg --yes 2>!
+pkg_fetch     += -d cfg 2>!
+pkg_purge     += -d cfg
+pkg_status    += -d cfg
+pkg_unpack    += -d cfg 2>!
+rep_add       += -d cfg 2>!
+rep_remove    += -d cfg 2>!
+rep_fetch     += -d cfg --auth all --trust-yes 2>!
+
+# Let's disable the progress indication that complicates stderr output
+# validation.
+#
+test.options += --no-progress
+
+: libfoo
+:
+: Test building different versions of libfoo.
+:
+{
+  test.arguments += --print-only
+
+  : no-name
+  :
+  $clone_root_cfg;
+  $* 2>>EOE != 0
+    error: package name argument expected
+      info: run 'bpkg help pkg-build' for more information
+    EOE
+
+  : version
+  :
+  {
+    : empty
+    :
+    $clone_root_cfg;
+    $* libfoo/ 2>>EOE != 0
+      error: empty package version in 'libfoo/'
+      EOE
+
+    : earliest
+    :
+    $clone_root_cfg;
+    $* libfoo/1.0.0- 2>>EOE != 0
+      error: invalid package version '1.0.0-' in 'libfoo/1.0.0-': earliest version
+      EOE
+
+    : earliest-constraint
+    :
+    $clone_root_cfg;
+    $* -- 'libfoo == 1.0.0-' 2>>EOE != 0
+      error: invalid package version constraint '== 1.0.0-' in 'libfoo == 1.0.0-': invalid version: equal version endpoints are earliest
+      EOE
+
+    : stub
+    :
+    $clone_root_cfg;
+    $* libfoo/0+1 2>>EOE != 0
+      error: invalid package version '0+1' in 'libfoo/0+1': stub version
+      EOE
+
+    : stub-constraint
+    :
+    $clone_root_cfg;
+    $* -- 'libfoo [0 1]' 2>>EOE != 0
+      error: invalid package version constraint '[0 1]' in 'libfoo [0 1]': endpoint is a stub
+      EOE
+  }
+
+  : unknown-package
+  :
+  $clone_root_cfg;
+  $* libfoo 2>>/EOE != 0
+    error: unknown package libfoo
+      info: configuration cfg/ has no repositories
+      info: use 'bpkg rep-add' to add a repository
+    EOE
+
+  : unknown-package-ver
+  :
+  $clone_root_cfg;
+  $* libfoo/1.0.0 2>>/EOE != 0
+    error: unknown package libfoo
+      info: configuration cfg/ has no repositories
+      info: use 'bpkg rep-add' to add a repository
+    EOE
+
+  : unknown-package-constraint
+  :
+  $clone_root_cfg;
+  $* 'libfoo>1.0.0' 2>>/EOE != 0
+    error: unknown package libfoo
+      info: configuration cfg/ has no repositories
+      info: use 'bpkg rep-add' to add a repository
+    EOE
+
+  : archive
+  :
+  $clone_root_cfg;
+  $* $src/libfoo-1.1.0.tar.gz >'new libfoo/1.1.0'
+
+  : dir
+  :
+  $clone_root_cfg;
+  $* $src/libfoo-1.1.0/ >'new libfoo/1.1.0'
+
+  : unpacked-dir
+  :
+  {
+    $clone_root_cfg && $pkg_unpack -e $src/libfoo-1.1.0;
+
+    $* libfoo               >'update libfoo/1.1.0';
+    $* libfoo/1.1.0         >'update libfoo/1.1.0';
+    $* -- 'libfoo == 1.1.0' >'update libfoo/1.1.0';
+    $* libfoo libfoo        >'update libfoo/1.1.0';
+
+    $* libfoo libfoo/1.1.0 2>>EOE != 0;
+      error: duplicate package libfoo
+        info: first mentioned as libfoo
+        info: second mentioned as libfoo/1.1.0
+      EOE
+
+    $* libfoo/1.1.0 libfoo 2>>EOE != 0;
+      error: duplicate package libfoo
+        info: first mentioned as libfoo/1.1.0
+        info: second mentioned as libfoo
+      EOE
+
+    $* libfoo/1.1.0 libfoo/1.1.0 >'update libfoo/1.1.0';
+
+    $* libfoo/1.0.0 2>>/EOE != 0;
+      error: unknown package libfoo
+        info: configuration cfg/ has no repositories
+        info: use 'bpkg rep-add' to add a repository
+      EOE
+
+    $pkg_purge libfoo 2>'purged libfoo/1.1.0'
+  }
+
+  : t1
+  :
+  {
+    +$clone_root_cfg && $rep_add $rep/t1 && $rep_fetch
+
+    : downgrade
+    :
+    {
+      $clone_cfg && $pkg_unpack -e $src/libfoo-1.1.0;
+
+      $* libfoo       >'update libfoo/1.1.0';
+      $* libfoo/1.0.0 >'downgrade libfoo/1.0.0';
+
+      $* libfoo/0.0.1 2>>EOE != 0;
+        error: libfoo/0.0.1 is not available in source
+          info: specify sys:libfoo/0.0.1 if it is available from the system
+        EOE
+
+      $pkg_purge libfoo 2>'purged libfoo/1.1.0'
+    }
+
+    : downgrade-constraint
+    :
+    {
+      $clone_cfg && $pkg_unpack -e $src/libfoo-1.1.0;
+
+      $* libfoo         >'update libfoo/1.1.0';
+      $* 'libfoo<1.1.0' >'downgrade libfoo/1.0.0';
+
+      $* 'libfoo<1.0.0' 2>>EOE != 0;
+        error: 'libfoo < 1.0.0' is not available in source
+          info: specify sys:libfoo/... if it is available from the system
+        EOE
+
+      $pkg_purge libfoo 2>'purged libfoo/1.1.0'
+    }
+
+    : upgrade
+    :
+    {
+      $clone_cfg;
+      $pkg_fetch -e $src/libfoo-0.0.1.tar.gz && $pkg_unpack libfoo;
+      $pkg_fetch -e $src/libfix-0.0.1.tar.gz && $pkg_unpack libfix;
+
+      $* libfoo >'upgrade libfoo/1.0.0';
+
+      $* libfoo/0.0.1 >>EOE;
+        update libfix/0.0.1 (required by libfoo)
+        update libfoo/0.0.1
+        EOE
+
+      $* libfoo/1.1.0 2>>EOE != 0;
+        error: libfoo/1.1.0 is not available in source
+          info: specify sys:libfoo/1.1.0 if it is available from the system
+        EOE
+
+      $pkg_purge libfoo 2>'purged libfoo/0.0.1';
+      $pkg_purge libfix 2>'purged libfix/0.0.1'
+    }
+
+    : upgrade-failure
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo       >'new libfoo/1.0.0';
+      $* libfoo/1.0.0 >'new libfoo/1.0.0';
+
+      $* libfoo/1.1.0 2>>EOE != 0
+        error: libfoo/1.1.0 is not available in source
+          info: specify sys:libfoo/1.1.0 if it is available from the system
+        EOE
+    }
+  }
+
+  : revision
+  :
+  {
+    +$clone_root_cfg
+    +$rep_add $rep/t4e && $rep_fetch
+
+    : latest
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo/1.1.0 >>EOO
+        new libfoo/1.1.0+1
+        EOO
+    }
+
+    : zero
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo/1.1.0+0 >>EOO
+        new libfoo/1.1.0
+        EOO
+    }
+  }
+}
+
+: libbar-libfoo
+:
+: Test building libbar that depends on libfoo.
+:
+{
+  test.arguments += --print-only
+
+  : unknown-dependency
+  :
+  $clone_root_cfg;
+  $* $src/libbar-1.0.0.tar.gz 2>>EOE != 0
+    error: unknown dependency libfoo of package libbar
+    info: while satisfying libbar/1.0.0
+    EOE
+
+  : t2
+  :
+  {
+    +$clone_root_cfg && $rep_add $rep/t2 && $rep_fetch
+
+    : build-dependency
+    :
+    {
+      $clone_cfg;
+
+      $* libbar >>EOO;
+        new libfoo/1.0.0 (required by libbar)
+        new libbar/1.0.0
+        EOO
+
+      $* libbar libfoo >>EOO;
+        new libfoo/1.0.0
+        new libbar/1.0.0
+        EOO
+
+      $* libbar libfoo/1.0.0 >>EOO;
+        new libfoo/1.0.0
+        new libbar/1.0.0
+        EOO
+
+      $* libbar libfoo libbar/1.0.0 2>>EOE != 0;
+        error: duplicate package libbar
+          info: first mentioned as libbar
+          info: second mentioned as libbar/1.0.0
+        EOE
+
+      $* libbar libfoo/1.1.0 2>>EOE != 0
+        error: libfoo/1.1.0 is not available in source
+          info: specify sys:libfoo/1.1.0 if it is available from the system
+        EOE
+    }
+
+    : upgrade-dependency
+    :
+    {
+      $clone_cfg;
+      $pkg_fetch -e $src/libfoo-0.0.1.tar.gz && $pkg_unpack libfoo;
+      $pkg_fetch -e $src/libfix-0.0.1.tar.gz && $pkg_unpack libfix;
+
+      $* libbar >>EOO;
+        update libfix/0.0.1 (required by libfoo)
+        update libfoo/0.0.1 (required by libbar)
+        new libbar/1.0.0
+        EOO
+
+      $* libbar libfoo >>EOO;
+        upgrade libfoo/1.0.0
+        new libbar/1.0.0
+        EOO
+
+      $* libbar libfoo/0.0.1 >>EOO;
+        update libfix/0.0.1 (required by libfoo)
+        update libfoo/0.0.1
+        new libbar/1.0.0
+        EOO
+
+      $pkg_purge libfoo 2>'purged libfoo/0.0.1';
+      $pkg_purge libfix 2>'purged libfix/0.0.1'
+    }
+
+    : downgrade-dependency
+    :
+    {
+      $clone_cfg && $pkg_unpack -e $src/libfoo-1.1.0;
+
+      $* libbar >>EOO;
+        update libfoo/1.1.0 (required by libbar)
+        new libbar/1.0.0
+        EOO
+
+      $* libbar libfoo >>EOO;
+        update libfoo/1.1.0
+        new libbar/1.0.0
+        EOO
+
+      $* libbar libfoo/1.0.0 >>EOO;
+        downgrade libfoo/1.0.0
+        new libbar/1.0.0
+        EOO
+
+      $pkg_purge libfoo 2>'purged libfoo/1.1.0'
+    }
+  }
+
+  : dependency-revision
+  :
+  {
+    +$clone_root_cfg && $rep_add $rep/t4e && $rep_fetch
+
+    : latest
+    :
+    {
+      $clone_cfg;
+
+      $* libbar/1.1.0 >>EOO
+        new libfoo/1.1.0+1 (required by libbar)
+        new libbar/1.1.0
+        EOO
+    }
+
+    : zero
+    :
+    {
+      $clone_cfg;
+
+      $* libbar/1.1.1 >>EOO
+        new libfoo/1.1.0 (required by libbar)
+        new libbar/1.1.1
+        EOO
+    }
+  }
+}
+
+: libbaz-libbar
+:
+: Test building libbaz that depends on libbar; libbar is in prerequisite
+: repository.
+:
+{
+  test.arguments += --print-only
+
+  : t3
+  :
+  {
+    +$clone_root_cfg && $rep_add $rep/t3 && $rep_fetch
+
+    : prerequisites-build-failure
+    :
+    : Fail to build packages that are only in prerequisite repository.
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo 2>>EOE != 0;
+        error: unknown package libfoo
+        EOE
+
+      $* libbar 2>>EOE != 0;
+        error: unknown package libbar
+        EOE
+
+      $* libbaz libbar 2>>EOE != 0
+        error: unknown package libbar
+        EOE
+    }
+
+    : prerequisites-build
+    :
+    $clone_cfg;
+    $* libbaz >>EOO
+      new libfoo/1.0.0 (required by libbar)
+      new libbar/1.0.0 (required by libbaz)
+      new libbaz/1.0.0
+      EOO
+
+    : different-build-order
+    :
+    {
+      +$clone_cfg && $rep_add $rep/t2 && $rep_fetch
+
+      : fox-foo
+      :
+      $clone_cfg;
+      $* libfox libfoo >>EOO
+        new libfox/1.0.0
+        new libfoo/1.0.0
+        EOO
+
+      : foo-fox
+      :
+      $clone_cfg;
+      $* libfoo libfox >>EOO
+        new libfoo/1.0.0
+        new libfox/1.0.0
+        EOO
+
+      : baz-foo
+      :
+      $clone_cfg;
+      $* libbaz libfoo >>EOO
+        new libfoo/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        EOO
+
+      : foo-baz
+      :
+      $clone_cfg;
+      $* libfoo libbaz >>EOO
+        new libfoo/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        EOO
+
+      : baz-fox
+      :
+      $clone_cfg;
+      $* libbaz libfox >>EOO
+        new libfoo/1.0.0 (required by libbar)
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        new libfox/1.0.0
+        EOO
+
+      : fox-baz
+      :
+      $clone_cfg;
+      $* libfox libbaz >>EOO
+        new libfox/1.0.0
+        new libfoo/1.0.0 (required by libbar)
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        EOO
+
+      : fox-foo-baz
+      :
+      $clone_cfg;
+      $* libfox libfoo libbaz >>EOO
+        new libfox/1.0.0
+        new libfoo/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        EOO
+
+      : fox-baz-foo
+      :
+      $clone_cfg;
+      $* libfox libbaz libfoo >>EOO
+        new libfox/1.0.0
+        new libfoo/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        EOO
+
+      : foo-fox-baz
+      :
+      $clone_cfg;
+      $* libfoo libfox libbaz >>EOO
+        new libfoo/1.0.0
+        new libfox/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        EOO
+
+      : foo-baz-fox
+      :
+      $clone_cfg;
+      $* libfoo libbaz libfox >>EOO
+        new libfoo/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        new libfox/1.0.0
+        EOO
+
+      : baz-fox-foo
+      :
+      : This one is contradictory: baz before fox but fox before foo.
+      :
+      $clone_cfg;
+      $* libbaz libfox libfoo >>EOO
+        new libfox/1.0.0
+        new libfoo/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        EOO
+
+      : baz-foo-fox
+      :
+      $clone_cfg;
+      $* libbaz libfoo libfox >>EOO
+        new libfoo/1.0.0
+        new libbar/1.0.0 (required by libbaz)
+        new libbaz/1.0.0
+        new libfox/1.0.0
+        EOO
+
+      : baz-foo-bar
+      :
+      $clone_cfg;
+      $* libbaz libfoo libbar >>EOO
+        new libfoo/1.0.0
+        new libbar/1.0.0
+        new libbaz/1.0.0
+        EOO
+
+      : baz-bar-foo
+      :
+      $clone_cfg;
+      $* libbaz libbar libfoo >>EOO
+        new libfoo/1.0.0
+        new libbar/1.0.0
+        new libbaz/1.0.0
+        EOO
+    }
+  }
+}
+
+: libbaz-libfoo-libbar
+:
+: Test building libbaz that depends on libfoo and libbar; libbar depends on
+: libfoo == 1.1.0.
+:
+{
+  test.arguments += --print-only
+
+  : t4c
+  :
+  {
+    +$clone_root_cfg && $rep_add $rep/t4c && $rep_fetch
+
+    : baz
+    :
+    $clone_cfg;
+    $* libbaz >>EOO
+      new libfoo/1.1.0 (required by libbar libbaz)
+      new libbar/1.1.0 (required by libbaz)
+      new libbaz/1.1.0
+      EOO
+
+    : foo-baz
+    :
+    $clone_cfg;
+    $* libfoo libbaz >>EOO
+      new libfoo/1.1.0
+      new libbar/1.1.0 (required by libbaz)
+      new libbaz/1.1.0
+      EOO
+
+    : unable-satisfy
+    :
+    $clone_cfg;
+    $* libfoo/1.0.0 libbaz 2>>EOE != 0
+      error: unable to satisfy constraints on package libfoo
+        info: libbar depends on (libfoo == 1.1.0)
+        info: command line depends on (libfoo == 1.0.0)
+        info: available libfoo/1.1.0
+        info: available libfoo/1.0.0
+        info: explicitly specify libfoo version to manually satisfy both constraints
+      info: while satisfying libbar/1.1.0
+      info: while satisfying libbaz/1.1.0
+      EOE
+
+    : not-available
+    :
+    $clone_cfg;
+    $* libfoo/1.1.0 libbaz 2>>EOE != 0
+      error: libfoo/1.1.0 is not available in source
+        info: specify sys:libfoo/1.1.0 if it is available from the system
+      EOE
+
+    : upgrade
+    :
+    {
+      $clone_cfg;
+      $pkg_fetch -e $src/libfoo-0.0.1.tar.gz && $pkg_unpack libfoo;
+      $pkg_fetch -e $src/libfix-0.0.1.tar.gz && $pkg_unpack libfix;
+
+      $* libbaz >>EOO;
+        upgrade libfoo/1.1.0 (required by libbar libbaz)
+        new libbar/1.1.0 (required by libbaz)
+        new libbaz/1.1.0
+        EOO
+
+      $pkg_purge libfoo 2>'purged libfoo/0.0.1';
+      $pkg_purge libfix 2>'purged libfix/0.0.1'
+    }
+
+    : downgrade
+    :
+    {
+      $clone_cfg;
+      $pkg_fetch -e $src/libfoo-1.2.0.tar.gz && $pkg_unpack libfoo;
+
+      $* libbaz >>EOO;
+        downgrade libfoo/1.1.0 (required by libbar libbaz)
+        new libbar/1.1.0 (required by libbaz)
+        new libbaz/1.1.0
+        EOO
+
+      $rep_add $rep/t4a && $rep_fetch;
+
+      $* libfoo/1.1.0 libbaz >>EOO;
+        downgrade libfoo/1.1.0
+        new libbar/1.1.0 (required by libbaz)
+        new libbaz/1.1.0
+        EOO
+
+      $pkg_purge libfoo 2>'purged libfoo/1.2.0'
+    }
+
+    : unable-downgrade
+    :
+    : Test that dependent prevents up/downgrade that would break dependency
+    : constraints.
+    :
+    {
+      $clone_cfg;
+      $pkg_fetch libfoo/1.1.0 && $pkg_unpack libfoo && $pkg_configure libfoo;
+      $pkg_fetch libbar/1.1.0 && $pkg_unpack libbar && $pkg_configure libbar;
+
+      $* libfoo-1.2.0.tar.gz 2>>EOE != 0;
+        error: unknown package libfoo-1.2.0.tar.gz
+        EOE
+
+      $* libfoo/1.0.0 2>>EOE != 0;
+        error: unable to downgrade package libfoo/1.1.0 to 1.0.0
+          info: because package libbar depends on (libfoo == 1.1.0)
+          info: explicitly request up/downgrade of package libbar
+          info: or explicitly specify package libfoo version to manually satisfy these constraints
+        EOE
+
+      $* libfoo/1.1.0 --keep-unused >'update libfoo/1.1.0';
+
+      $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+      $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+    }
+  }
+
+  : dependent-reconfiguration
+  :
+  {
+    test.arguments += --keep-unused
+
+    +$clone_root_cfg
+
+    +$pkg_fetch -e $src/libfoo-1.0.0.tar.gz && $pkg_unpack libfoo
+    +$pkg_configure libfoo
+
+    +$pkg_fetch -e $src/libbar-1.0.0.tar.gz && $pkg_unpack libbar
+    +$pkg_configure libbar
+
+    +$pkg_fetch -e $src/libbaz-1.1.0.tar.gz && $pkg_unpack libbaz
+    +$pkg_configure libbaz
+
+    +$rep_add $rep/t4a && $rep_add $rep/t4b && $rep_fetch
+
+    : bar
+    :
+    : Only libbar/1.1.0 (that we are upgrading to) requires libfoo/1.1.0.
+    : libbaz, that depends on libfoo and libbar, is happy with any version of
+    : its dependencies.
+    :
+    $clone_cfg;
+    $* libbar >>EOO
+      upgrade libfoo/1.1.0 (required by libbar)
+      upgrade libbar/1.1.0
+      reconfigure libbaz (dependent of libbar libfoo)
+      EOO
+
+    : foo
+    :
+    $clone_cfg;
+    $* libfoo >>EOO
+      upgrade libfoo/1.1.0
+      reconfigure libbar (dependent of libfoo)
+      reconfigure libbaz (dependent of libbar libfoo)
+      EOO
+
+    : foo-bar
+    :
+    $clone_cfg;
+    $* libfoo libbar/1.0.0 >>EOO
+      upgrade libfoo/1.1.0
+      reconfigure/update libbar/1.0.0
+      reconfigure libbaz (dependent of libbar libfoo)
+      EOO
+
+    : bar-foo
+    :
+    $clone_cfg;
+    $* libbar/1.0.0 libfoo >>EOO
+      upgrade libfoo/1.1.0
+      reconfigure/update libbar/1.0.0
+      reconfigure libbaz (dependent of libbar libfoo)
+      EOO
+
+    : baz-foo
+    :
+    $clone_cfg;
+    $* libbaz libfoo >>EOO
+      upgrade libfoo/1.1.0
+      reconfigure libbar (dependent of libfoo)
+      reconfigure/update libbaz/1.1.0
+      EOO
+
+    : baz-foo-1.0.0
+    :
+    $clone_cfg;
+    $* libbaz libfoo/1.0.0 >>EOO
+      update libfoo/1.0.0
+      update libbaz/1.1.0
+      EOO
+
+    -$pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0'
+    -$pkg_purge     libbaz 2>'purged libbaz/1.1.0'
+
+    -$pkg_disfigure libbar 2>'disfigured libbar/1.0.0'
+    -$pkg_purge     libbar 2>'purged libbar/1.0.0'
+
+    -$pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0'
+    -$pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+  }
+}
+
+# Note that when we fetch a package from remote repository the bpkg stderr
+# contains fetch program progress output, that comes prior the informational
+# message.
+#
+
+: actual-build
+:
+{
+  test.arguments += --yes
+
+  : with-dependencies
+  :
+  {
+    $clone_root_cfg && $rep_add $rep/t4c && $rep_fetch;
+
+    $* libbaz 2>>~%EOE%;
+      fetched libfoo/1.1.0
+      unpacked libfoo/1.1.0
+      configured libfoo/1.1.0
+      fetched libbar/1.1.0
+      unpacked libbar/1.1.0
+      configured libbar/1.1.0
+      fetched libbaz/1.1.0
+      unpacked libbaz/1.1.0
+      configured libbaz/1.1.0
+      %info: .+ is up to date%
+      updated libbaz/1.1.0
+      EOE
+
+    $pkg_status libfoo/1.1.0 >'libfoo configured 1.1.0';
+    $pkg_status libbar/1.1.0 >'libbar configured 1.1.0';
+    $pkg_status libbaz/1.1.0 >'!libbaz configured 1.1.0';
+
+    $pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0';
+    $pkg_purge     libbaz 2>'purged libbaz/1.1.0';
+
+    $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+    $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+  }
+
+  : hold-fs-fetched
+  :
+  {
+    : direct
+    :
+    {
+      $clone_root_cfg;
+
+      $* $src/libfoo-1.0.0.tar.gz 2>>~%EOE%;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        %info: .+ is up to date%
+        updated libfoo/1.0.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured !1.0.0';
+
+      $* $src/libfoo-1.1.0/ 2>>~%EOE%;
+        disfigured libfoo/1.0.0
+        using libfoo/1.1.0 (external)
+        configured libfoo/1.1.0
+        %info: .+ is up to date%
+        updated libfoo/1.1.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured !1.1.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+    }
+
+    : pre-fetch
+    :
+    {
+      $clone_root_cfg;
+      $pkg_fetch -e $src/libfoo-1.0.0.tar.gz && $pkg_unpack libfoo;
+      $pkg_configure libfoo;
+
+      $pkg_status libfoo >'libfoo configured 1.0.0';
+
+      $* libfoo 2>>~%EOE%;
+        %info: .+ is up to date%
+        updated libfoo/1.0.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured 1.0.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+    }
+  }
+
+  : hold-repo-fetched
+  :
+  {
+    +$clone_root_cfg && $rep_add $rep/t4c && $rep_fetch
+
+    : package-version
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo 2>>~%EOE%;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        %info: .+ is up to date%
+        updated libfoo/1.0.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured 1.0.0 available [1.1.0]';
+
+      $* libfoo/1.0.0 2>>~%EOE%;
+        %info: .+ is up to date%
+        updated libfoo/1.0.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured !1.0.0 available [1.1.0]';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+    }
+
+    : version
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo/1.0.0 2>>~%EOE%;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        %info: .+ is up to date%
+        updated libfoo/1.0.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured !1.0.0 available [1.1.0]';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+    }
+
+    : not-held
+    :
+    {
+      $clone_cfg;
+
+      $* libbaz 2>>~%EOE%;
+        fetched libfoo/1.1.0
+        unpacked libfoo/1.1.0
+        configured libfoo/1.1.0
+        fetched libbar/1.1.0
+        unpacked libbar/1.1.0
+        configured libbar/1.1.0
+        fetched libbaz/1.1.0
+        unpacked libbaz/1.1.0
+        configured libbaz/1.1.0
+        %info: .+ is up to date%
+        updated libbaz/1.1.0
+        EOE
+
+      $pkg_status libfoo >'libfoo configured 1.1.0';
+
+      $pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0';
+      $pkg_purge     libbaz 2>'purged libbaz/1.1.0';
+
+      $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+      $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+    }
+
+    : forcing-upgrade-unheld
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo 2>>~%EOE%;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        %info: .+ is up to date%
+        updated libfoo/1.0.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured 1.0.0 available [1.1.0]';
+
+      $* libbaz 2>>~%EOE%;
+        warning: package libbar dependency on (libfoo == 1.1.0) is forcing upgrade of libfoo/1.0.0 to 1.1.0
+        disfigured libfoo/1.0.0
+        fetched libfoo/1.1.0
+        unpacked libfoo/1.1.0
+        configured libfoo/1.1.0
+        fetched libbar/1.1.0
+        unpacked libbar/1.1.0
+        configured libbar/1.1.0
+        fetched libbaz/1.1.0
+        unpacked libbaz/1.1.0
+        configured libbaz/1.1.0
+        %info: .+ is up to date%
+        updated libbaz/1.1.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured 1.1.0';
+
+      $pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0';
+      $pkg_purge     libbaz 2>'purged libbaz/1.1.0';
+
+      $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+      $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+    }
+
+    : forcing-upgrade-held
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo/1.0.0 2>>~%EOE%;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        %info: .+ is up to date%
+        updated libfoo/1.0.0
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured !1.0.0 available [1.1.0]';
+
+      $* libbaz 2>>EOE != 0;
+        error: package libbar dependency on (libfoo == 1.1.0) is forcing upgrade of libfoo/1.0.0 to 1.1.0
+          info: package version libfoo/1.0.0 is held
+          info: explicitly request version upgrade to continue
+        info: while satisfying libbar/1.1.0
+        info: while satisfying libbaz/1.1.0
+        EOE
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+    }
+  }
+
+  : drop-dependencies
+  :
+  {
+    $clone_root_cfg && $rep_add $rep/t2 && $rep_fetch;
+
+    $* libbar 2>>~%EOE%;
+      fetched libfoo/1.0.0
+      unpacked libfoo/1.0.0
+      configured libfoo/1.0.0
+      fetched libbar/1.0.0
+      unpacked libbar/1.0.0
+      configured libbar/1.0.0
+      %info: .+ is up to date%
+      updated libbar/1.0.0
+      EOE
+
+    $pkg_status libfoo >'libfoo configured 1.0.0';
+    $pkg_status libbar >'!libbar configured 1.0.0';
+
+    $rep_add $rep/t5 && $rep_fetch;
+
+    $* libbar 2>>~%EOE%;
+      disfigured libbar/1.0.0
+      disfigured libfoo/1.0.0
+      purged libfoo/1.0.0
+      fetched libbar/1.2.0
+      unpacked libbar/1.2.0
+      configured libbar/1.2.0
+      %info: .+ is up to date%
+      updated libbar/1.2.0
+      EOE
+
+    $pkg_status libfoo >'libfoo available 1.0.0';
+    $pkg_status libbar >'!libbar configured 1.2.0';
+
+    $* libbar/1.0.0 libfoo 2>>~%EOE%;
+      disfigured libbar/1.2.0
+      fetched libfoo/1.0.0
+      unpacked libfoo/1.0.0
+      configured libfoo/1.0.0
+      fetched libbar/1.0.0
+      unpacked libbar/1.0.0
+      configured libbar/1.0.0
+      %info: .+ is up to date%{2}
+      updated libfoo/1.0.0
+      updated libbar/1.0.0
+      EOE
+
+    $pkg_status libfoo >'!libfoo configured 1.0.0';
+    $pkg_status libbar >'!libbar configured !1.0.0 available 1.2.0';
+
+    $* libbar 2>>~%EOE%;
+      disfigured libbar/1.0.0
+      fetched libbar/1.2.0
+      unpacked libbar/1.2.0
+      configured libbar/1.2.0
+      %info: .+ is up to date%
+      updated libbar/1.2.0
+      EOE
+
+    $pkg_status libfoo >'!libfoo configured 1.0.0';
+    $pkg_status libbar >'!libbar configured 1.2.0';
+
+    $pkg_disfigure libbar 2>'disfigured libbar/1.2.0';
+    $pkg_purge     libbar 2>'purged libbar/1.2.0';
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+  }
+
+  : local-dependency
+  :
+  : Test that the local package can be built against the local dependency
+  : package.
+  :
+  {
+    # Prepare libbar and libbaz (libbaz->libbar) local packages using the
+    # temporary configuration.
+    #
+    $clone_root_cfg;
+
+    $pkg_fetch -e $src/t4b/libbar-1.1.0.tar.gz;
+    $pkg_unpack libbar &cfg/libbar-1.1.0/***;
+
+    $pkg_fetch -e $src/t4c/libbaz-1.1.0.tar.gz;
+    $pkg_unpack libbaz &cfg/libbaz-1.1.0/***;
+
+    mv cfg/libbar-1.1.0 libbar;
+    mv cfg/libbaz-1.1.0 libbaz;
+
+    rm -r cfg && $clone_root_cfg;    # Re-clone.
+    $rep_add $rep/t4a && $rep_fetch;
+
+    $* ./libbar/ 2>>~%EOE%;
+      fetched libfoo/1.1.0
+      unpacked libfoo/1.1.0
+      configured libfoo/1.1.0
+      using libbar/1.1.0 (external)
+      configured libbar/1.1.0
+      %info: .+ is up to date%
+      updated libbar/1.1.0
+      EOE
+
+    $* ./libbaz/ 2>>~%EOE%;
+      using libbaz/1.1.0 (external)
+      configured libbaz/1.1.0
+      %info: .+ is up to date%
+      updated libbaz/1.1.0
+      EOE
+
+    $pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0';
+    $pkg_purge     libbaz 2>'purged libbaz/1.1.0';
+
+    $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+    $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+  }
+
+  : upgrade-all-held
+  :
+  {
+    $clone_root_cfg && $rep_fetch $rep/t2 $rep/t5;
+
+    $* libbar/1.0 2>>~%EOE%;
+      fetched libfoo/1.0.0
+      unpacked libfoo/1.0.0
+      configured libfoo/1.0.0
+      fetched libbar/1.0.0
+      unpacked libbar/1.0.0
+      configured libbar/1.0.0
+      %info: .+ is up to date%
+      updated libbar/1.0.0
+      EOE
+
+    $* --upgrade 2>>~%EOE%;
+      disfigured libbar/1.0.0
+      disfigured libfoo/1.0.0
+      purged libfoo/1.0.0
+      fetched libbar/1.2.0
+      unpacked libbar/1.2.0
+      configured libbar/1.2.0
+      %info: .+ is up to date%
+      updated libbar/1.2.0
+      EOE
+
+    $pkg_status libbar >'!libbar configured 1.2.0';
+
+    $rep_remove $rep/t2 $rep/t5;
+
+    $* --upgrade 2>>/EOE != 0;
+      error: libbar is not available
+        info: configuration cfg/ has no repositories
+        info: use 'bpkg rep-add' to add a repository
+      EOE
+
+    $pkg_drop libbar
+  }
+}
+
+: dependency
+:
+{
+  : upgrade-diag
+  :
+  {
+    +$clone_root_cfg && $rep_fetch $rep/t1
+
+    : warning
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo 2>!;
+      $rep_fetch $rep/t4b;
+
+      $* libbar --yes 2>>~%EOE%;
+        warning: package libbar dependency on (libfoo == 1.1.0) is forcing upgrade of libfoo/1.0.0 to 1.1.0
+        disfigured libfoo/1.0.0
+        fetched libfoo/1.1.0
+        unpacked libfoo/1.1.0
+        configured libfoo/1.1.0
+        fetched libbar/1.1.0
+        unpacked libbar/1.1.0
+        configured libbar/1.1.0
+        %info: .+ is up to date%
+        updated libbar/1.1.0
+        EOE
+
+      $pkg_drop libbar libfoo
+    }
+
+    : error
+    :
+    {
+      $clone_cfg;
+
+      $* libfoo/1.0.0 2>!;
+      $rep_fetch $rep/t4b;
+
+      $* libbar 2>>EOE != 0;
+        error: package libbar dependency on (libfoo == 1.1.0) is forcing upgrade of libfoo/1.0.0 to 1.1.0
+          info: package version libfoo/1.0.0 is held
+          info: explicitly request version upgrade to continue
+        info: while satisfying libbar/1.1.0
+        EOE
+
+      $pkg_drop libfoo
+    }
+
+    : info
+    :
+    {
+      $clone_cfg && $rep_fetch $rep/t2;
+
+      $* libbar --yes 2>!;
+      $rep_fetch $rep/t4b;
+
+      $* -v libbar --yes 2>>~%EOE%;
+        info: package libbar dependency on (libfoo == 1.1.0) is forcing upgrade of libfoo/1.0.0 to 1.1.0
+        %.*
+        EOE
+
+      $pkg_drop libbar
+    }
+
+    : none
+    :
+    {
+      $clone_cfg && $rep_fetch $rep/t2;
+
+      $* libbar --yes 2>!;
+      $rep_fetch $rep/t4b;
+
+      $* libbar --yes 2>>~%EOE%;
+        disfigured libbar/1.0.0
+        disfigured libfoo/1.0.0
+        fetched libfoo/1.1.0
+        unpacked libfoo/1.1.0
+        configured libfoo/1.1.0
+        fetched libbar/1.1.0
+        unpacked libbar/1.1.0
+        configured libbar/1.1.0
+        %info: .+ is up to date%
+        updated libbar/1.1.0
+        EOE
+
+      $pkg_drop libbar
+    }
+  }
+
+  : unknown
+  :
+  {
+    $clone_root_cfg;
+    $rep_fetch $rep/t0c;
+
+    $* '?libbux'      2>'error: unknown package libbux' != 0;
+    $* '?sys:libbux'  2>'error: unknown package sys:libbux' != 0;
+    $* '?libbar/1.3'  2>'error: unknown package libbar/1.3' != 0;
+    $* '?libbar[5 7]' 2>"error: unknown package 'libbar [5 7]'" != 0
+  }
+
+  : constraint
+  :
+  {
+    $clone_root_cfg;
+    $rep_fetch $rep/t0c;
+
+    # Constraint the dependency version.
+    #
+    $* libbox '?libbaz < 0.1.0' 2>>~%EOE%;
+      fetched libbaz/0.0.4
+      unpacked libbaz/0.0.4
+      configured libbaz/0.0.4
+      fetched libbox/0.0.1
+      unpacked libbox/0.0.1
+      configured libbox/0.0.1
+      %info: .+ is up to date%{2}
+      updated libbaz/0.0.4
+      updated libbox/0.0.1
+      EOE
+
+    $pkg_status libbaz >'libbaz configured !0.0.4 available 0.1.0';
+
+    # The selected dependency libbaz/0.0.4 satisfies the constraint, thus it
+    # is not upgraded.
+    #
+    $* '?libbaz < 1.0.0';
+
+    $pkg_status libbaz >'libbaz configured !0.0.4 available 0.1.0';
+
+    # Upgrade the dependency.
+    #
+    $* '?libbaz > 0.0.4' --yes 2>>~%EOE%;
+      disfigured libbox/0.0.1
+      disfigured libbaz/0.0.4
+      fetched libbaz/0.1.0
+      unpacked libbaz/0.1.0
+      configured libbaz/0.1.0
+      configured libbox/0.0.1
+      %info: .+ is up to date%{2}
+      updated libbaz/0.1.0
+      updated libbox/0.0.1
+      EOE
+
+    $pkg_status libbaz >'libbaz configured !0.1.0';
+
+    $pkg_drop libbox
+  }
+
+  : system-no-repo
+  :
+  {
+    $clone_root_cfg;
+
+    cp -r $src/libfoo-1.1.0 libfoo;
+    echo 'depends: libhello >= 1.0' >+libfoo/manifest;
+    $rep_add libfoo --type dir;
+
+    $rep_fetch;
+
+    $* libfoo 2>>~%EOE% != 0;
+      error: unknown dependency libhello >= 1.0 of package libfoo
+      %.+
+      EOE
+
+    $* libfoo '?sys:libhello' 2>'error: unknown package sys:libhello' != 0;
+
+    $* "?sys:libhello/2.0@$rep/t0a" --trust-yes 2>>~%EOE% != 0;
+      %.+
+      %error: package sys:libhello/2\.0 is not found in .+t0a%
+      EOE
+
+    $* libfoo '?sys:libhello/0.1' 2>>~%EOE% != 0;
+      error: unable to satisfy constraints on package libhello
+      %.+
+      EOE
+
+    $* libfoo '?sys:libhello/*' 2>>~%EOE%;
+      configured sys:libhello/*
+      using libfoo/1.1.0 (external)
+      configured libfoo/1.1.0
+      %info: .+ is up to date%
+      updated libfoo/1.1.0
+      EOE
+
+    $pkg_status libhello >'libhello configured,system !*';
+
+    $* '?sys:libhello/2.0' --yes 2>>~%EOE%;
+      disfigured libfoo/1.1.0
+      purged libhello/*
+      configured sys:libhello/2.0
+      configured libfoo/1.1.0
+      %info: .+ is up to date%
+      updated libfoo/1.1.0
+      EOE
+
+    $pkg_status libhello >'libhello configured,system !2.0';
+
+    $pkg_drop libfoo
+  }
+
+  : unused
+  :
+  {
+    test.arguments += --configure-only
+
+    +$clone_root_cfg
+    +$rep_fetch $rep/t2 $rep/t5
+
+    : drop
+    :
+    : Test dropping of unused dependencies (default behavior).
+    :
+    {
+      $clone_cfg;
+
+      # Here we also test that specifying unknown but unused system
+      # dependencies.
+      #
+      $* --yes libbar/1.0.0 '?sys:libbox/*' '?sys:libbux/1' 2>>EOE;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        fetched libbar/1.0.0
+        unpacked libbar/1.0.0
+        configured libbar/1.0.0
+        EOE
+
+      $* libbar/1.2.0 <'y' 2>>EOE;
+          drop libfoo/1.0.0 (unused)
+          upgrade libbar/1.2.0
+        continue? [Y/n] disfigured libbar/1.0.0
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        fetched libbar/1.2.0
+        unpacked libbar/1.2.0
+        configured libbar/1.2.0
+        EOE
+
+      $pkg_status libfoo >'libfoo available 1.0.0';
+
+      $pkg_disfigure libbar 2>'disfigured libbar/1.2.0';
+      $pkg_purge     libbar 2>'purged libbar/1.2.0'
+    }
+
+    : keep
+    :
+    : Test keeping of unused dependencies (--keep-unused option).
+    :
+    {
+      $clone_cfg;
+
+      $* --yes libbar/1.0.0 2>>EOE;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        fetched libbar/1.0.0
+        unpacked libbar/1.0.0
+        configured libbar/1.0.0
+        EOE
+
+      $* --keep-unused libbar/1.2.0 <'y' 2>>EOE;
+          upgrade libbar/1.2.0
+        continue? [Y/n] disfigured libbar/1.0.0
+        fetched libbar/1.2.0
+        unpacked libbar/1.2.0
+        configured libbar/1.2.0
+        EOE
+
+      $pkg_status libfoo >'libfoo configured 1.0.0';
+
+      $pkg_disfigure libbar 2>'disfigured libbar/1.2.0';
+      $pkg_purge     libbar 2>'purged libbar/1.2.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+    }
+
+    : drop-recursive
+    :
+    {
+      test.arguments += --yes
+
+      $clone_root_cfg;
+      $rep_fetch $rep/t0a $rep/t0c;
+
+      $* libbar/0.0.1 2>!;
+
+      $pkg_status libbaz >'libbaz configured 0.0.1 available 0.1.0 0.0.4 0.0.3';
+      $pkg_status libfox >'libfox configured 0.0.1';
+
+      $* libbar 2>>EOE;
+        disfigured libbar/0.0.1
+        disfigured libbaz/0.0.1
+        disfigured libfox/0.0.1
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        purged libfox/0.0.1
+        purged libbaz/0.0.1
+        fetched libbar/1.0.0
+        unpacked libbar/1.0.0
+        configured libbar/1.0.0
+        EOE
+
+      $pkg_status libbaz >'libbaz available 0.1.0 0.0.4 0.0.3 0.0.1';
+      $pkg_status libfox >'libfox available 0.0.1';
+
+      $pkg_drop libbar
+    }
+
+    : drop-unsatisfactory
+    :
+    : Test that a dependency (libbaz/0.0.3) that doesn't satisfy its dependent
+    : (libbar/0.0.1) but get dropped during the plan refinement, doesn't
+    : prevent the command to succeed.
+    :
+    {
+      test.arguments += --yes
+
+      $clone_root_cfg;
+      $rep_fetch $rep/t0a $rep/t0c;
+
+      $* libbar/0.0.1 2>!;
+
+      $pkg_status libbaz >'libbaz configured 0.0.1 available 0.1.0 0.0.4 0.0.3';
+      $pkg_status libfox >'libfox configured 0.0.1';
+
+      $* ?libbar ?libbaz/0.0.3 2>>EOE;
+        disfigured libbar/0.0.1
+        disfigured libbaz/0.0.1
+        disfigured libfox/0.0.1
+        purged libfox/0.0.1
+        purged libbaz/0.0.1
+        purged libbar/0.0.1
+        EOE
+
+      $pkg_status libbar >'libbar available 1.0.0 0.0.3 0.0.1';
+      $pkg_status libbaz >'libbaz available 0.1.0 0.0.4 0.0.3 0.0.1';
+      $pkg_status libfox >'libfox available 0.0.1'
+    }
+  }
+
+  : apply-constraints
+  :
+  : Test that the desired dependency version imposes constraint that is taken
+  : into account during prerequisites collection (see collect_prerequisites()
+  : for more details).
+  :
+  {
+    test.arguments += --yes --configure-only
+
+    : unable-satisfy
+    :
+    {
+      $clone_root_cfg;
+      $rep_fetch $rep/t0a $rep/t0b;
+
+      $* libbar/0.0.1 ?libbaz/0.0.2 2>>EOE != 0;
+        error: unable to satisfy constraints on package libbaz
+          info: libbar depends on (libbaz == 0.0.1)
+          info: command line depends on (libbaz == 0.0.2)
+          info: specify libbaz version to satisfy libbar constraint
+        info: while satisfying libbar/0.0.1
+        EOE
+
+      $* -- libbar/0.0.1 '?libbaz>=0.0.2' 2>>EOE != 0
+        error: unable to satisfy constraints on package libbaz
+          info: libbar depends on (libbaz == 0.0.1)
+          info: command line depends on (libbaz >= 0.0.2)
+          info: specify libbaz version to satisfy libbar constraint
+        info: while satisfying libbar/0.0.1
+        EOE
+    }
+
+    : resolve-conflict
+    :
+    {
+      : satisfy-dependents
+      :
+      : Test resolving a conflict when libfix and libbiz have selected such
+      : versions of their dependency libbaz, that do not satisfy each other
+      : constraints. We resolve the conflict explicitly specifying
+      : ?libbaz/0.0.3 on the command line, which satisfies both constraints.
+      :
+      {
+        $clone_root_cfg;
+        $rep_fetch $rep/t0b $rep/t0c;
+
+        $* libfix libbiz 2>>EOE != 0;
+          error: unable to satisfy constraints on package libbaz
+            info: libfix depends on (libbaz >= 0.0.3)
+            info: libbiz depends on (libbaz <= 0.0.3)
+            info: available libbaz/0.1.0
+            info: available libbaz/0.0.2
+            info: explicitly specify libbaz version to manually satisfy both constraints
+          info: while satisfying libbiz/0.0.2
+          EOE
+
+        $* libfix libbiz ?libbaz/0.0.3 2>>EOE;
+          fetched libfoo/1.0.0
+          unpacked libfoo/1.0.0
+          configured libfoo/1.0.0
+          fetched libbaz/0.0.3
+          unpacked libbaz/0.0.3
+          configured libbaz/0.0.3
+          fetched libfix/0.0.3
+          unpacked libfix/0.0.3
+          configured libfix/0.0.3
+          fetched libbiz/0.0.2
+          unpacked libbiz/0.0.2
+          configured libbiz/0.0.2
+          EOE
+
+        $pkg_status libbaz >'libbaz configured !0.0.3 available 0.1.0 0.0.4';
+
+        $pkg_drop libbiz libfix
+      }
+
+      : postpone
+      :
+      : Same as above but with an opposite order of dependents on the command
+      : line. This would normally fail due the inability to find libbaz/0.0.3
+      : in repositories available to libbiz, unless libbaz dependencies
+      : collection were not postponed (see collect_build_prerequisites()
+      : function for more details).
+      :
+      {
+        $clone_root_cfg;
+        $rep_fetch $rep/t0b $rep/t0c;
+
+        $* libbiz libfix ?libbaz/0.0.3 2>>EOE;
+          fetched libfoo/1.0.0
+          unpacked libfoo/1.0.0
+          configured libfoo/1.0.0
+          fetched libbaz/0.0.3
+          unpacked libbaz/0.0.3
+          configured libbaz/0.0.3
+          fetched libbiz/0.0.2
+          unpacked libbiz/0.0.2
+          configured libbiz/0.0.2
+          fetched libfix/0.0.3
+          unpacked libfix/0.0.3
+          configured libfix/0.0.3
+          EOE
+
+        $pkg_status libbaz >'libbaz configured !0.0.3 available 0.1.0 0.0.4';
+
+        $pkg_drop libbiz libfix
+      }
+
+      : replace-dependent
+      :
+      : Test resolving a conflict when libbox and libfox have selected such
+      : versions of their dependency libfoo, that do not satisfy each other
+      : constraints. Note that these constraints are incompatible, so we
+      : resolve the conflict explicitly specifying ?libfox/0.0.1 on the
+      : command line, to replace one of the conflicting dependents.
+      :
+      {
+        $clone_root_cfg;
+        $rep_fetch $rep/t0d;
+
+        $* libbiz 2>>EOE != 0;
+          error: unable to satisfy constraints on package libfoo
+            info: libbox depends on (libfoo == 1.0.0)
+            info: libfox depends on (libfoo == 0.0.1)
+            info: available libfoo/1.0.0
+            info: available libfoo/0.0.1
+            info: explicitly specify libfoo version to manually satisfy both constraints
+          info: while satisfying libbox/0.0.2
+          info: while satisfying libbiz/0.0.1
+          EOE
+
+        $* libbiz ?libfox/0.0.1 2>>EOE;
+          fetched libfox/0.0.1
+          unpacked libfox/0.0.1
+          configured libfox/0.0.1
+          fetched libfoo/1.0.0
+          unpacked libfoo/1.0.0
+          configured libfoo/1.0.0
+          fetched libbox/0.0.2
+          unpacked libbox/0.0.2
+          configured libbox/0.0.2
+          fetched libbiz/0.0.1
+          unpacked libbiz/0.0.1
+          configured libbiz/0.0.1
+          EOE
+
+        $pkg_status libfox >'libfox configured !0.0.1 available 0.0.2';
+
+        $pkg_drop libbiz
+      }
+    }
+
+    : selected
+    :
+    : Test cases when the selected package (partially) satisfies the
+    : user-imposed dependency constraint.
+    :
+    {
+      +$clone_root_cfg
+      +$rep_fetch $rep/t0a $rep/t0b $rep/t0c
+
+      : same
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 2>!;
+        $* libbar/0.0.2 ?libbaz/0.0.1 2>!;
+
+        $pkg_status libbaz >'libbaz configured !0.0.1 available 0.1.0 0.0.4 0.0.3 0.0.2';
+        $pkg_status libfox >'libfox configured 0.0.1';
+
+        $pkg_drop libbar
+      }
+
+      : same-constraint
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 2>!;
+        $* libbar/0.0.2 '?libbaz<0.0.2' 2>!;
+
+        $pkg_status libbaz >'libbaz configured !0.0.1 available 0.1.0 0.0.4 0.0.3 0.0.2';
+        $pkg_status libfox >'libfox configured 0.0.1';
+
+        $pkg_drop libbar
+      }
+
+      : src-to-sys
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 2>!;
+        $* libbar/0.0.2 '?sys:libbaz/0.0.1' 2>!;
+
+        $pkg_status libbaz >'libbaz configured,system !0.0.1 available 0.1.0 0.0.4 0.0.3 0.0.2';
+        $pkg_status libfox >'libfox available 0.0.1';
+
+        $pkg_drop libbar
+      }
+
+      : sysver-to-wildcard
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 '?sys:libbaz/0.0.1' 2>!;
+        $* libbar/0.0.2 '?sys:libbaz' 2>!;
+
+        $pkg_status libbaz >'libbaz configured,system !* available 0.1.0 0.0.4 0.0.3 0.0.2 0.0.1';
+
+        $pkg_drop libbar
+      }
+
+      : wildcard-to-sysver
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 '?sys:libbaz' 2>!;
+        $* libbar/0.0.2 '?sys:libbaz/0.0.1' 2>!;
+
+        $pkg_status libbaz >'libbaz configured,system !0.0.1 available 0.1.0 0.0.4 0.0.3 0.0.2';
+
+        $pkg_drop libbar
+      }
+    }
+
+    : unknown
+    :
+    {
+      $clone_root_cfg;
+      $rep_fetch $rep/t0a $rep/t0c;
+
+      $* libbar/1.0.0 ?libfoo/0.0.1 2>>EOE != 0
+        error: unknown dependency libfoo == 0.0.1 of package libbar
+        info: while satisfying libbar/1.0.0
+        EOE
+    }
+  }
+
+  : refine
+  :
+  {
+    test.arguments += --yes --configure-only
+
+    +$clone_root_cfg
+    +$rep_fetch $rep/t0a $rep/t0c
+
+    : system
+    :
+    {
+      +$clone_cfg
+
+      : wildcard-to-version
+      :
+      {
+        $clone_cfg;
+
+        $* libbar '?sys:libfoo' 2>>EOE;
+          configured sys:libfoo/*
+          fetched libbar/1.0.0
+          unpacked libbar/1.0.0
+          configured libbar/1.0.0
+          EOE
+
+        $* '?sys:libfoo/0.1' 2>>EOE;
+          disfigured libbar/1.0.0
+          purged libfoo/*
+          configured sys:libfoo/0.1
+          configured libbar/1.0.0
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : wildcard-to-itself
+      :
+      {
+        $clone_cfg;
+
+        $* libbar '?sys:libfoo' 2>>EOE;
+          configured sys:libfoo/*
+          fetched libbar/1.0.0
+          unpacked libbar/1.0.0
+          configured libbar/1.0.0
+          EOE
+
+        $* '?sys:libfoo';
+
+        $pkg_drop libbar
+      }
+
+      : wildcard-to-src
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 '?sys:libbaz' 2>>EOE;
+          configured sys:libbaz/*
+          fetched libbar/0.0.1
+          unpacked libbar/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $* '?libbaz' 2>>EOE;
+          disfigured libbar/0.0.1
+          purged libbaz/*
+          fetched libfox/0.0.1
+          unpacked libfox/0.0.1
+          configured libfox/0.0.1
+          fetched libbaz/0.0.1
+          unpacked libbaz/0.0.1
+          configured libbaz/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : version-to-wildcard
+      :
+      {
+        $clone_cfg;
+
+        $* libbar '?sys:libfoo/0.1' 2>>EOE;
+          configured sys:libfoo/0.1
+          fetched libbar/1.0.0
+          unpacked libbar/1.0.0
+          configured libbar/1.0.0
+          EOE
+
+        $* '?sys:libfoo' 2>>EOE;
+          disfigured libbar/1.0.0
+          purged libfoo/0.1
+          configured sys:libfoo/*
+          configured libbar/1.0.0
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : version-to-itself
+      :
+      {
+        $clone_cfg;
+
+        $* libbar '?sys:libfoo/0.1' 2>>EOE;
+          configured sys:libfoo/0.1
+          fetched libbar/1.0.0
+          unpacked libbar/1.0.0
+          configured libbar/1.0.0
+          EOE
+
+        $* '?sys:libfoo/0.1';
+
+        $pkg_drop libbar
+      }
+
+      : version-to-version
+      :
+      {
+        $clone_cfg;
+
+        $* libbar '?sys:libfoo/0.2' 2>>EOE;
+          configured sys:libfoo/0.2
+          fetched libbar/1.0.0
+          unpacked libbar/1.0.0
+          configured libbar/1.0.0
+          EOE
+
+        $* '?sys:libfoo/0.1' 2>>EOE;
+          disfigured libbar/1.0.0
+          purged libfoo/0.2
+          configured sys:libfoo/0.1
+          configured libbar/1.0.0
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : version-to-src
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 '?sys:libbaz/0.0.1' 2>>EOE;
+          configured sys:libbaz/0.0.1
+          fetched libbar/0.0.1
+          unpacked libbar/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $* '?libbaz/0.0.1' 2>>EOE;
+          disfigured libbar/0.0.1
+          purged libbaz/0.0.1
+          fetched libfox/0.0.1
+          unpacked libfox/0.0.1
+          configured libfox/0.0.1
+          fetched libbaz/0.0.1
+          unpacked libbaz/0.0.1
+          configured libbaz/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : version-to-constraint
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 '?sys:libbaz/0.0.1' 2>>EOE;
+          configured sys:libbaz/0.0.1
+          fetched libbar/0.0.1
+          unpacked libbar/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $* '?libbaz [0.0.1 0.0.2]' 2>>EOE;
+          disfigured libbar/0.0.1
+          purged libbaz/0.0.1
+          fetched libfox/0.0.1
+          unpacked libfox/0.0.1
+          configured libfox/0.0.1
+          fetched libbaz/0.0.1
+          unpacked libbaz/0.0.1
+          configured libbaz/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : src-to-wildcard
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 '?libbaz' 2>>EOE;
+          fetched libfox/0.0.1
+          unpacked libfox/0.0.1
+          configured libfox/0.0.1
+          fetched libbaz/0.0.1
+          unpacked libbaz/0.0.1
+          configured libbaz/0.0.1
+          fetched libbar/0.0.1
+          unpacked libbar/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $* '?sys:libbaz' 2>>EOE;
+          disfigured libbar/0.0.1
+          disfigured libbaz/0.0.1
+          disfigured libfox/0.0.1
+          purged libfox/0.0.1
+          purged libbaz/0.0.1
+          configured sys:libbaz/*
+          configured libbar/0.0.1
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : src-to-version
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 '?libbaz/0.0.1' 2>>EOE;
+          fetched libfox/0.0.1
+          unpacked libfox/0.0.1
+          configured libfox/0.0.1
+          fetched libbaz/0.0.1
+          unpacked libbaz/0.0.1
+          configured libbaz/0.0.1
+          fetched libbar/0.0.1
+          unpacked libbar/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $* '?sys:libbaz/0.0.1' 2>>EOE;
+          disfigured libbar/0.0.1
+          disfigured libbaz/0.0.1
+          disfigured libfox/0.0.1
+          purged libfox/0.0.1
+          purged libbaz/0.0.1
+          configured sys:libbaz/0.0.1
+          configured libbar/0.0.1
+          EOE
+
+        $pkg_drop libbar
+      }
+    }
+
+    : source
+    :
+    {
+      +$clone_cfg
+
+      : unavailable
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/1.0.0 2>!;
+
+        $* ?libfoo/0.0.1 2>>EOE != 0;
+          error: libfoo/0.0.1 is not available from its dependents' repositories
+          EOE
+
+        $* '?libfoo < 0.0.2' 2>>EOE != 0;
+          error: 'libfoo < 0.0.2' is not available from its dependents' repositories
+          EOE
+
+        $pkg_drop libbar
+      }
+
+      : satisfy
+      :
+      {
+        $clone_cfg;
+        $rep_fetch $rep/t0b;
+
+        $* libbar/0.0.1 2>!;
+
+        $pkg_status libbaz >'libbaz configured 0.0.1 available 0.1.0 0.0.4 0.0.3 0.0.2';
+
+        $* libbar/0.0.2 ?libbaz 2>>EOE;
+          disfigured libbar/0.0.1
+          disfigured libbaz/0.0.1
+          disfigured libfox/0.0.1
+          purged libfox/0.0.1
+          fetched libfoo/1.0.0
+          unpacked libfoo/1.0.0
+          configured libfoo/1.0.0
+          fetched libbaz/0.0.2
+          unpacked libbaz/0.0.2
+          configured libbaz/0.0.2
+          fetched libbar/0.0.2
+          unpacked libbar/0.0.2
+          configured libbar/0.0.2
+          EOE
+
+        $pkg_status libbaz >'libbaz configured 0.0.2 available 0.1.0 0.0.4 0.0.3';
+
+        $rep_remove $rep/t0b && $rep_fetch;
+
+        # Test that the selected package, that is "better" than the available
+        # one, is left.
+        #
+        $* libbox ?libbaz 2>>EOE;
+          fetched libbox/0.0.1
+          unpacked libbox/0.0.1
+          configured libbox/0.0.1
+          EOE
+
+        $pkg_status libbaz >'libbaz configured 0.0.2 available 0.1.0 0.0.4 0.0.3';
+
+        $rep_remove $rep/t0a && $rep_fetch;
+
+        # Test that the selected package is left as there is no satisfactory
+        # available package.
+        #
+        $* ?libbaz;
+
+        # Test that the above behavior is not triggered for the system package.
+        #
+        $* '?sys:libbaz' 2>>EOE;
+          disfigured libbar/0.0.2
+          disfigured libbox/0.0.1
+          disfigured libbaz/0.0.2
+          disfigured libfoo/1.0.0
+          purged libfoo/1.0.0
+          purged libbaz/0.0.2
+          configured sys:libbaz/*
+          configured libbox/0.0.1
+          configured libbar/0.0.2
+          EOE
+
+        $pkg_status libbaz >'libbaz configured,system !* available 0.1.0 0.0.4 0.0.3';
+
+        $pkg_drop libbar libbox
+      }
+
+      : unsatisfied
+      :
+      {
+        $clone_cfg;
+
+        $* libbar/0.0.1 2>!;
+
+        $pkg_status libbaz >'libbaz configured 0.0.1 available 0.1.0 0.0.4 0.0.3';
+
+        $* ?libbaz/0.0.3 2>>EOE != 0;
+          error: package libbaz doesn't satisfy its dependents
+            info: libbaz/0.0.3 doesn't satisfy libbar/0.0.1
+          EOE
+
+        $pkg_status libbaz >'libbaz configured 0.0.1 available 0.1.0 0.0.4 0.0.3';
+
+        $pkg_drop libbar
+      }
+    }
+
+    : scratch
+    :
+    {
+      $clone_cfg;
+
+      $* libbox 2>!;
+
+      $pkg_status libbaz >'libbaz configured 0.0.3 available 0.1.0 0.0.4';
+      $pkg_status libfoo >'libfoo configured 0.0.1 available 1.0.0';
+      $pkg_status libfox >'libfox available 0.0.1';
+
+      # After the first simulation it is discovered that libfoo needs to be
+      # upgraded to 1.0.0. But after the second simulation, that upgrades
+      # libfoo, it is discovered that it is now unused (libbaz doesn't need it
+      # anymore). So we replace libfoo upgrade with drop and start from
+      # scratch.
+      #
+      $* ?libfoo/1.0.0 ?libbaz/0.0.1 2>>EOE;
+        disfigured libbox/0.0.1
+        disfigured libbaz/0.0.3
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        purged libfix/0.0.1
+        purged libfoo/0.0.1
+        fetched libfox/0.0.1
+        unpacked libfox/0.0.1
+        configured libfox/0.0.1
+        fetched libbaz/0.0.1
+        unpacked libbaz/0.0.1
+        configured libbaz/0.0.1
+        configured libbox/0.0.1
+        EOE
+
+      $pkg_status libbaz >'libbaz configured !0.0.1 available 0.1.0 0.0.4 0.0.3';
+      $pkg_status libfoo >'libfoo available 1.0.0 0.0.1';
+      $pkg_status libfox >'libfox configured 0.0.1';
+
+      $pkg_drop libbox
+    }
+
+    : reconf-dependent
+    :
+    {
+      $clone_cfg;
+      $rep_fetch $rep/t0b;
+
+      $* libbar/0.0.2 2>!;
+
+      $pkg_status libbaz >'libbaz configured 0.0.2 available 0.1.0 0.0.4 0.0.3';
+      $pkg_status libfoo >'libfoo configured 1.0.0';
+
+      $* '?sys:libfoo' ?libbaz/0.0.2 2>>EOE;
+        disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        configured sys:libfoo/*
+        configured libbaz/0.0.2
+        configured libbar/0.0.2
+        EOE
+
+      $pkg_drop libbar
+    }
+  }
+
+  : unhold
+  :
+  {
+    test.arguments += --configure-only
+
+    +$clone_root_cfg
+    +$rep_fetch $rep/t0a
+
+    : drop
+    :
+    {
+      $clone_cfg;
+
+      $* libfox 2>!;
+
+      $* ?libfox --yes 2>>EOE;
+        disfigured libfox/0.0.1
+        purged libfox/0.0.1
+        EOE
+
+      $pkg_status libfox >'libfox available 0.0.1'
+    }
+
+    : silent
+    :
+    {
+      $clone_cfg;
+
+      $* libbar libbaz --yes 2>!;
+      $pkg_status libbaz >'!libbaz configured 0.0.1 available 0.0.3';
+
+      $* ?libbaz;
+      $pkg_status libbaz >'libbaz configured 0.0.1 available 0.0.3';
+
+      $pkg_drop libbar
+    }
+
+    : prompt
+    :
+    {
+      $clone_cfg;
+
+      $* libbar libbaz --yes 2>!;
+      $pkg_status libbaz >'!libbaz configured 0.0.1 available 0.0.3';
+
+      $* '?sys:libbaz' < 'y' 2>>EOE;
+          drop libfox/0.0.1 (unused)
+          reconfigure/unhold sys:libbaz/*
+          reconfigure libbar (dependent of libbaz)
+        continue? [Y/n] disfigured libbar/0.0.1
+        disfigured libbaz/0.0.1
+        disfigured libfox/0.0.1
+        purged libfox/0.0.1
+        purged libbaz/0.0.1
+        configured sys:libbaz/*
+        configured libbar/0.0.1
+        EOE
+
+      $pkg_status libbaz >'libbaz configured,system !* available 0.0.3 0.0.1';
+
+      $pkg_drop libbar
+    }
+
+    : unheld
+    :
+    {
+      $clone_cfg;
+
+      $* libbar ?libbaz --yes 2>!;
+      $pkg_status libbaz >'libbaz configured 0.0.1 available 0.0.3';
+
+      $* ?libbaz;
+      $pkg_status libbaz >'libbaz configured 0.0.1 available 0.0.3';
+
+      $pkg_drop libbar
+    }
+  }
+
+  : options
+  :
+  {
+    : keep-out
+    :
+    : Test that --keep-out is properly propagated when building libhello
+    : as a dependency, so it is built incrementally.
+    :
+    {
+      $cfg_create cxx $config_cxx -d cfg 2>- &cfg/***;
+
+      # Add libhello as the dir repository.
+      #
+      cp -r $src/libhello-1.0.0 ./libhello;
+      $rep_add libhello --type dir;
+
+      # Add libfoo as the dir repository and make it a dependent of libhello.
+      #
+      cp -r $src/libfoo-1.1.0 libfoo;
+      echo 'depends: libhello' >+libfoo/manifest;
+      $rep_add libfoo --type dir;
+
+      $rep_fetch;
+
+      # Note that libfoo building doesn't trigger libhello building as it is a
+      # fake dependent, so build both explicitly.
+      #
+      $* libfoo ?libhello 2>!;
+
+      # Move libhello version ahead.
+      #
+      sed -i -e 's/(version: 1.0).0/\1.1/' libhello/manifest;
+      $rep_fetch;
+
+      # Upgrade libhello as a dependency.
+      #
+      # Note that despite the fact that we have modified the libhello's
+      # manifest file after the build, libhello may still be considered up to
+      # date on filesystems with a low file timestamps resolution (for example
+      # HFS+).
+      #
+      $* ?libhello --yes --keep-out 2>>~%EOE%
+        disfigured libfoo/1.1.0
+        disfigured libhello/1.0.0
+        using libhello/1.0.1 (external)
+        configured libhello/1.0.1
+        configured libfoo/1.1.0
+        %info: .+ is up to date%{1,2}
+        updated libhello/1.0.1
+        updated libfoo/1.1.0
+        EOE
+    }
+  }
+
+  : dependents
+  :
+  {
+    test.arguments += --yes --configure-only
+
+    : order
+    :
+    : Test that libbar that is built but isn't upgraded (and so doesn't order
+    : itself against dependencies) is still properly reconfigured being
+    : ordered as (an indirect) dependent of libfoo.
+    :
+    {
+      $clone_root_cfg;
+      $rep_fetch $rep/t0a $rep/t0b;
+
+      $* libbar libfoo/0.0.1 2>>EOE;
+        fetched libfix/0.0.1
+        unpacked libfix/0.0.1
+        configured libfix/0.0.1
+        fetched libfoo/0.0.1
+        unpacked libfoo/0.0.1
+        configured libfoo/0.0.1
+        fetched libbaz/0.0.2
+        unpacked libbaz/0.0.2
+        configured libbaz/0.0.2
+        fetched libbar/0.0.2
+        unpacked libbar/0.0.2
+        configured libbar/0.0.2
+        EOE
+
+      $* libbar libfoo 2>>EOE;
+        disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        purged libfix/0.0.1
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        configured libbaz/0.0.2
+        configured libbar/0.0.2
+        EOE
+
+      $pkg_drop libbaz libbar libfoo
+    }
+
+    : adjust-merge-build
+    :
+    : Test that the registered in the map but not ordered package build
+    : (libfoo) is properly merged into the reconfigure adjustment as a
+    : dependent of the reconfigured dependency (see collect_order_dependents()
+    : for more details).
+    :
+    {
+      $clone_root_cfg;
+      $rep_fetch $rep/t0a;
+
+      $* libfoo 2>>EOE;
+        fetched libfix/0.0.1
+        unpacked libfix/0.0.1
+        configured libfix/0.0.1
+        fetched libfoo/0.0.1
+        unpacked libfoo/0.0.1
+        configured libfoo/0.0.1
+        EOE
+
+      $* libbaz libbar 'sys:libfix' 2>>EOE;
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        fetched libfox/0.0.1
+        unpacked libfox/0.0.1
+        configured libfox/0.0.1
+        fetched libbaz/0.0.1
+        unpacked libbaz/0.0.1
+        configured libbaz/0.0.1
+        fetched libbar/0.0.1
+        unpacked libbar/0.0.1
+        configured libbar/0.0.1
+        purged libfix/0.0.1
+        configured sys:libfix/*
+        configured libfoo/0.0.1
+        EOE
+
+      $pkg_drop libbaz libbar libfoo
+    }
+  }
+
+  : upgrade
+  :
+  : Test dependency upgrade using --immediate and --recursive options.
+  :
+  {
+    test.arguments += --configure-only --upgrade
+
+    +$clone_root_cfg
+    +$rep_fetch $rep/t0a $rep/t0b $rep/t0c
+
+    +$* libbar/0.0.2 libbaz/0.0.2 libfoo/0.0.1 --yes 2>>EOE
+       fetched libfix/0.0.1
+       unpacked libfix/0.0.1
+       configured libfix/0.0.1
+       fetched libfoo/0.0.1
+       unpacked libfoo/0.0.1
+       configured libfoo/0.0.1
+       fetched libbaz/0.0.2
+       unpacked libbaz/0.0.2
+       configured libbaz/0.0.2
+       fetched libbar/0.0.2
+       unpacked libbar/0.0.2
+       configured libbar/0.0.2
+       EOE
+
+    clone_cfg = cp --no-cleanup -r ../cfg ./ &cfg/***
+
+    : immediate
+    :
+    {
+      $clone_cfg;
+
+      $* libbar/0.0.3 --immediate --yes 2>>EOE;
+        disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        fetched libbaz/0.1.0
+        unpacked libbaz/0.1.0
+        configured libbaz/0.1.0
+        fetched libbar/0.0.3
+        unpacked libbar/0.0.3
+        configured libbar/0.0.3
+        EOE
+
+      $pkg_status libbar >'!libbar configured !0.0.3 available 1.0.0';
+      $pkg_status libbaz >'!libbaz configured !0.1.0';
+      $pkg_status libfoo >'!libfoo configured !0.0.1 available 1.0.0'
+    }
+
+    : recursive
+    :
+    {
+      $clone_cfg;
+
+      $* libbar/0.0.3 --recursive --yes 2>>EOE;
+        disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        purged libfix/0.0.1
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        fetched libbaz/0.1.0
+        unpacked libbaz/0.1.0
+        configured libbaz/0.1.0
+        fetched libbar/0.0.3
+        unpacked libbar/0.0.3
+        configured libbar/0.0.3
+        EOE
+
+      $pkg_status libbar >'!libbar configured !0.0.3 available 1.0.0';
+      $pkg_status libbaz >'!libbaz configured !0.1.0';
+      $pkg_status libfoo >'!libfoo configured !1.0.0'
+    }
+
+    : all-held
+    :
+    {
+      $clone_cfg;
+
+      $* ?libfoo/0.0.1 ?libbaz/0.0.2; # Unhold.
+
+      $* --upgrade --recursive <'y' 2>>EOE
+          drop libfix/0.0.1 (unused)
+          upgrade libfoo/1.0.0
+          drop libbaz/0.0.2 (unused)
+          upgrade libbar/1.0.0
+        continue? [Y/n] disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        purged libfix/0.0.1
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        purged libbaz/0.0.2
+        fetched libbar/1.0.0
+        unpacked libbar/1.0.0
+        configured libbar/1.0.0
+        EOE
+    }
+
+    : prompt
+    :
+    {
+      $clone_cfg;
+
+      $* libbaz/0.0.2 --recursive <'y' 2>>EOE
+          drop libfix/0.0.1 (unused)
+          upgrade libfoo/1.0.0
+          reconfigure libbaz/0.0.2
+          reconfigure libbar (dependent of libbaz)
+        continue? [Y/n] disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        purged libfix/0.0.1
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        configured libbaz/0.0.2
+        configured libbar/0.0.2
+        EOE
+    }
+
+    : override
+    :
+    {
+      $clone_cfg;
+
+      $* libbar/0.0.3 ?libbaz/0.0.3 --recursive --yes 2>>EOE;
+        disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        purged libfix/0.0.1
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        fetched libbaz/0.0.3
+        unpacked libbaz/0.0.3
+        configured libbaz/0.0.3
+        fetched libbar/0.0.3
+        unpacked libbar/0.0.3
+        configured libbar/0.0.3
+        EOE
+
+      $pkg_status libbaz >'libbaz configured !0.0.3 available 0.1.0 0.0.4'
+    }
+
+    : unhold
+    :
+    {
+      $clone_cfg;
+
+      $* libbar/0.0.3 ?libbaz/0.0.3 ?libfoo --recursive --yes 2>>EOE;
+        disfigured libbar/0.0.2
+        disfigured libbaz/0.0.2
+        disfigured libfoo/0.0.1
+        disfigured libfix/0.0.1
+        purged libfix/0.0.1
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        fetched libbaz/0.0.3
+        unpacked libbaz/0.0.3
+        configured libbaz/0.0.3
+        fetched libbar/0.0.3
+        unpacked libbar/0.0.3
+        configured libbar/0.0.3
+        EOE
+
+      $pkg_status libbar >'!libbar configured !0.0.3 available 1.0.0';
+      $pkg_status libbaz >'libbaz configured !0.0.3 available 0.1.0 0.0.4';
+      $pkg_status libfoo >'libfoo configured 1.0.0'
+    }
+
+    : unavailable
+    :
+    : Test that the selected dependency (libfix/0.0.1) is silently left
+    : unchanged if there is no package available from the dependents
+    : repositories.
+    :
+    {
+      $clone_cfg;
+      $rep_remove $rep/t0a $rep/t0b $rep/t0c;
+
+      $* libbar --recursive --yes
+    }
+
+    -$pkg_drop libbar libbaz libfoo
+  }
+}
+
+: dependent
+:
+{
+  +$clone_cfg
+  +$rep_add $rep/t2 && $rep_fetch
+
+  : update
+  :
+  : Test --update-dependent option.
+  :
+  {
+    $clone_cfg;
+
+    $* --yes libbar 2>>~%EOE%;
+      fetched libfoo/1.0.0
+      unpacked libfoo/1.0.0
+      configured libfoo/1.0.0
+      fetched libbar/1.0.0
+      unpacked libbar/1.0.0
+      configured libbar/1.0.0
+      %info: .+ is up to date%
+      updated libbar/1.0.0
+      EOE
+
+    $rep_add $rep/t4a && $rep_fetch;
+
+    $* --update-dependent libfoo/1.1.0 <'y' 2>>~%EOE%;
+        upgrade libfoo/1.1.0
+        reconfigure libbar (dependent of libfoo)
+      continue? [Y/n] disfigured libbar/1.0.0
+      disfigured libfoo/1.0.0
+      fetched libfoo/1.1.0
+      unpacked libfoo/1.1.0
+      configured libfoo/1.1.0
+      configured libbar/1.0.0
+      %info: .+ is up to date%{2}
+      updated libfoo/1.1.0
+      updated libbar/1.0.0
+      EOE
+
+    $pkg_disfigure libbar 2>'disfigured libbar/1.0.0';
+    $pkg_purge     libbar 2>'purged libbar/1.0.0';
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+  }
+
+  : leave
+  :
+  : Test --leave-dependent option.
+  :
+  {
+    $clone_cfg;
+
+    $* --yes libbar 2>>~%EOE%;
+      fetched libfoo/1.0.0
+      unpacked libfoo/1.0.0
+      configured libfoo/1.0.0
+      fetched libbar/1.0.0
+      unpacked libbar/1.0.0
+      configured libbar/1.0.0
+      %info: .+ is up to date%
+      updated libbar/1.0.0
+      EOE
+
+    $rep_add $rep/t4a && $rep_fetch;
+
+    $* --leave-dependent libfoo/1.1.0 <'y' 2>>~%EOE%;
+        upgrade libfoo/1.1.0
+        reconfigure libbar (dependent of libfoo)
+      continue? [Y/n] disfigured libbar/1.0.0
+      disfigured libfoo/1.0.0
+      fetched libfoo/1.1.0
+      unpacked libfoo/1.1.0
+      configured libfoo/1.1.0
+      configured libbar/1.0.0
+      %info: .+ is up to date%
+      updated libfoo/1.1.0
+      EOE
+
+    $pkg_disfigure libbar 2>'disfigured libbar/1.0.0';
+    $pkg_purge     libbar 2>'purged libbar/1.0.0';
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+  }
+}
+
+: dependency-cycle
+:
+{
+  test.arguments += --yes
+
+  +$cfg_create cxx $config_cxx -d cfg 2>- &cfg/***
+
+  : direct
+  :
+  {
+    $clone_cfg;
+
+    cp -r $src/libfoo-1.1.0/ libfoo;
+    echo "depends: libfoo" >+ libfoo/manifest;
+    $rep_add libfoo --type dir;
+
+    $rep_fetch;
+
+    $* libfoo 2>>EOE != 0
+      error: dependency cycle detected involving package libfoo
+        info: libfoo/1.1.0 depends on libfoo/1.1.0
+      EOE
+  }
+
+  : indirect
+  :
+  {
+    +$clone_cfg
+
+    : new
+    :
+    {
+      $clone_cfg;
+
+      cp -r $src/libfoo-1.1.0/ libfoo;
+      echo "depends: libbar" >+ libfoo/manifest;
+
+      cat <<"EOI" >=libfoo/repositories.manifest;
+        : 1
+        summary: libfoo project repository
+
+        :
+        role: prerequisite
+        location: $rep/t0b
+        EOI
+
+      $rep_add libfoo --type dir;
+
+      $rep_fetch;
+
+      $* libfoo 2>>EOE != 0
+        error: dependency cycle detected involving package libfoo
+          info: libfoo/1.1.0 depends on libbar/0.0.2
+          info: libbar/0.0.2 depends on libbaz/0.0.2
+          info: libbaz/0.0.2 depends on libfoo/1.1.0
+        EOE
+    }
+
+    : upgrade
+    :
+    {
+      $clone_cfg;
+
+      cp -r $src/libfoo-1.1.0/ libfoo;
+      $rep_add libfoo --type dir;
+
+      cp -r $src/libhello-1.0.0/ libhello;
+      echo "depends: libfoo" >+ libhello/manifest;
+      $rep_add libhello --type dir;
+
+      $rep_fetch;
+
+      $* libhello 2>>~%EOE%;
+        using libfoo/1.1.0 (external)
+        configured libfoo/1.1.0
+        using libhello/1.0.0 (external)
+        configured libhello/1.0.0
+        %(mkdir|c\+\+|ld|ar) .+%{8}
+        updated libhello/1.0.0
+        EOE
+
+      echo "depends: libhello" >+ libfoo/manifest;
+      sed -i -e 's/(version: 1.1).0/\1.1/' libfoo/manifest;
+
+      $rep_fetch;
+
+      $* ?libfoo 2>>EOE != 0;
+        error: dependency cycle detected involving package libfoo
+          info: libfoo/1.1.1 depends on libhello/1.0.0
+          info: libhello/1.0.0 depends on libfoo/1.1.1
+        EOE
+
+      $pkg_drop libhello
+    }
+  }
+}
+
+: config-vars
+:
+{
+  test.arguments += --yes
+
+  +$cfg_create cxx $config_cxx -d cfg 2>- &cfg/***
+  +cp -r $src/libhello-1.0.0 ./libhello
+  +$rep_add libhello --type dir
+  +$rep_fetch
+
+  : global-and-local
+  :
+  {
+    $clone_cfg;
+
+    $* config.cxx.poptions=-DG -- libhello +{ config.cxx.poptions+=-DL } 2>>~%EOE%;
+      using libhello/1.0.0 (external)
+      configured libhello/1.0.0
+      %(mkdir|c\+\+|ar|ld) .+%{8}
+      updated libhello/1.0.0
+      EOE
+
+    cat cfg/libhello/build/config.build >>~%EOO%;
+      %.*
+      config.cxx.poptions = -DG -DL
+      EOO
+
+    $pkg_drop libhello
+  }
+
+  : global-and-options
+  :
+  {
+    $clone_cfg;
+
+    $* config.cxx.poptions=-DG --fetch-timeout=60 -- libhello 2>>~%EOE%;
+      using libhello/1.0.0 (external)
+      configured libhello/1.0.0
+      %(mkdir|c\+\+|ar|ld) .+%{8}
+      updated libhello/1.0.0
+      EOE
+
+    cat cfg/libhello/build/config.build >>~%EOO%;
+      %.*
+      config.cxx.poptions = -DG
+      EOO
+
+    $pkg_drop libhello
+  }
+}
+
+: patch
+:
+{
+  test.arguments += --configure-only --yes
+
+  +$clone_root_cfg
+
+  : held
+  :
+  {
+    +$clone_cfg
+    +$rep_fetch $rep/t0c
+
+    : success
+    :
+    {
+      $clone_cfg;
+
+      $* libbaz/0.0.3 2>!;
+
+      $* libbaz --patch 2>>EOE;
+        disfigured libbaz/0.0.3
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        fetched libbaz/0.0.4
+        unpacked libbaz/0.0.4
+        configured libbaz/0.0.4
+        EOE
+
+      $pkg_drop libbaz
+    }
+
+    : ignore
+    :
+    {
+      $clone_cfg;
+
+      $* libbaz/0.0.3 --patch 2>>EOE;
+        fetched libfoo/1.0.0
+        unpacked libfoo/1.0.0
+        configured libfoo/1.0.0
+        fetched libbaz/0.0.3
+        unpacked libbaz/0.0.3
+        configured libbaz/0.0.3
+        EOE
+
+      $* libbaz/0.1.0 --patch 2>>EOE;
+        disfigured libbaz/0.0.3
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        fetched libbaz/0.1.0
+        unpacked libbaz/0.1.0
+        configured libbaz/0.1.0
+        EOE
+
+      $pkg_drop libbaz
+    }
+
+    : warn
+    :
+    {
+      $clone_cfg;
+
+      $* 'sys:libbaz/0.0.3-alpha' 2>!;
+
+      $* libbaz --patch 2>>EOE;
+        warning: unable to patch libbaz/0.0.3-alpha
+          info: package is not using semantic/standard version
+        info: nothing to build
+        EOE
+
+      $pkg_drop libbaz
+    }
+  }
+
+  : dependency
+  :
+  {
+    +$clone_cfg
+    +$rep_fetch $rep/t0c
+
+    +$* libbox libfix ?libbaz/0.0.3 2>>EOE
+       fetched libfoo/1.0.0
+       unpacked libfoo/1.0.0
+       configured libfoo/1.0.0
+       fetched libbaz/0.0.3
+       unpacked libbaz/0.0.3
+       configured libbaz/0.0.3
+       fetched libbox/0.0.1
+       unpacked libbox/0.0.1
+       configured libbox/0.0.1
+       fetched libfix/0.0.3
+       unpacked libfix/0.0.3
+       configured libfix/0.0.3
+       EOE
+
+    clone_cfg = cp --no-cleanup -r ../cfg ./ &cfg/***
+
+    : explicitly
+    :
+    : Here we also test that the package --path option overrides the global
+    : --upgrade option.
+    :
+    {
+      $clone_cfg;
+
+      $* ?libbaz +{ --patch } --upgrade 2>>EOE
+        disfigured libbox/0.0.1
+        disfigured libfix/0.0.3
+        disfigured libbaz/0.0.3
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        fetched libbaz/0.0.4
+        unpacked libbaz/0.0.4
+        configured libbaz/0.0.4
+        configured libfix/0.0.3
+        configured libbox/0.0.1
+        EOE
+    }
+
+    : warn
+    :
+    {
+      $clone_cfg;
+
+      $* '?sys:libbaz/0.0.4-alpha' 2>!;
+
+      $* ?libbaz --patch 2>>EOE
+        warning: unable to patch libbaz/0.0.4-alpha
+          info: package is not using semantic/standard version
+        EOE
+    }
+
+    : recursive
+    :
+    {
+      $clone_cfg;
+
+      $* --patch --recursive 2>>EOE
+        disfigured libfix/0.0.3
+        disfigured libbox/0.0.1
+        disfigured libbaz/0.0.3
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        fetched libbaz/0.0.4
+        unpacked libbaz/0.0.4
+        configured libbaz/0.0.4
+        configured libbox/0.0.1
+        configured libfix/0.0.3
+        EOE
+    }
+
+    : upgrade-wins-patch
+    :
+    : Test that --upgrade options wins --patch.
+    :
+    {
+      $clone_cfg;
+
+      $* libbox +{ --upgrade-immediate } libfix +{ --patch-immediate } 2>>EOE
+        disfigured libfix/0.0.3
+        disfigured libbox/0.0.1
+        disfigured libbaz/0.0.3
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        fetched libbaz/0.1.0
+        unpacked libbaz/0.1.0
+        configured libbaz/0.1.0
+        configured libbox/0.0.1
+        configured libfix/0.0.3
+        EOE
+    }
+
+    : unavailable
+    :
+    {
+      $clone_cfg;
+
+      $* '?sys:libbaz/0.0.3' 2>>EOE;
+        disfigured libbox/0.0.1
+        disfigured libfix/0.0.3
+        disfigured libbaz/0.0.3
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        purged libbaz/0.0.3
+        configured sys:libbaz/0.0.3
+        configured libfix/0.0.3
+        configured libbox/0.0.1
+        EOE
+
+      $rep_remove $rep/t0c;
+      $rep_fetch $rep/t0b;
+
+      $* ?libbaz --patch --yes 2>>EOE != 0
+        error: patch version for sys:libbaz/0.0.3 is not available from its dependents' repositories
+        EOE
+    }
+
+    -$pkg_drop libbox libfix libbaz libfoo
+  }
+
+  : from-repository
+  :
+  {
+    test.arguments += --patch --auth all --trust-yes
+
+    +$clone_cfg
+
+    +$* "libbaz/0.0.3@$rep/t0c" 2>>EOE
+      added pkg:build2.org/pkg-build/t0c
+      fetching pkg:build2.org/pkg-build/t0c
+      fetched libfoo/1.0.0
+      unpacked libfoo/1.0.0
+      configured libfoo/1.0.0
+      fetched libbaz/0.0.3
+      unpacked libbaz/0.0.3
+      configured libbaz/0.0.3
+      EOE
+
+    clone_cfg = cp --no-cleanup -r ../cfg ./ &cfg/***
+
+    : explicit
+    :
+    {
+      $clone_cfg;
+
+      $* "libbaz@$rep/t0c" 2>>EOE
+        fetching pkg:build2.org/pkg-build/t0c
+        disfigured libbaz/0.0.3
+        disfigured libfoo/1.0.0
+        purged libfoo/1.0.0
+        fetched libbaz/0.0.4
+        unpacked libbaz/0.0.4
+        configured libbaz/0.0.4
+        EOE
+    }
+
+    : implicit
+    :
+    : Note that libfoo also becomes held.
+    :
+    {
+      $clone_cfg;
+
+      $* "@$rep/t0c" 2>>EOE;
+        fetching pkg:build2.org/pkg-build/t0c
+        info: package libbar is not present in configuration
+        info: package libbox is not present in configuration
+        info: package libfix is not present in configuration
+        disfigured libbaz/0.0.3
+        fetched libbaz/0.0.4
+        unpacked libbaz/0.0.4
+        configured libbaz/0.0.4
+        EOE
+
+      $pkg_status libfoo >'!libfoo configured !1.0.0'
+    }
+
+    -$pkg_drop libbaz libfoo
+  }
+}
+
+: configure-only
+:
+: Test --configure-only option.
+:
+{
+  $clone_cfg;
+  $rep_add $rep/t2 && $rep_fetch;
+
+  $* --configure-only --yes libbar 2>>EOE;
+    fetched libfoo/1.0.0
+    unpacked libfoo/1.0.0
+    configured libfoo/1.0.0
+    fetched libbar/1.0.0
+    unpacked libbar/1.0.0
+    configured libbar/1.0.0
+    EOE
+
+  $pkg_disfigure libbar 2>'disfigured libbar/1.0.0';
+  $pkg_purge     libbar 2>'purged libbar/1.0.0';
+
+  $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+  $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+}
+
+: repository-location
+:
+{
+  test.arguments += --yes --auth all --trust-yes
+
+  : all-packages
+  :
+  {
+    : explicit
+    :
+    {
+      $clone_root_cfg;
+
+      $* "@$rep/t4d" 2>>~%EOE%;
+        %.+
+        %info: .+ is up to date%{2}
+        updated libfox/1.0.0
+        updated libbiz/1.0.0
+        EOE
+
+      $pkg_disfigure libbiz 2>'disfigured libbiz/1.0.0';
+      $pkg_purge     libbiz 2>'purged libbiz/1.0.0';
+
+      $pkg_disfigure libfox 2>'disfigured libfox/1.0.0';
+      $pkg_purge     libfox 2>'purged libfox/1.0.0';
+
+      $pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0';
+      $pkg_purge     libbaz 2>'purged libbaz/1.1.0';
+
+      $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+      $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+    }
+
+    : url-detection
+    :
+    {
+      $clone_root_cfg;
+
+      if! $remote
+        rep = ($cxx.target.class != 'windows' \
+               ? "file:$rep" \
+               : "file:/$regex.replace($rep, '\\', '/')")
+
+        rep = "$regex.replace($rep, ' ', '%20')"
+      end;
+
+      $* "$rep/t4d" 2>>~%EOE%;
+        %.+
+        %info: .+ is up to date%{2}
+        updated libfox/1.0.0
+        updated libbiz/1.0.0
+        EOE
+
+      $pkg_disfigure libbiz 2>'disfigured libbiz/1.0.0';
+      $pkg_purge     libbiz 2>'purged libbiz/1.0.0';
+
+      $pkg_disfigure libfox 2>'disfigured libfox/1.0.0';
+      $pkg_purge     libfox 2>'purged libfox/1.0.0';
+
+      $pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0';
+      $pkg_purge     libbaz 2>'purged libbaz/1.1.0';
+
+      $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+      $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+      $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+      $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+    }
+  }
+
+  : multiple-packages
+  :
+  {
+    $clone_root_cfg;
+
+    $* "libfox,libbiz/1.0.0@$rep/t4d" 2>>~%EOE%;
+      %.+
+      %info: .+ is up to date%{2}
+      updated libfox/1.0.0
+      updated libbiz/1.0.0
+      EOE
+
+    $pkg_disfigure libbiz 2>'disfigured libbiz/1.0.0';
+    $pkg_purge     libbiz 2>'purged libbiz/1.0.0';
+
+    $pkg_disfigure libfox 2>'disfigured libfox/1.0.0';
+    $pkg_purge     libfox 2>'purged libfox/1.0.0';
+
+    $pkg_disfigure libbaz 2>'disfigured libbaz/1.1.0';
+    $pkg_purge     libbaz 2>'purged libbaz/1.1.0';
+
+    $pkg_disfigure libbar 2>'disfigured libbar/1.1.0';
+    $pkg_purge     libbar 2>'purged libbar/1.1.0';
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+  }
+
+  : version
+  :
+  : Test that libfoo/0.0.1 package version is built (repository t0a), rather
+  : than libfoo/1.0.0 (repository t4a).
+  :
+  {
+    $clone_root_cfg;
+
+    $rep_fetch $rep/t4c 2>!;
+
+    $* "libfoo@$rep/t0a" 2>>~%EOE%;
+      %.+
+      configured libfoo/0.0.1
+      %info: .+ is up to date%
+      updated libfoo/0.0.1
+      EOE
+
+    $pkg_drop libfoo
+  }
+
+  : no-patch
+  :
+  : Here we also test that --patch options is ignored if there is no selected
+  : package in the configuration.
+  :
+  {
+    $clone_root_cfg;
+
+    $* "libfoo@$rep/t1" --patch 2>>~%EOE%;
+      %.+
+      configured libfoo/1.0.0
+      %info: .+ is up to date%
+      updated libfoo/1.0.0
+      EOE
+
+    $* "libfoo@$rep/t3" --patch 2>>~%EOE% != 0;
+      %.+
+      error: patch version for libfoo/1.0.0 is not found in pkg:build2.org/pkg-build/t3
+      EOE
+
+    $pkg_drop libfoo
+  }
+
+  : package-in-complement
+  :
+  {
+    $clone_root_cfg;
+
+    $* "libfoo@$rep/t4d" 2>>~%EOE%;
+      %.+
+      %info: .+ is up to date%
+      updated libfoo/1.0.0
+      EOE
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.0.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.0.0'
+  }
+
+  : system
+  :
+  {
+    $clone_root_cfg;
+
+    $* "sys:libbiz/2.0.0@$rep/t4d" 2>>~%EOE%;
+      %.+
+      configured sys:libbiz/2.0.0
+      EOE
+
+    $pkg_disfigure libbiz 2>'purged libbiz/2.0.0'
+  }
+
+  : non-existent-package
+  :
+  {
+    $clone_root_cfg;
+
+    $* "libbar@$rep/t4d" 2>>~%EOE% != 0
+      %.+
+      error: package libbar is not found in pkg:build2.org/pkg-build/t4d or its complements
+      EOE
+  }
+
+  : location-search
+  :
+  : Test that the repository location is searched in the database before being
+  : parsed. The latest would fail as the repository type would be misguessed.
+  :
+  {
+    $clone_root_cfg;
+    $rep_add $src/libfoo-1.1.0 --type dir && $rep_fetch;
+
+    d = $canonicalize([dir_path] $src/libfoo-1.1.0);
+
+    $* "libfoo@$d" 2>>~"%EOE%";
+      fetching dir:$d
+      using libfoo/1.1.0 \(external\)
+      configured libfoo/1.1.0
+      %info: .+ is up to date%
+      updated libfoo/1.1.0
+      EOE
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+  }
+}
+
+: dir-rep
+:
+{
+  : preferred
+  :
+  : Test that dir (local) repository is preferred over non-dir local repository
+  : that comes first.
+  :
+  {
+    $clone_root_cfg;
+    $rep_fetch $rep/t4a;
+    $rep_add $src/libfoo-1.1.0 --type dir;
+    $rep_fetch "dir:$canonicalize([dir_path] $src/libfoo-1.1.0)";
+
+    $* libfoo 2>>~%EOE%;
+      using libfoo/1.1.0 (external)
+      configured libfoo/1.1.0
+      %info: .+ is up to date%
+      updated libfoo/1.1.0
+      EOE
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0';
+    $pkg_purge     libfoo 2>'purged libfoo/1.1.0'
+  }
+}
+
+: keep-out
+:
+{
+  +$cfg_create cxx $config_cxx -d cfg 2>- &cfg/***
+
+  # Build libhello as an external package.
+  #
+  +cp -r $src/libhello-1.0.0 ./libhello
+  +$rep_add libhello --type dir
+  +$rep_fetch
+  +$* libhello 2>!
+
+  # Move libhello version ahead.
+  #
+  +sed -i -e 's/(version: 1.0).0/\1.1/' libhello/manifest
+  +$rep_fetch
+
+  test.arguments += --yes # Is a command-specific option.
+
+  : unspecified
+  :
+  : Test that libhello is fully rebuilt.
+  :
+  {
+    $clone_cfg;
+    $rep_fetch;
+
+    $* libhello 2>>~%EOE%
+      disfigured libhello/1.0.0
+      using libhello/1.0.1 (external)
+      configured libhello/1.0.1
+      %(mkdir|c\+\+|ld|ar) .+%{8}
+      updated libhello/1.0.1
+      EOE
+  }
+
+  : specified
+  :
+  {
+    test.arguments += --keep-out
+
+    +$clone_cfg
+
+    : dir-repo
+    :
+    : Test that libhello is built incrementally. May re-link due to the
+    : configuration copying.
+    :
+    {
+      $clone_cfg;
+
+      $* libhello 2>>~%EOE%;
+        disfigured libhello/1.0.0
+        using libhello/1.0.1 (external)
+        configured libhello/1.0.1
+        %(ld|ar) .+%*
+        updated libhello/1.0.1
+        EOE
+
+      test -d cfg/libhello/;
+      test -d cfg/libhello-1.0.1/ == 1
+    }
+
+    : directory
+    :
+    : Test that libhello is built incrementally. May re-link due to the
+    : configuration copying.
+    :
+    {
+      +$clone_cfg
+
+      # To avoid 'external package is already available' failure for the
+      # nested tests.
+      #
+      +$rep_remove --all
+
+      : arg
+      :
+      {
+        $clone_cfg;
+
+        $* ../../../libhello/ 2>>~%EOE%;
+          disfigured libhello/1.0.0
+          using libhello/1.0.1 (external)
+          configured libhello/1.0.1
+          %(ld|ar) .+%*
+          updated libhello/1.0.1
+          EOE
+
+        test -d cfg/libhello/;
+        test -d cfg/libhello-1.0.1/ == 1
+      }
+
+      : unpacked
+      :
+      {
+        $clone_cfg;
+        $pkg_disfigure libhello --keep-out 2>!;
+        $pkg_unpack --replace --existing ../../../libhello;
+
+        $* libhello 2>>~%EOE%;
+          configured libhello/1.0.1
+          %(ld|ar) .+%*
+          updated libhello/1.0.1
+          EOE
+
+        test -d cfg/libhello/;
+        test -d cfg/libhello-1.0.1/ == 1
+      }
+    }
+
+    : archive
+    :
+    : Test that libhello is fully rebuilt, as the resulted package is not
+    : external.
+    {
+      clone_cfg = cp -pr --no-cleanup ../../cfg ./
+
+      # Distribute using the dedicated configuration to avoid the 'c and cxx
+      # module toolchain pattern mismatch' warning.
+      #
+      +$cfg_create cxx $config_cxx -d cfg 2>- &cfg/***
+
+      +$build 'dist(../../libhello/@./cfg/libhello/)' \
+              config.dist.root=./ \
+              config.dist.archives=tar.gz 2>! \
+              &libhello-1.0.1/*** &libhello-1.0.1.tar.gz
+
+      : arg
+      :
+      {
+        $clone_cfg;
+
+        $* ../libhello-1.0.1.tar.gz 2>>~%EOE%;
+          disfigured libhello/1.0.0
+          fetched libhello/1.0.1
+          unpacked libhello/1.0.1
+          configured libhello/1.0.1
+          %(c\+\+|ld|ar) .+%{6}
+          updated libhello/1.0.1
+          EOE
+
+        test -d cfg/libhello-1.0.1/;
+        test -d cfg/libhello/ == 1;
+
+        $pkg_disfigure libhello 2>'disfigured libhello/1.0.1';
+        $pkg_purge     libhello 2>'purged libhello/1.0.1';
+
+        rm -r cfg/
+      }
+
+      : unpacked
+      :
+      {
+        $clone_cfg;
+
+        $pkg_disfigure libhello 2>!;
+        $pkg_fetch --replace --existing ../libhello-1.0.1.tar.gz;
+        $pkg_unpack libhello;
+
+        $* libhello 2>>~%EOE%;
+          configured libhello/1.0.1
+          %(c\+\+|ld|ar) .+%{6}
+          updated libhello/1.0.1
+          EOE
+
+        test -d cfg/libhello-1.0.1/;
+        test -d cfg/libhello/ == 1;
+
+        $pkg_disfigure libhello 2>'disfigured libhello/1.0.1';
+        $pkg_purge     libhello 2>'purged libhello/1.0.1';
+
+        rm -r cfg/
+      }
+    }
+  }
+
+  -$pkg_disfigure libhello 2>'disfigured libhello/1.0.0'
+  -$pkg_purge     libhello 2>'purged libhello/1.0.0'
+}
+
+: iter
+:
+{
+  test.arguments += --yes # Is a command-specific option.
+
+  : already-available
+  :
+  {
+    $clone_root_cfg;
+    $rep_add $src/libfoo-1.1.0 --type dir && $rep_fetch;
+
+    $* $src/libfoo-1.1.0/ 2>>~%EOE% != 0
+      %error: external package libfoo/1.1.0 is already available from dir:.+libfoo-1.1.0%
+      EOE
+  }
+
+  : upgrade
+  :
+  {
+    $clone_root_cfg;
+
+    $* $src/libfoo-1.1.0/ 2>>~%EOE%;
+      using libfoo/1.1.0 (external)
+      configured libfoo/1.1.0
+      %info: .+ is up to date%
+      updated libfoo/1.1.0
+      EOE
+
+    cp -pr $src/libfoo-1.1.0 libfoo;
+
+    $* libfoo/ 2>>~%EOE%;
+      disfigured libfoo/1.1.0
+      using libfoo/1.1.0#1 (external)
+      configured libfoo/1.1.0#1
+      %info: .+ is up to date%
+      updated libfoo/1.1.0#1
+      EOE
+
+    $rep_add $src/libfoo-1.1.0 --type dir && $rep_fetch;
+
+    $* libfoo 2>>~%EOE%;
+      disfigured libfoo/1.1.0#1
+      using libfoo/1.1.0#2 (external)
+      configured libfoo/1.1.0#2
+      %info: .+ is up to date%
+      updated libfoo/1.1.0#2
+      EOE
+
+    $pkg_disfigure libfoo 2>'disfigured libfoo/1.1.0#2'
+  }
+}
+
+: ignore-case
+:
+{
+  test.arguments += --yes --auth all --trust-yes
+
+  $clone_cfg;
+
+  $* "libbar@$rep/t5" 2>>~%EOE%;
+    added pkg:build2.org/pkg-build/t5
+    fetching pkg:build2.org/pkg-build/t5
+    fetched libbar/1.2.0
+    unpacked libbar/1.2.0
+    configured libbar/1.2.0
+    %info: .+ is up to date%
+    updated libbar/1.2.0
+    EOE
+
+  $* "libbar@$rep/t6" 2>>~%EOE%;
+    added pkg:build2.org/pkg-build/t6
+    fetching pkg:build2.org/pkg-build/t6
+    disfigured libbar/1.2.0
+    fetched libBar/2.0.0
+    unpacked libBar/2.0.0
+    configured libBar/2.0.0
+    %info: .+ is up to date%
+    updated libBar/2.0.0
+    EOE
+
+  $pkg_status libbar >'!libBar configured !2.0.0';
+
+  test -d cfg/libBar-2.0.0;
+
+  $pkg_drop libbar
+}
+
+: git-rep
+:
+if! $git_supported
+{
+  # Skip git repository tests.
+  #
+}
+else
+{
+  rep0 = "$rep_git/state0"
+  rep1 = "$rep_git/state1"
+
+  test.arguments += --yes
+
+  pkg_disfigure += 2>!
+  pkg_purge     += 2>!
+
+  : prerequisite-repo
+  :
+  : Dependency package of the dependent being built is in the prerequisite
+  : repository.
+  :
+  {
+    $clone_root_cfg;
+    $rep_add "$rep0/libbar.git#master";
+    $rep_add "$rep0/style-basic.git#master";
+    $rep_fetch &cfg/.bpkg/repos/*/***;
+
+    $* libmbar 2>>~%EOE%;
+      %checked out style-basic/.+%
+      %configured style-basic/.+%
+      checked out libmbar/1.0.0
+      configured libmbar/1.0.0
+      %info: .+ is up to date%
+      updated libmbar/1.0.0
+      EOE
+
+    $pkg_disfigure libmbar;
+    $pkg_disfigure style-basic;
+
+    $pkg_purge libmbar;
+    $pkg_purge style-basic
+  }
+
+  : no-prerequisite-repos
+  :
+  : Dependent package repository has no prerequisites nor complements. Its
+  : dependency is picked up via the root repository that complements its
+  : repository (see rep_fetch() function implementation for details).
+  :
+  {
+    $clone_root_cfg;
+    $rep_add "$rep1/libbaz.git#master";
+    $rep_add "$rep0/style-basic.git#master";
+    $rep_fetch &cfg/.bpkg/repos/*/***;
+
+    $* libbaz 2>>~%EOE%;
+      %checked out style-basic/.+%
+      %configured style-basic/.+%
+      checked out libbaz/1.0.0
+      configured libbaz/1.0.0
+      %info: .+ is up to date%
+      updated libbaz/1.0.0
+      EOE
+
+    $pkg_disfigure libbaz;
+    $pkg_disfigure style-basic;
+
+    $pkg_purge libbaz;
+    $pkg_purge style-basic
+  }
+
+  : build-unpacked
+  :
+  : Test that the unpacked external package is properly built for the first
+  : time and is not rebuilt afterwards via the directory argument.
+  :
+  if! $remote
+  {
+    $clone_root_cfg;
+
+    d = $canonicalize([dir_path] $out_git/state0/style-basic.git);
+    $pkg_unpack -e $d;
+
+    $* style-basic 2>>~%EOE%;
+      %configured style-basic/1\.1\.0-a\.0\.\d+\..+%
+      %info: .+ is up to date%
+      %updated style-basic/1\.1\.0-a\.0\.\d+\..+%
+      EOE
+
+    $* $d 2>>~%EOE%;
+      %info: .+ is up to date%
+      %updated style-basic/1\.1\.0-a\.0\.\d+\..+%
+      EOE
+
+    $pkg_disfigure style-basic
+  }
+}

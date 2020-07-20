@@ -1,0 +1,11 @@
+# file      : doc/buildfile
+# license   : MIT; see accompanying LICENSE file
+
+define css: file
+css{*}: extension = css
+
+./: doc{build2-toolchain-*}     \
+    css{code-box common doc pre-box toc} \
+    file{install.cli intro.cli doc-* *.html2ps}
+
+./: file{cli.sh}

@@ -1,0 +1,88 @@
+# file      : tests/cfg-create.testscript
+# license   : MIT; see accompanying LICENSE file
+
+.include common.testscript
+
+config_cxx = config.cxx=$quote($recall($cxx.path) $cxx.config.mode, true)
+
+pkg_status += -d cfg
+
+: non-empty
+:
+$* 2>>/~%EOE% != 0
+error: directory ./ is not empty
+  info: use --wipe to clean it up but be careful
+EOE
+
+: dir
+:
+{
+  test.arguments += -d cfg
+  test.cleanups  += &cfg/***
+
+  : no-vars-mods
+  :
+  {
+    $* 2>>/~%EOE%;
+      %created new configuration in .+/cfg/%
+      EOE
+
+    $pkg_status libfoo >'libfoo unknown'
+  }
+
+  : conf-var
+  :
+  {
+    $* "config.install.root='$~/opt'" 2>>/~%EOE%;
+      %created new configuration in .+/cfg/%
+      EOE
+
+    $pkg_status libfoo >'libfoo unknown';
+
+    cat cfg/build/config.build >>/~"%EOO%"
+      %.+
+      %config.install.root = '?.+/opt/'?%
+      %.+
+      EOO
+  }
+
+  : module
+  :
+  {
+    $* cxx $config_cxx 2>>/~%EOE%;
+      %created new configuration in .+/cfg/%
+      EOE
+
+    $pkg_status libfoo >'libfoo unknown';
+
+    cat cfg/build/config.build >>/~"%EOO%"
+      %.+
+      %config.cxx = .+%
+      %.+
+      EOO
+  }
+
+  : wipe
+  :
+  {
+    mkdir -p cfg/foo/bar &!cfg/ &!cfg/foo/ &!cfg/foo/bar/;
+
+    $* --wipe 2>>/~%EOE%;
+      %created new configuration in .+/cfg/%
+      EOE
+
+    $pkg_status libfoo >'libfoo unknown'
+  }
+
+  : existing
+  :
+  {
+    $build 'create(cfg/,cc)' $config_cxx 2>!;
+
+    $* --existing 2>>/~%EOE%;
+      %initialized existing configuration in .+/cfg/%
+      EOE
+
+    $pkg_status libfoo >'libfoo unknown'
+  }
+}

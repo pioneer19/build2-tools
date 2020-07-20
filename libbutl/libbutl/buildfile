@@ -1,0 +1,140 @@
+# file      : libbutl/buildfile
+# license   : MIT; see accompanying LICENSE file
+
+# This library was modularized using the Modules TS semantics (with support
+# for dual, module/header consumption) which was subsequently partially
+# dismantled. We, however, kept some of the changes in anticipation that they
+# would be useful when attempting to modularize using the merged modules
+# semantics. Specifically, there are currently headers with both .mxx and .hxx
+# extensions and the code is littered with the `#if __cpp_[lib_]modules_ts`
+# blocks. Note that it's important for the auto-generated header support
+# that the default extension for hxx{} is .hxx.
+#
+# @@ If/when going back to using mxx{}, make sure to cleanup explicit .mxx.
+#
+lib{butl}: {hxx ixx txx cxx}{** -uuid-* +uuid-io            \
+                                -win32-utility              \
+                                -version                    \
+                                -builtin-options}           \
+  hxx{**.mxx} {hxx}{version} {hxx ixx cxx}{builtin-options}
+
+tclass = $cxx.target.class
+tsys   = $cxx.target.system
+
+windows = ($tclass == 'windows')
+
+# Exclude these from compilation on non-Windows targets.
+#
+lib{butl}: {hxx ixx cxx}{win32-utility}: include = $windows
+
+# Our C-files are included into sha256.cxx (sha256c.c) and timestamp.cxx
+# (strptime.c timelocal.h timelocal.c), so treat them as files exclude from
+# the compilation.
+#
+lib{butl}: file{*.c *.h}
+
+# Platform-specific UUID implementations.
+#
+lib{butl}: cxx{uuid-linux}:   include = ($tclass == 'linux')
+lib{butl}: cxx{uuid-macos}:   include = ($tclass == 'macos')
+lib{butl}: cxx{uuid-windows}: include = $windows
+lib{butl}: cxx{uuid-freebsd}: include = ($tsys == 'freebsd' || $tsys == 'netbsd')
+
+# Additional system libraries.
+#
+switch $tclass, $tsys
+{
+  case 'linux'
+    cxx.libs += -ldl
+
+  case 'macos'
+    cxx.libs += -framework CoreFoundation
+
+  case 'windows', 'mingw32'
+    cxx.libs += -lrpcrt4 -limagehlp
+
+  case 'windows'
+    cxx.libs += rpcrt4.lib imagehlp.lib
+
+  case 'bsd', 'freebsd' | 'netbsd'
+    cxx.libs += -lexecinfo
+}
+
+if! $windows
+  cxx.libs += -lpthread
+
+# Include the generated version header into the distribution (so that we don't
+# pick up an installed one) and don't remove it when cleaning in src (so that
+# clean results in a state identical to distributed).
+#
+hxx{version}: in{version} $src_root/manifest
+hxx{version}:
+{
+  dist  = true
+  clean = ($src_root != $out_root)
+}
+
+# Build options.
+#
+cxx.poptions =+ "-I$out_root" "-I$src_root"
+
+obja{*} bmia{*}: cxx.poptions += -DLIBBUTL_STATIC_BUILD
+objs{*} bmis{*}: cxx.poptions += -DLIBBUTL_SHARED_BUILD
+
+# Export options.
+#
+lib{butl}: cxx.export.poptions = "-I$out_root" "-I$src_root"
+
+liba{butl}: cxx.export.poptions += -DLIBBUTL_STATIC
+libs{butl}: cxx.export.poptions += -DLIBBUTL_SHARED
+
+# For pre-releases use the complete version to make sure they cannot be used
+# in place of another pre-release or the final version. See the version module
+# for details on the version.* variable values.
+#
+if $version.pre_release
+  lib{butl}: bin.lib.version = @"-$version.project_id"
+else
+  lib{butl}: bin.lib.version = @"-$version.major.$version.minor"
+
+# Generated options parser.
+#
+if $cli.configured
+{
+  cli.cxx{builtin-options}: cli{builtin}
+
+  cli.options += --std c++11 -I $src_root --include-with-brackets \
+--include-prefix libbutl --guard-prefix LIBBUTL --cli-namespace butl::cli \
+--generate-vector-scanner --generate-parse --keep-separator \
+--generate-specifier --suppress-usage
+
+  cli.cxx{*}:
+  {
+    # Include the generated cli files into the distribution and don't remove
+    # them when cleaning in src (so that clean results in a state identical to
+    # distributed). But don't install their headers since they are only used
+    # internally in the builtins implementation.
+    #
+    dist  = true
+    clean = ($src_root != $out_root)
+    install = false
+
+    # We keep the generated code in the repository so copy it back to src in
+    # case of a forwarded configuration.
+    #
+    backlink = overwrite
+  }
+}
+else
+  # No install for the pre-generated case.
+  #
+  hxx{builtin-options}@./ ixx{builtin-options}@./: install = false
+
+# Install into the libbutl/ subdirectory of, say, /usr/include/
+# recreating subdirectories.
+#
+{hxx ixx txx}{*}:
+{
+  install         = include/libbutl/
+  install.subdirs = true
+}

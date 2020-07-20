@@ -1,0 +1,136 @@
+# file      : tests/variable/override/testscript
+# license   : MIT; see accompanying LICENSE file
+
+.include ../../common.testscript
+
+: cache-invalidation
+:
+{
+  : value-version
+  :
+  $* x+=01 y+=01 <<EOI >>EOO
+  x = [string] 0
+  print $x
+
+  x = [uint64] 1
+  print $x
+
+  y = 0
+  print $y
+
+  [uint64] y = [null]
+  print $y
+  EOI
+  001
+  2
+  0 01
+  1
+  EOO
+
+  : value-position
+  :
+  $* x+=01 <<EOI >>EOO
+  x = [string] 0
+
+  print $x
+  dir/
+  {
+    print $x
+  }
+
+  dir/ x = [uint64] 1
+
+  print $x
+  dir/
+  {
+    print $x
+  }
+
+  EOI
+  001
+  001
+  001
+  2
+  EOO
+}
+
+: override-cached
+:
+: Test overriding cached target type/pattern-specific prepend/append
+:
+{
+  $* x+=X <<EOI >>EOO
+  x = 0
+  file{*}: x += a
+
+  print $(file{foo}:x)
+
+  x = 1                 # Should invalidate both caches.
+  print $(file{foo}:x)
+
+  file{*}: x += b       # Should invalidate both caches.
+  print $(file{foo}:x)
+  EOI
+  0 a X
+  1 a X
+  1 a b X
+  EOO
+}
+
+: order
+:
+{
+  : after
+  :
+  $* x=1 x+=2 x=+0 <<EOI >>EOO
+  print $x
+  EOI
+  0 1 2
+  EOO
+
+  : before
+  :
+  $* x+=2 x=+0 x=1 <<EOI >>EOO
+  print $x
+  EOI
+  1
+  EOO
+
+  : both
+  :
+  $* x=+0 x=1 x+=2 <<EOI >>EOO
+  print $x
+  EOI
+  1 2
+  EOO
+}
+
+: multiple
+:
+{
+  : assign
+  :
+  $* x=0 !y=0 x=1 !y=1 <<EOI >>EOO
+  print $x
+  print $y
+  EOI
+  1
+  1
+  EOO
+
+  : append
+  :
+  $* x=0 x+=1 x+=2 <<EOI >>EOO
+  print $x
+  EOI
+  0 1 2
+  EOO
+
+  : prepend
+  :
+  $* x=2 x=+1 x=+0 <<EOI >>EOO
+  print $x
+  EOI
+  0 1 2
+  EOO
+}
